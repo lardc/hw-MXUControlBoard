@@ -26,4 +26,12 @@
 #define CAN_BAUDRATE					1000000		// Битрейт CAN
 // ----------------------------------------------
 
+// ADC
+#define ADC_V_CHANNEL					1			// Номер канала оцифровки тока
+
+// SPI
+#define SPI3_BAUDRATE_BITS				0x1			// Биты задания битрейта SPI
+#define SPI3_LSB_FIRST					false		// Передача младшим битов вперед
+// ----------------------------------------------
+
 #endif // __SYSCONFIG_H

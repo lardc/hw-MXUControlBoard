@@ -26,9 +26,15 @@ int main()
 	// Настройка сторожевого таймера
 	INITCFG_ConfigWatchDog();
 	
+	// Настройка АЦП
+	INITCFG_ConfigADC();
+
+	// Настройка SPI
+	INITCFG_ConfigSPI8b();
+
 	// Инициализация логики контроллера
 	CONTROL_Init();
-	
+
 	// Фоновый цикл
 	while(TRUE)
 		CONTROL_Idle();

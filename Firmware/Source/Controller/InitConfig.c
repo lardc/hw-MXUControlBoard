@@ -20,11 +20,29 @@ void INITCFG_ConfigIO()
 	
 	// Выходы
 	GPIO_InitPushPullOutput(GPIO_LED);
+	GPIO_InitPushPullOutput(GPIO_FP_LED);
+	GPIO_InitPushPullOutput(GPIO_SPI_SS);
+	GPIO_InitPushPullOutput(GPIO_SPI_RST);
+	GPIO_InitPushPullOutput(GPIO_SPI_OE);
+	GPIO_InitPushPullOutput(GPIO_SF_RED_LED);
+	GPIO_InitPushPullOutput(GPIO_SF_GRN_LED);
+	GPIO_InitPushPullOutput(GPIO_SF_EN);
+	GPIO_InitPushPullOutput(GPIO_SD_EN);
+
 
 	// Входы
+	GPIO_InitInput(GPIO_SF_TRIG, NoPull);
 
 	// Начальная установка состояний выводов
 	GPIO_SetState(GPIO_LED, false);
+	GPIO_SetState(GPIO_FP_LED, false);
+	GPIO_SetState(GPIO_SPI_SS, true);
+	GPIO_SetState(GPIO_SPI_RST, true);
+	GPIO_SetState(GPIO_SPI_OE, true);
+	GPIO_SetState(GPIO_SF_RED_LED, false);
+	GPIO_SetState(GPIO_SF_GRN_LED, false);
+	GPIO_SetState(GPIO_SF_EN, true);
+	GPIO_SetState(GPIO_SD_EN, false);
 
 	// Альтернативные функции
 	GPIO_InitAltFunction(GPIO_ALT_UART1_RX, AltFn_7);
@@ -39,9 +57,8 @@ void INITCFG_ConfigIO()
 
 void INITCFG_ConfigExtInterrupt()
 {
-	// Вход SYNC
-	EXTI_Config(EXTI_PA, EXTI_6, FALL_TRIG, 0);
-	EXTI_EnableInterrupt(EXTI9_5_IRQn, 0, true);
+	// Вход сигнала безопасности
+	EXTI_Init(EXTI_SAFETY_IN, RISE_TRIG);
 }
 //------------------------------------------------
 
@@ -65,5 +82,22 @@ void INITCFG_ConfigWatchDog()
 {
 	IWDG_Config();
 	IWDG_ConfigureSlowUpdate();
+}
+//------------------------------------------------
+
+void INITCFG_ConfigADC()
+{
+	RCC_ADC_Clk_EN(ADC_12_ClkEN);
+
+	// ADC1
+	ADC_Calibration(ADC1);
+	ADC_SoftTrigConfig(ADC1);
+	ADC_Enable(ADC1);
+}
+//-----------------------------------------------
+
+void INITCFG_ConfigSPI8b()
+{
+	SPI_Init8b(SPI3, SPI3_BAUDRATE_BITS, SPI3_LSB_FIRST);
 }
 //------------------------------------------------
