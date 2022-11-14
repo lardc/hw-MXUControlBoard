@@ -10,95 +10,64 @@
 #include "DataTable.h"
 
 // Variables
-const uint8_t SPI_Data[] = {0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0x0A};
+uint8_t SPI_Data[] = {0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0x0A};
+uint8_t Data_Length = 0x74;
 
 // Functions
-//
-void DBACT_ToggleBoardLED()
+
+// Send pulse to Front Panel LED
+void DBACT_ToggleFPLed()
 {
-	LL_ToggleBoardLED(true);
+	LL_SetStateFPLed(true);
 	DELAY_MS(1000);
-	LL_ToggleBoardLED(false);
+	LL_SetStateFPLed(false);
 }
 //-----------------------
 
-void DBACT_SetStateFP_LED()
+// Send pulse to Safety Subsystem Red LED
+void DBACT_ToggleSFRedLed()
 {
-	LL_SetStateFP_LED(true);
+	LL_SetStateSFRedLed(true);
 	DELAY_MS(1000);
-	LL_SetStateFP_LED(false);
+	LL_SetStateSFRedLed(false);
 }
 //-----------------------
 
-void DBACT_SF_RED_LED()
+// Send pulse to Safety Subsystem Green LED
+void DBACT_ToggleSFGreenLed()
 {
-	LL_SetStateSF_RED_LED(true);
+	LL_SetStateSFGreenLed(true);
 	DELAY_MS(1000);
-	LL_SetStateSF_RED_LED(false);
+	LL_SetStateSFGreenLed(false);
 }
 //-----------------------
 
-void DBACT_SF_GRN_LED()
+// Write variable SPI_Data via SPI
+void DBACT_WriteSPI()
 {
-	LL_SetStateSF_GRN_LED(true);
-	DELAY_MS(1000);
-	LL_SetStateSF_GRN_LED(false);
+	LL_WriteSPI(SPI_Data, Data_Length);
 }
 //-----------------------
 
-void DBACT_SPI_WRITE()
+// Stop commutation, reset shift-registers, turn outputs Hi-Z
+void DBACT_StopSPI()
 {
-	SPI_Enable(SPI3, true);
-
-	// Reset all shift-registers
-	LL_SetStateSPI_RST(false);
-	DELAY_MS(5);
-	LL_SetStateSPI_RST(true);
-
-	// Latch outputs of shift-registers
-	LL_SetStateSPI_SS(false);
-
-	// Send 15 bytes of data
-	for (int i = 0; i<=15; i++)
-		SPI_WriteByte(SPI3, SPI_Data[i]);
-
-	// Turn outputs ON
-	LL_SetStateSPI_OE(true);
+	LL_StopSPI();
 }
+//-----------------------
 
-void DBACT_SPI_STOP_COMMUTATION()
+// Safety EN check
+void DBACT_ToggleSF_EN()
 {
-	// Turn outputs OFF
-	LL_SetStateSPI_OE(false);
-
-	LL_SetStateSPI_SS(true);
-
-	// Reset all shift-registers
-	LL_SetStateSPI_RST(false);
-	DELAY_MS(5);
-	LL_SetStateSPI_RST(true);
+	LL_SetStateSF_EN(true);
+	DELAY_MS(1000);
+	LL_SetStateSF_EN(false);
 }
+//-----------------------
 
-bool DBACT_ADC_MEASURE_OPEN_CURCUIT()
+// Turn self-test current ON, measure voltage with ADC, compare result with DataTable constant
+void DBACT_SelfTestMeasure()
 {
-	float MeasuredTestVoltage, Error;
-
-	LL_SetStateSD_EN(true);
-	DELAY_MS(5);
-	MeasuredTestVoltage = LL_ADC_Measure();
-	LL_SetStateSD_EN(false);
-	Error = (MeasuredTestVoltage - ADC_V_OC) / ADC_V_OC * 100;
-	return (Error >= DataTable[REG_SFTST_V_ALLOWED_ERR]) ? false : true;
+	LL_SelfTestMeasure();
 }
-
-bool DBACT_ADC_MEASURE_CLOSE_CURCUIT()
-{
-	float MeasuredTestVoltage, Error;
-
-	LL_SetStateSD_EN(true);
-	DELAY_MS(5);
-	MeasuredTestVoltage = LL_ADC_Measure();
-	LL_SetStateSD_EN(false);
-	Error = (MeasuredTestVoltage - ADC_V_CC) / ADC_V_CC * 100;
-	return (Error >= DataTable[REG_SFTST_V_ALLOWED_ERR]) ? false : true;
-}
+//-----------------------

@@ -12,32 +12,32 @@ bool DIAG_HandleDiagnosticAction(uint16_t ActionID, uint16_t *pUserError)
 {
 	switch (ActionID)
 	{
-	case ACT_DBG_BOARD_LED:
-		DBACT_ToggleBoardLED();
-		break;
-
 	case ACT_DBG_FP_LED:
-		DBACT_SetStateFP_LED();
+		DBACT_ToggleFPLed();
 		break;
 
 	case ACT_DBG_SF_RED_LED:
-		DBACT_SF_RED_LED();
+		DBACT_ToggleSFRedLed();
 		break;
 
 	case ACT_DBG_SF_GRN_LED:
-		DBACT_SF_GRN_LED();
+		DBACT_ToggleSFGreenLed();
 		break;
 
-	case ACT_DBG_SPI_WRITE:
-		DBACT_SPI_WRITE();
+	case ACT_DBG_WRITE_SPI:
+		DBACT_WriteSPI();
 		break;
 
-	case ACT_DBG_STOP_COMMUTATION:
-		DBACT_SPI_STOP_COMMUTATION();
+	case ACT_DBG_STOP_SPI:
+		DBACT_StopSPI();
 		break;
 
-	case ACT_DBG_ADC_MEASURE_OC:
-		DBACT_ADC_MEASURE_OPEN_CURCUIT();
+	case ACT_SF_EN:
+		DBACT_ToggleSF_EN();
+		break;
+
+	case ACT_DBG_SELF_TEST_MEASURE:
+		DBACT_SelfTestMeasure();
 		break;
 
 		default:

@@ -7,12 +7,12 @@
 
 // Functions
 //
-void DBACT_ToggleBoardLED();
-void DBACT_SetStateFP_LED();
-void DBACT_SF_RED_LED();
-void DBACT_SF_GRN_LED();
-void DBACT_SPI_WRITE();
-void DBACT_SPI_STOP_COMMUTATION();
-bool DBACT_ADC_MEASURE_OPEN_CURCUIT();
+void DBACT_ToggleFPLed();
+void DBACT_ToggleSFRedLed();
+void DBACT_ToggleSFGreenLed();
+void DBACT_WriteSPI();
+void DBACT_StopSPI();
+void DBACT_ToggleSF_EN();
+void DBACT_SelfTestMeasure();
 
 #endif //__DEBUGACTIONS_H

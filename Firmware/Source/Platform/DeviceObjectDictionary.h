@@ -7,14 +7,13 @@
 #define ACT_CLR_FAULT					3	// Очистка всех fault
 #define ACT_CLR_WARNING					4	// Очистка всех warning
 //
-#define ACT_DBG_BOARD_LED				20	// Проверка работы индикатора на плате
 #define ACT_DBG_FP_LED					21	// Проверка работы индикатора на передней панели
 #define ACT_DBG_SF_RED_LED				22	// Проверка работы красного индикатора системы безопасности
 #define ACT_DBG_SF_GRN_LED				23	// Проверка работы зеленого индикатора системы безопасности
-#define ACT_DBG_SPI_WRITE				24	// Проверка работы коммутации тестовой комбинации
-#define ACT_DBG_STOP_COMMUTATION		25	// Остановка и сборс текущей комбинации
-#define ACT_DBG_ADC_MEASURE_OC			26	// Измерение значения напряжение при наличии разрыва в цепи
-#define ACT_DBG_ADC_MEASURE_CC			27	// Измерение значения напряжение при отсутсвии разрыва в цепи
+#define ACT_DBG_WRITE_SPI				24	// Проверка работы коммутации тестовой комбинации
+#define ACT_DBG_STOP_SPI				25	// Остановка и сборс текущей комбинации
+#define ACT_SF_EN						26	// Проверка работы сигнала-разрешения системы безопаснсоти
+#define ACT_DBG_SELF_TEST_MEASURE		27	// Измерение значения напряжение системы самодиагностики
 
 #define ACT_SAVE_TO_ROM					200	// Сохранение пользовательских данных во FLASH процессора
 #define ACT_RESTORE_FROM_ROM			201	// Восстановление данных из FLASH
