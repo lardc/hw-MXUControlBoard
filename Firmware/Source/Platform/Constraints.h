@@ -8,6 +8,10 @@
 
 //Definitions
 //
+#define SFTST_V_ALLOWED_ERR_MIN		0
+#define SFTST_V_ALLOWED_ERR_MAX		20
+#define SFTST_V_ALLOWED_ERR_DIF		10
+//
 #define COEF_K_MIN					-INT16S_MAX
 #define COEF_K_MAX					INT16S_MAX
 #define COEF_K_DEF					1

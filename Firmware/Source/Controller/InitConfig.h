@@ -11,5 +11,7 @@ void INITCFG_ConfigUART();
 void INITCFG_ConfigTimer7();
 void INITCFG_ConfigWatchDog();
 void INITCFG_ConfigExtInterrupt();
+void INITCFG_ConfigADC();
+void INITCFG_ConfigSPI8b();
 
 #endif //__INITCONFIG_H
