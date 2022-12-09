@@ -2,24 +2,44 @@
 #define __DEV_OBJ_DIC_H
 
 // Команды
-#define ACT_ENABLE_POWER				1	// Включение блока
-#define ACT_DISABLE_POWER				2	// Выключение блока
-#define ACT_CLR_FAULT					3	// Очистка всех fault
-#define ACT_CLR_WARNING					4	// Очистка всех warning
+#define ACT_ENABLE_POWER					1	// Включение блока
+#define ACT_DISABLE_POWER					2	// Выключение блока
+#define ACT_CLR_FAULT						3	// Очистка всех fault
+#define ACT_CLR_WARNING						4	// Очистка всех warning
 //
-#define ACT_DBG_FP_LED					21	// Проверка работы индикатора на передней панели
-#define ACT_DBG_SF_RED_LED				22	// Проверка работы красного индикатора системы безопасности
-#define ACT_DBG_SF_GRN_LED				23	// Проверка работы зеленого индикатора системы безопасности
-#define ACT_DBG_WRITE_SPI				24	// Проверка работы коммутации тестовой комбинации
-#define ACT_DBG_STOP_SPI				25	// Остановка и сборс текущей комбинации
-#define ACT_SF_EN						26	// Проверка работы сигнала-разрешения системы безопаснсоти
-#define ACT_DBG_SELF_TEST_MEASURE		27	// Измерение значения напряжение системы самодиагностики
+#define ACT_DBG_FP_LED						21	// Проверка работы индикатора на передней панели
+#define ACT_DBG_SF_RED_LED					22	// Проверка работы красного индикатора системы безопасности
+#define ACT_DBG_SF_GRN_LED					23	// Проверка работы зеленого индикатора системы безопасности
+#define ACT_DBG_WRITE_SPI					24	// Проверка работы коммутации тестовой комбинации
+#define ACT_DBG_STOP_SPI					25	// Остановка и сборс текущей комбинации
+#define ACT_SF_EN							26	// Проверка работы сигнала-разрешения системы безопаснсоти
+#define ACT_DBG_SELF_TEST_MEASURE			27	// Измерение значения напряжение системы самодиагностики
 
-#define ACT_SAVE_TO_ROM					200	// Сохранение пользовательских данных во FLASH процессора
-#define ACT_RESTORE_FROM_ROM			201	// Восстановление данных из FLASH
-#define ACT_RESET_TO_DEFAULT			202	// Сброс DataTable в состояние по умолчанию
+#define ACT_COMM_NONE						100 // Отключение всех реле
+#define ACT_COMM_ILEAK_GATE_EMITTER_POS_1	101 // Режим измерения тока утечки затвора-эмиттера (1 полукомлект, положительный импульс)
+#define ACT_COMM_ILEAK_GATE_EMITTER_POS_2	102 // Режим измерения тока утечки затвора-эмиттера (2 полукомлект, положительный импульс)
+#define ACT_COMM_ILEAK_GATE_EMITTER_NEG_1	103 // Режим измерения тока утечки затвора-эмиттера (1 полукомлект, отрицательный импульс)
+#define ACT_COMM_ILEAK_GATE_EMITTER_NEG_2	104 // Режим измерения тока утечки затвора-эмиттера (2 полукомлект, отрицательный импульс)
+#define ACT_COMM_UTH_GATE_EMITTER_1			105 // Режим измерения порогового напряжения затвор-эмиттер (1 полукомлект)
+#define ACT_COMM_UTH_GATE_EMITTER_2			106 // Режим измерения порогового напряжения затвор-эмиттер (2 полукомлект)
+#define ACT_COMM_Q_GATE_POS_1				107 // Режим измерения заряда затвора (1 полукомлект, положительный импульс)
+#define ACT_COMM_Q_GATE_POS_2				108 // Режим измерения заряда затвора (2 полукомлект, положительный импульс)
+#define ACT_COMM_Q_GATE_NEG_1				109 // Режим измерения заряда затвора (1 полукомлект, отрицательный импульс)
+#define ACT_COMM_Q_GATE_NEG_2				110 // Режим измерения заряда затвора (2 полукомлект, отрицательный импульс)
+#define ACT_COMM_USAT_COLLECTOR_EMITTER_1	111 // Режим измерения напряжения насыщения коллектор-эмиттер (1 полукомлект)
+#define ACT_COMM_USAT_COLLECTOR_EMITTER_2	112 // Режим измерения напряжения насыщения коллектор-эмиттер (2 полукомлект)
+#define ACT_COMM_UFW_CHOPPER_DIODE_1		113 // Режим измерения прямого напряжения обратно-параллельного диода и диода чоппера  (1 полукомлект)
+#define ACT_COMM_UFW_CHOPPER_DIODE_2		114 // Режим измерения прямого напряжения обратно-параллельного диода и диода чоппера  (2 полукомлект)
+#define ACT_COMM_ILEAK_COLLECTOR_EMITTER_1	115 // Режим измерения тока утечки коллектор-эмиттер (1 полукомлект)
+#define ACT_COMM_ILEAK_COLLECTOR_EMITTER_2	116 // Режим измерения тока утечки коллектор-эмиттер (2 полукомлект)
+#define ACT_COMM_THERMISTOR					117 // Режим измерения сопротивления термистора
+#define ACT_COMM_NO_PE						118 // Отключения защитного заземления
 
-#define ACT_BOOT_LOADER_REQUEST			320	// Перезапуск процессора с целью перепрограммирования
+#define ACT_SAVE_TO_ROM						200	// Сохранение пользовательских данных во FLASH процессора
+#define ACT_RESTORE_FROM_ROM				201	// Восстановление данных из FLASH
+#define ACT_RESET_TO_DEFAULT				202	// Сброс DataTable в состояние по умолчанию
+
+#define ACT_BOOT_LOADER_REQUEST				320	// Перезапуск процессора с целью перепрограммирования
 // -----------------------------
 
 

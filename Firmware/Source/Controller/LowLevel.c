@@ -32,6 +32,14 @@ void LL_SetStateSFGreenLed(bool State)
 }
 //-----------------------------
 
+void LL_ResetRegisters()
+{
+	// Reset all shift-registers
+	GPIO_SetState(GPIO_SPI_RST, false);
+	DELAY_MS(5);
+	GPIO_SetState(GPIO_SPI_RST, true);
+}
+
 void LL_WriteSPI(uint8_t SPI_Data[], uint8_t Data_Length)
 {
 	// Reset all shift-registers
