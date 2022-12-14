@@ -27,6 +27,8 @@
 #define ACT_COMM_THERMISTOR						109 // Режим измерения сопротивления термистора
 #define ACT_COMM_NO_PE							110 // Отключения защитного заземления
 
+#define ACT_SF_DEACTIVATE						120	// Команда деактивации контура безопасности
+
 #define ACT_SAVE_TO_ROM							200	// Сохранение пользовательских данных во FLASH процессора
 #define ACT_RESTORE_FROM_ROM					201	// Восстановление данных из FLASH
 #define ACT_RESET_TO_DEFAULT					202	// Сброс DataTable в состояние по умолчанию

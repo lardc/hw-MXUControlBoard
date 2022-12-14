@@ -16,5 +16,7 @@ typedef enum __TestType
 // Functions
 //
 void LOGIC_ResetOutputRegisters();
+void LOGIC_UpdatePosition();
+void LOGIC_ResetSFSystem();
 
 #endif /* LOGIC_H_ */

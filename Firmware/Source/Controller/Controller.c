@@ -30,8 +30,6 @@ static Boolean CycleActive = false;
 //
 volatile Int64U CONTROL_TimeCounter = 0;
 //
-Int16U MeasurementPosition = 1;
-//
 
 // Forward functions
 //
@@ -58,11 +56,6 @@ void CONTROL_Init()
 	CONTROL_ResetToDefaultState();
 }
 //------------------------------------------
-
-void LOGIC_UpdatePosition()
-{
-	MeasurementPosition = DataTable[REG_MEASUREMENT_POSITION];
-}
 
 void CONTROL_ResetToDefaultState()
 {
@@ -115,6 +108,10 @@ static Boolean CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 
 		case ACT_CLR_WARNING:
 			DataTable[REG_WARNING] = WARNING_NONE;
+			break;
+
+		case ACT_SF_DEACTIVATE:
+			LOGIC_ResetSFSystem();
 			break;
 
 		default:
