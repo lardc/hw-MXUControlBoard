@@ -44,400 +44,409 @@ void COMM_Commutate(Int16U ActionID)
 
 	switch(ActionID)
 	{
-		case ACT_COMM_ILEAK_GATE_EMITTER_POS_1:
+		case ACT_COMM_ILEAK_GATE_EMITTER_POS_PULSE:
 			{
-				ZcRD_OutputValuesReset();
+				if (REG_MEASUREMENT_POSITION == 1)
+				{
+					ZcRD_OutputValuesReset();
 
-				ZcRD_OutputValuesCompose(OL_C_POT_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_C_POT_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_C_POT_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(OL_E_POT_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_E_POT_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_E_POT_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_E_POT_LSL_POTP, TRUE);
-				ZcRD_OutputValuesCompose(MC_C_POT_LSL_POTN, TRUE);
+					ZcRD_OutputValuesCompose(OL_C_POT_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_C_POT_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_C_POT_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(OL_E_POT_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_E_POT_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_E_POT_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_E_POT_LSL_POTP, TRUE);
+					ZcRD_OutputValuesCompose(MC_C_POT_LSL_POTN, TRUE);
 
-				ZcRD_OutputValuesCompose(OL_G_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_G_GT_G, TRUE);
-				ZcRD_OutputValuesCompose(IL_GT_G_COMM, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_G_GT_G, TRUE);
+					ZcRD_OutputValuesCompose(IL_GT_G_COMM, TRUE);
 
-				ZcRD_OutputValuesCompose(OL_GE_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_G_GT_GE, TRUE);
-				ZcRD_OutputValuesCompose(IL_GT_GE_COMM, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_G_GT_GE, TRUE);
+					ZcRD_OutputValuesCompose(IL_GT_GE_COMM, TRUE);
 
-				ZcRD_RegisterFlushWrite();
+					ZcRD_RegisterFlushWrite();
+				}
+				else if (REG_MEASUREMENT_POSITION == 2)
+				{
+					ZcRD_OutputValuesReset();
+
+					ZcRD_OutputValuesCompose(OL_C_POT_2_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_C_POT_2_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_C_POT_2_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(OL_E_POT_2_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_E_POT_2_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_E_POT_2_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_E_POT_2_LSL_POTP, TRUE);
+					ZcRD_OutputValuesCompose(MC_C_POT_2_LSL_POTN, TRUE);
+
+					ZcRD_OutputValuesCompose(OL_G_2_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_2_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_2_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_G_2_GT_G, TRUE);
+					ZcRD_OutputValuesCompose(IL_GT_G_COMM, TRUE);
+
+					ZcRD_OutputValuesCompose(OL_GE_2_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_2_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_2_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_G_2_GT_GE, TRUE);
+					ZcRD_OutputValuesCompose(IL_GT_GE_COMM, TRUE);
+
+					ZcRD_RegisterFlushWrite();
+				}
 			}
 			break;
 
-		case ACT_COMM_ILEAK_GATE_EMITTER_POS_2:
+		case ACT_COMM_ILEAK_GATE_EMITTER_NEG_PULSE:
 			{
-				ZcRD_OutputValuesReset();
+				if (REG_MEASUREMENT_POSITION == 1)
+				{
+					ZcRD_OutputValuesReset();
 
-				ZcRD_OutputValuesCompose(OL_C_POT_2_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_C_POT_2_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_C_POT_2_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(OL_E_POT_2_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_E_POT_2_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_E_POT_2_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_E_POT_2_LSL_POTP, TRUE);
-				ZcRD_OutputValuesCompose(MC_C_POT_2_LSL_POTN, TRUE);
+					ZcRD_OutputValuesCompose(OL_C_POT_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_C_POT_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_C_POT_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(OL_E_POT_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_E_POT_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_E_POT_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_E_POT_LSL_POTP, TRUE);
+					ZcRD_OutputValuesCompose(MC_C_POT_LSL_POTN, TRUE);
 
-				ZcRD_OutputValuesCompose(OL_G_2_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_2_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_2_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_G_2_GT_G, TRUE);
-				ZcRD_OutputValuesCompose(IL_GT_G_COMM, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_G_GT_GE, TRUE);
+					ZcRD_OutputValuesCompose(IL_GT_GE_COMM, TRUE);
 
-				ZcRD_OutputValuesCompose(OL_GE_2_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_2_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_2_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_G_2_GT_GE, TRUE);
-				ZcRD_OutputValuesCompose(IL_GT_GE_COMM, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_GE_GT_GE, TRUE);
+					ZcRD_OutputValuesCompose(IL_GT_G_COMM, TRUE);
 
-				ZcRD_RegisterFlushWrite();
+					ZcRD_RegisterFlushWrite();
+				}
+				else if (REG_MEASUREMENT_POSITION == 2)
+				{
+					ZcRD_OutputValuesReset();
+
+					ZcRD_OutputValuesCompose(OL_C_POT_2_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_C_POT_2_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_C_POT_2_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(OL_E_POT_2_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_E_POT_2_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_E_POT_2_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_E_POT_2_LSL_POTP, TRUE);
+					ZcRD_OutputValuesCompose(MC_C_POT_2_LSL_POTN, TRUE);
+
+					ZcRD_OutputValuesCompose(OL_G_2_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_2_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_2_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_G_2_GT_GE, TRUE);
+					ZcRD_OutputValuesCompose(IL_GT_GE_COMM, TRUE);
+
+					ZcRD_OutputValuesCompose(OL_GE_2_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_2_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_2_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_GE_2_GT_GE, TRUE);
+					ZcRD_OutputValuesCompose(IL_GT_G_COMM, TRUE);
+
+					ZcRD_RegisterFlushWrite();
+				}
 			}
 			break;
 
-		case ACT_COMM_ILEAK_GATE_EMITTER_NEG_1:
+		case ACT_COMM_UTH_GATE_EMITTER:
 			{
-				ZcRD_OutputValuesReset();
+				if (REG_MEASUREMENT_POSITION == 1)
+				{
+					ZcRD_OutputValuesReset();
 
-				ZcRD_OutputValuesCompose(OL_C_POT_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_C_POT_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_C_POT_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(OL_E_POT_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_E_POT_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_E_POT_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_E_POT_LSL_POTP, TRUE);
-				ZcRD_OutputValuesCompose(MC_C_POT_LSL_POTN, TRUE);
+					ZcRD_OutputValuesCompose(OL_C_POT_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_C_POT_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_C_POT_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_G_C_POT1, TRUE);
+					ZcRD_OutputValuesCompose(MC_G_C_POT2, TRUE);
+					ZcRD_OutputValuesCompose(MC_G_C_POT2, TRUE);
 
-				ZcRD_OutputValuesCompose(OL_G_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_G_GT_GE, TRUE);
-				ZcRD_OutputValuesCompose(IL_GT_GE_COMM, TRUE);
+					ZcRD_OutputValuesCompose(MC_G_GT_G, TRUE);
+					ZcRD_OutputValuesCompose(IL_GT_G_COMM, TRUE);
 
-				ZcRD_OutputValuesCompose(OL_GE_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_GE_GT_GE, TRUE);
-				ZcRD_OutputValuesCompose(IL_GT_G_COMM, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_GE_GT_GE, TRUE);
+					ZcRD_OutputValuesCompose(IL_GT_GE_COMM, TRUE);
 
-				ZcRD_RegisterFlushWrite();
+					ZcRD_RegisterFlushWrite();
+				}
+				else if (REG_MEASUREMENT_POSITION == 2)
+				{
+					ZcRD_OutputValuesReset();
+
+					ZcRD_OutputValuesCompose(OL_C_POT_2_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_C_POT_2_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_C_POT_2_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_2_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_2_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_2_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_G_2_C_POT1, TRUE);
+					ZcRD_OutputValuesCompose(MC_G_2_C_POT2, TRUE);
+					ZcRD_OutputValuesCompose(MC_G_2_C_POT3, TRUE);
+
+					ZcRD_OutputValuesCompose(MC_G_2_GT_G, TRUE);
+					ZcRD_OutputValuesCompose(IL_GT_G_COMM, TRUE);
+
+					ZcRD_OutputValuesCompose(OL_GE_2_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_2_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_2_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_GE_2_GT_GE, TRUE);
+					ZcRD_OutputValuesCompose(IL_GT_GE_COMM, TRUE);
+
+					ZcRD_RegisterFlushWrite();
+				}
 			}
 			break;
 
-		case ACT_COMM_ILEAK_GATE_EMITTER_NEG_2:
+		case ACT_COMM_Q_GATE_POS_PULSE:
 			{
-				ZcRD_OutputValuesReset();
+				if (REG_MEASUREMENT_POSITION == 1)
+				{
+					ZcRD_OutputValuesReset();
 
-				ZcRD_OutputValuesCompose(OL_C_POT_2_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_C_POT_2_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_C_POT_2_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(OL_E_POT_2_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_E_POT_2_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_E_POT_2_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_E_POT_2_LSL_POTP, TRUE);
-				ZcRD_OutputValuesCompose(MC_C_POT_2_LSL_POTN, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_G_GT_G, TRUE);
+					ZcRD_OutputValuesCompose(IL_GT_G_COMM, TRUE);
 
-				ZcRD_OutputValuesCompose(OL_G_2_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_2_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_2_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_G_2_GT_GE, TRUE);
-				ZcRD_OutputValuesCompose(IL_GT_GE_COMM, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_GE_GT_GE, TRUE);
+					ZcRD_OutputValuesCompose(IL_GT_GE_COMM, TRUE);
 
-				ZcRD_OutputValuesCompose(OL_GE_2_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_2_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_2_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_GE_2_GT_GE, TRUE);
-				ZcRD_OutputValuesCompose(IL_GT_G_COMM, TRUE);
+					ZcRD_RegisterFlushWrite();
+				}
+				else if (REG_MEASUREMENT_POSITION == 2)
+				{
+					ZcRD_OutputValuesReset();
 
-				ZcRD_RegisterFlushWrite();
+					ZcRD_OutputValuesCompose(OL_G_2_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_2_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_2_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_G_2_GT_G, TRUE);
+					ZcRD_OutputValuesCompose(IL_GT_G_COMM, TRUE);
+
+					ZcRD_OutputValuesCompose(OL_GE_2_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_2_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_2_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_GE_2_GT_GE, TRUE);
+					ZcRD_OutputValuesCompose(IL_GT_GE_COMM, TRUE);
+
+					ZcRD_RegisterFlushWrite();
+				}
 			}
 			break;
 
-		case ACT_COMM_UTH_GATE_EMITTER_1:
+		case ACT_COMM_Q_GATE_NEG_PULSE:
 			{
-				ZcRD_OutputValuesReset();
+				if (REG_MEASUREMENT_POSITION == 1)
+				{
+					ZcRD_OutputValuesReset();
 
-				ZcRD_OutputValuesCompose(OL_C_POT_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_C_POT_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_C_POT_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_G_C_POT1, TRUE);
-				ZcRD_OutputValuesCompose(MC_G_C_POT2, TRUE);
-				ZcRD_OutputValuesCompose(MC_G_C_POT2, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_GE_GT_G, TRUE);
+					ZcRD_OutputValuesCompose(IL_GT_GE_COMM, TRUE);
 
-				ZcRD_OutputValuesCompose(MC_G_GT_G, TRUE);
-				ZcRD_OutputValuesCompose(IL_GT_G_COMM, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_G_GT_GE, TRUE);
+					ZcRD_OutputValuesCompose(IL_GT_G_COMM, TRUE);
 
-				ZcRD_OutputValuesCompose(OL_GE_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_GE_GT_GE, TRUE);
-				ZcRD_OutputValuesCompose(IL_GT_GE_COMM, TRUE);
+					ZcRD_RegisterFlushWrite();
+				}
+				else if (REG_MEASUREMENT_POSITION == 2)
+				{
+					ZcRD_OutputValuesReset();
 
-				ZcRD_RegisterFlushWrite();
+					ZcRD_OutputValuesCompose(OL_G_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_GE_GT_G, TRUE);
+					ZcRD_OutputValuesCompose(IL_GT_GE_COMM, TRUE);
+
+					ZcRD_OutputValuesCompose(OL_GE_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_G_GT_GE, TRUE);
+					ZcRD_OutputValuesCompose(IL_GT_G_COMM, TRUE);
+
+					ZcRD_RegisterFlushWrite();
+				}
 			}
 			break;
 
-		case ACT_COMM_UTH_GATE_EMITTER_2:
+		case ACT_COMM_USAT_COLLECTOR_EMITTER:
 			{
-				ZcRD_OutputValuesReset();
+				if (REG_MEASUREMENT_POSITION == 1)
+				{
+					ZcRD_OutputValuesReset();
 
-				ZcRD_OutputValuesCompose(OL_C_POT_2_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_C_POT_2_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_C_POT_2_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_2_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_2_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_2_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_G_2_C_POT1, TRUE);
-				ZcRD_OutputValuesCompose(MC_G_2_C_POT2, TRUE);
-				ZcRD_OutputValuesCompose(MC_G_2_C_POT3, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_G_LSL_G, TRUE);
+					ZcRD_OutputValuesCompose(IL_LSL_G_COMM, TRUE);
 
-				ZcRD_OutputValuesCompose(MC_G_2_GT_G, TRUE);
-				ZcRD_OutputValuesCompose(IL_GT_G_COMM, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_GE_LSL_GE, TRUE);
+					ZcRD_OutputValuesCompose(IL_LSL_GE_COMM, TRUE);
 
-				ZcRD_OutputValuesCompose(OL_GE_2_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_2_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_2_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_GE_2_GT_GE, TRUE);
-				ZcRD_OutputValuesCompose(IL_GT_GE_COMM, TRUE);
+					ZcRD_OutputValuesCompose(OL_C_POT_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_C_POT_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_C_POT_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_C_POT_LSL_POTP, TRUE);
+					ZcRD_OutputValuesCompose(IL_LSL_POTP_COMM, TRUE);
 
-				ZcRD_RegisterFlushWrite();
+					ZcRD_OutputValuesCompose(OL_E_POT_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_E_POT_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_E_POT_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_E_POT_LSL_POTN, TRUE);
+					ZcRD_OutputValuesCompose(IL_LSL_POTN_COMM, TRUE);
+
+					ZcRD_RegisterFlushWrite();
+				}
+				else if (REG_MEASUREMENT_POSITION == 2)
+				{
+					ZcRD_OutputValuesReset();
+
+					ZcRD_OutputValuesCompose(OL_G_2_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_2_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_2_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_G_2_LSL_G, TRUE);
+					ZcRD_OutputValuesCompose(IL_LSL_G_COMM, TRUE);
+
+					ZcRD_OutputValuesCompose(OL_GE_2_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_2_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_2_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_GE_2_LSL_GE, TRUE);
+					ZcRD_OutputValuesCompose(IL_LSL_GE_COMM, TRUE);
+
+					ZcRD_OutputValuesCompose(OL_C_POT_2_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_C_POT_2_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_C_POT_2_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_C_POT_2_LSL_POTP, TRUE);
+					ZcRD_OutputValuesCompose(IL_LSL_POTP_COMM, TRUE);
+
+					ZcRD_OutputValuesCompose(OL_E_POT_2_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_E_POT_2_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_E_POT_2_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_E_POT_2_LSL_POTN, TRUE);
+					ZcRD_OutputValuesCompose(IL_LSL_POTN_COMM, TRUE);
+
+					ZcRD_RegisterFlushWrite();
+				}
 			}
 			break;
 
-		case ACT_COMM_Q_GATE_POS_1:
+		case ACT_COMM_UFW_CHOPPER_DIODE:
 			{
-				ZcRD_OutputValuesReset();
+				if (REG_MEASUREMENT_POSITION == 1)
+				{
+					ZcRD_OutputValuesReset();
 
-				ZcRD_OutputValuesCompose(OL_G_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_G_GT_G, TRUE);
-				ZcRD_OutputValuesCompose(IL_GT_G_COMM, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_G_LSL_G, TRUE);
+					ZcRD_OutputValuesCompose(IL_LSL_G_COMM, TRUE);
 
-				ZcRD_OutputValuesCompose(OL_GE_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_GE_GT_GE, TRUE);
-				ZcRD_OutputValuesCompose(IL_GT_GE_COMM, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_GE_LSL_GE, TRUE);
+					ZcRD_OutputValuesCompose(IL_LSL_GE_COMM, TRUE);
 
-				ZcRD_RegisterFlushWrite();
+					ZcRD_OutputValuesCompose(OL_C_POT_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_C_POT_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_C_POT_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_C_POT_LSL_POTN, TRUE);
+					ZcRD_OutputValuesCompose(IL_LSL_POTN_COMM, TRUE);
+
+					ZcRD_OutputValuesCompose(OL_E_POT_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_E_POT_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_E_POT_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_E_POT_LSL_POTP, TRUE);
+					ZcRD_OutputValuesCompose(IL_LSL_POTP_COMM, TRUE);
+
+					ZcRD_RegisterFlushWrite();
+				}
+				else if (REG_MEASUREMENT_POSITION == 2)
+				{
+					ZcRD_OutputValuesReset();
+
+					ZcRD_OutputValuesCompose(OL_G_2_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_2_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_G_2_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_G_2_LSL_G, TRUE);
+					ZcRD_OutputValuesCompose(IL_LSL_G_COMM, TRUE);
+
+					ZcRD_OutputValuesCompose(OL_GE_2_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_2_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_GE_2_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_GE_2_LSL_GE, TRUE);
+					ZcRD_OutputValuesCompose(IL_LSL_GE_COMM, TRUE);
+
+					ZcRD_OutputValuesCompose(OL_C_POT_2_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_C_POT_2_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_C_POT_2_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_C_POT_2_LSL_POTN, TRUE);
+					ZcRD_OutputValuesCompose(IL_LSL_POTN_COMM, TRUE);
+
+					ZcRD_OutputValuesCompose(OL_E_POT_2_COMM1, TRUE);
+					ZcRD_OutputValuesCompose(OL_E_POT_2_COMM2, TRUE);
+					ZcRD_OutputValuesCompose(OL_E_POT_2_COMM3, TRUE);
+					ZcRD_OutputValuesCompose(MC_E_POT_2_LSL_POTP, TRUE);
+					ZcRD_OutputValuesCompose(IL_LSL_POTP_COMM, TRUE);
+
+					ZcRD_RegisterFlushWrite();
+				}
 			}
 			break;
 
-		case ACT_COMM_Q_GATE_POS_2:
+		case ACT_COMM_ILEAK_COLLECTOR_EMITTER:
 			{
-				ZcRD_OutputValuesReset();
+				if (REG_MEASUREMENT_POSITION == 1)
+				{
+					ZcRD_OutputValuesReset();
 
-				ZcRD_OutputValuesCompose(OL_G_2_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_2_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_2_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_G_2_GT_G, TRUE);
-				ZcRD_OutputValuesCompose(IL_GT_G_COMM, TRUE);
+					ZcRD_OutputValuesCompose(MC_G_GE, TRUE);
 
-				ZcRD_OutputValuesCompose(OL_GE_2_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_2_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_2_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_GE_2_GT_GE, TRUE);
-				ZcRD_OutputValuesCompose(IL_GT_GE_COMM, TRUE);
+					ZcRD_RegisterFlushWrite();
+				}
+				else if (REG_MEASUREMENT_POSITION == 2)
+				{
+					ZcRD_OutputValuesReset();
 
-				ZcRD_RegisterFlushWrite();
-			}
-			break;
+					ZcRD_OutputValuesCompose(MC_G_2_GE, TRUE);
 
-		case ACT_COMM_Q_GATE_NEG_1:
-			{
-				ZcRD_OutputValuesReset();
-
-				ZcRD_OutputValuesCompose(OL_G_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_GE_GT_G, TRUE);
-				ZcRD_OutputValuesCompose(IL_GT_GE_COMM, TRUE);
-
-				ZcRD_OutputValuesCompose(OL_GE_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_G_GT_GE, TRUE);
-				ZcRD_OutputValuesCompose(IL_GT_G_COMM, TRUE);
-
-				ZcRD_RegisterFlushWrite();
-			}
-			break;
-
-		case ACT_COMM_Q_GATE_NEG_2:
-			{
-				ZcRD_OutputValuesReset();
-
-				ZcRD_OutputValuesCompose(OL_G_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_GE_GT_G, TRUE);
-				ZcRD_OutputValuesCompose(IL_GT_GE_COMM, TRUE);
-
-				ZcRD_OutputValuesCompose(OL_GE_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_G_GT_GE, TRUE);
-				ZcRD_OutputValuesCompose(IL_GT_G_COMM, TRUE);
-
-				ZcRD_RegisterFlushWrite();
-			}
-			break;
-
-		case ACT_COMM_USAT_COLLECTOR_EMITTER_1:
-			{
-				ZcRD_OutputValuesReset();
-
-				ZcRD_OutputValuesCompose(OL_G_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_G_LSL_G, TRUE);
-				ZcRD_OutputValuesCompose(IL_LSL_G_COMM, TRUE);
-
-				ZcRD_OutputValuesCompose(OL_GE_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_GE_LSL_GE, TRUE);
-				ZcRD_OutputValuesCompose(IL_LSL_GE_COMM, TRUE);
-
-				ZcRD_OutputValuesCompose(OL_C_POT_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_C_POT_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_C_POT_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_C_POT_LSL_POTP, TRUE);
-				ZcRD_OutputValuesCompose(IL_LSL_POTP_COMM, TRUE);
-
-				ZcRD_OutputValuesCompose(OL_E_POT_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_E_POT_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_E_POT_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_E_POT_LSL_POTN, TRUE);
-				ZcRD_OutputValuesCompose(IL_LSL_POTN_COMM, TRUE);
-
-				ZcRD_RegisterFlushWrite();
-			}
-			break;
-
-		case ACT_COMM_USAT_COLLECTOR_EMITTER_2:
-			{
-				ZcRD_OutputValuesReset();
-
-				ZcRD_OutputValuesCompose(OL_G_2_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_2_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_2_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_G_2_LSL_G, TRUE);
-				ZcRD_OutputValuesCompose(IL_LSL_G_COMM, TRUE);
-
-				ZcRD_OutputValuesCompose(OL_GE_2_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_2_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_2_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_GE_2_LSL_GE, TRUE);
-				ZcRD_OutputValuesCompose(IL_LSL_GE_COMM, TRUE);
-
-				ZcRD_OutputValuesCompose(OL_C_POT_2_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_C_POT_2_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_C_POT_2_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_C_POT_2_LSL_POTP, TRUE);
-				ZcRD_OutputValuesCompose(IL_LSL_POTP_COMM, TRUE);
-
-				ZcRD_OutputValuesCompose(OL_E_POT_2_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_E_POT_2_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_E_POT_2_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_E_POT_2_LSL_POTN, TRUE);
-				ZcRD_OutputValuesCompose(IL_LSL_POTN_COMM, TRUE);
-
-				ZcRD_RegisterFlushWrite();
-			}
-			break;
-
-		case ACT_COMM_UFW_CHOPPER_DIODE_1:
-			{
-				ZcRD_OutputValuesReset();
-
-				ZcRD_OutputValuesCompose(OL_G_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_G_LSL_G, TRUE);
-				ZcRD_OutputValuesCompose(IL_LSL_G_COMM, TRUE);
-
-				ZcRD_OutputValuesCompose(OL_GE_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_GE_LSL_GE, TRUE);
-				ZcRD_OutputValuesCompose(IL_LSL_GE_COMM, TRUE);
-
-				ZcRD_OutputValuesCompose(OL_C_POT_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_C_POT_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_C_POT_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_C_POT_LSL_POTN, TRUE);
-				ZcRD_OutputValuesCompose(IL_LSL_POTN_COMM, TRUE);
-
-				ZcRD_OutputValuesCompose(OL_E_POT_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_E_POT_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_E_POT_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_E_POT_LSL_POTP, TRUE);
-				ZcRD_OutputValuesCompose(IL_LSL_POTP_COMM, TRUE);
-
-				ZcRD_RegisterFlushWrite();
-			}
-			break;
-
-		case ACT_COMM_UFW_CHOPPER_DIODE_2:
-			{
-				ZcRD_OutputValuesReset();
-
-				ZcRD_OutputValuesCompose(OL_G_2_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_2_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_2_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_G_2_LSL_G, TRUE);
-				ZcRD_OutputValuesCompose(IL_LSL_G_COMM, TRUE);
-
-				ZcRD_OutputValuesCompose(OL_GE_2_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_2_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_2_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_GE_2_LSL_GE, TRUE);
-				ZcRD_OutputValuesCompose(IL_LSL_GE_COMM, TRUE);
-
-				ZcRD_OutputValuesCompose(OL_C_POT_2_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_C_POT_2_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_C_POT_2_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_C_POT_2_LSL_POTN, TRUE);
-				ZcRD_OutputValuesCompose(IL_LSL_POTN_COMM, TRUE);
-
-				ZcRD_OutputValuesCompose(OL_E_POT_2_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_E_POT_2_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_E_POT_2_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_E_POT_2_LSL_POTP, TRUE);
-				ZcRD_OutputValuesCompose(IL_LSL_POTP_COMM, TRUE);
-
-				ZcRD_RegisterFlushWrite();
-			}
-
-		case ACT_COMM_ILEAK_COLLECTOR_EMITTER_1:
-			{
-				ZcRD_OutputValuesReset();
-
-				ZcRD_OutputValuesCompose(MC_G_GE, TRUE);
-
-				ZcRD_RegisterFlushWrite();
-			}
-			break;
-
-		case ACT_COMM_ILEAK_COLLECTOR_EMITTER_2:
-			{
-				ZcRD_OutputValuesReset();
-
-				ZcRD_OutputValuesCompose(MC_G_2_GE, TRUE);
-
-				ZcRD_RegisterFlushWrite();
+					ZcRD_RegisterFlushWrite();
+				}
 			}
 			break;
 

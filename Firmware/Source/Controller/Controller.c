@@ -30,6 +30,8 @@ static Boolean CycleActive = false;
 //
 volatile Int64U CONTROL_TimeCounter = 0;
 //
+Int16U MeasurementPosition = 1;
+//
 
 // Forward functions
 //
@@ -56,6 +58,11 @@ void CONTROL_Init()
 	CONTROL_ResetToDefaultState();
 }
 //------------------------------------------
+
+void LOGIC_UpdatePosition()
+{
+	MeasurementPosition = DataTable[REG_MEASUREMENT_POSITION];
+}
 
 void CONTROL_ResetToDefaultState()
 {
