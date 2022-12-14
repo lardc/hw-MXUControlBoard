@@ -85,9 +85,9 @@ void LL_SetStateSD_EN(bool State)
 }
 //-----------------------------
 
-bool LL_SelfTestMeasure()
+float LL_SelfTestMeasure()
 {
-	float MeasuredTestVoltage, Error;
+	float MeasuredTestVoltage;
 
 	// Enable self-test current
 	LL_SetStateSD_EN(true);
@@ -98,6 +98,7 @@ bool LL_SelfTestMeasure()
 	LL_SetStateSD_EN(false);
 
 	// Compare measured value of voltage to constant value of closed-circuit (normal operation mode) voltage ADC_V_CC
-	Error = (MeasuredTestVoltage - ADC_V_CC) / ADC_V_CC * 100;
-	return (Error >= DataTable[REG_SFTST_V_ALLOWED_ERR]) ? false : true;
+	// Error = (MeasuredTestVoltage - ADC_V_CC) / ADC_V_CC * 100;
+	// return (Error >= DataTable[REG_SFTST_V_ALLOWED_ERR]) ? false : true;
+	return MeasuredTestVoltage;
 }

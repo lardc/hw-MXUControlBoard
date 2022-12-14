@@ -20,7 +20,18 @@ typedef enum __DeviceState
 
 typedef enum __DeviceSubState
 {
-	SS_None = 0
+	SS_None = 0,
+
+	SS_ST_StartPrepare,
+	SS_ST_InputRelayCheck_1,
+	SS_ST_InputRelayCheck_2,
+	SS_ST_InputRelayCheck_3,
+	SS_ST_InputRelayCheck_4,
+	SS_ST_MCRelayCheck_1,
+	SS_ST_MCRelayCheck_2,
+	SS_ST_MCRelayCheck_3,
+	SS_ST_MCRelayCheck_4,
+	SS_ST_CurrentMeasure
 } DeviceSubState;
 
 // Variables

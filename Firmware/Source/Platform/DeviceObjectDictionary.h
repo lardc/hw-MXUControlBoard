@@ -71,6 +71,7 @@
 
 //  Fault and disable codes
 #define DF_NONE							0
+#define DF_VOLTAGE_MEASURING			1
 
 // Problem
 #define PROBLEM_NONE					0
