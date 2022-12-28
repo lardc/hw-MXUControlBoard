@@ -124,14 +124,58 @@ static Boolean CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 
 void CONTROL_LogicProcess()
 {
-	switch(CONTROL_SubState)
+	if(CONTROL_State == DS_InProcess)
 	{
-		default:
-			break;
+		switch(CONTROL_SubState)
+		{
+			case SS_StartUp:
+
+				if(CONTROL_Delay(DataTable[REG_PS_FIRST_START_TIME]))
+					CONTROL_SetDeviceState(DS_InProcess, SS_StartSelfTest);
+				break;
+
+			case SS_StartSelfTest:
+				if(DataTable[REG_SELF_TEST_ACTIVE])
+				{
+					CONTROL_SetDeviceState(DS_SelfTest, SS_ST_StartPrepare);
+				}
+				else
+					CONTROL_SetDeviceState(DS_InProcess, SS_Commutation);
+				break;
+
+			case SS_Commutation:
+					if(REG_SELF_TEST_OP_RESULT == 1)
+					{
+						CONTROL_SetDeviceState(DS_InProcess, SS_Commutation);
+					}
+					else
+						CONTROL_SetDeviceState(DS_Fault, SS_None);
+				break;
+		}
+	}
+	else if(CONTROL_State == DS_SelfTest)
+	{
+		SELFTEST_Process();
+	}
+}
+//-----------------------------------------------
+
+bool CONTROL_Delay(Int16U Time)
+{
+	static Int64U CONTROL_Delay = 0;
+
+	if(!CONTROL_Delay)
+		CONTROL_Delay = CONTROL_TimeCounter + Time;
+	else
+	{
+		if(CONTROL_TimeCounter >= CONTROL_Delay)
+		{
+			CONTROL_Delay = 0;
+			return true;
+		}
 	}
 
-	if(CONTROL_State == DS_SelfTest)
-		SELFTEST_Process();
+	return false;
 }
 //-----------------------------------------------
 
