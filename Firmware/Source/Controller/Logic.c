@@ -9,6 +9,7 @@
 
 
 // Variables
+Int16U MeasurementPosition = 1;
 //
 
 // Functions prototypes
@@ -28,3 +29,13 @@ void LOGIC_ResetOutputRegisters()
 	DEVPROFILE_ResetEPReadState();
 }
 //------------------------------------------
+
+void LOGIC_UpdatePosition()
+{
+	MeasurementPosition = DataTable[REG_MEASUREMENT_POSITION];
+}
+
+void LOGIC_ResetSFSystem()
+{
+	LL_SetStateSF_EN(false);
+}

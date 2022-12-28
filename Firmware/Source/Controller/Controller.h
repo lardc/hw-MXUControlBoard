@@ -20,7 +20,21 @@ typedef enum __DeviceState
 
 typedef enum __DeviceSubState
 {
-	SS_None = 0
+	SS_None = 0,
+	SS_StartUp,
+	SS_StartSelfTest,
+	SS_Commutation,
+
+	SS_ST_StartPrepare,
+	SS_ST_InputRelayCheck_1,
+	SS_ST_InputRelayCheck_2,
+	SS_ST_InputRelayCheck_3,
+	SS_ST_InputRelayCheck_4,
+	SS_ST_MCRelayCheck_1,
+	SS_ST_MCRelayCheck_2,
+	SS_ST_MCRelayCheck_3,
+	SS_ST_MCRelayCheck_4,
+	SS_ST_CurrentMeasure
 } DeviceSubState;
 
 // Variables
@@ -36,6 +50,8 @@ extern Int64U CONTROL_LEDTimeout;
 void CONTROL_Init();
 void CONTROL_Idle();
 void CONTROL_DelayMs(uint32_t Delay);
+bool CONTROL_Delay(Int16U Time);
+void CONTROL_SaveTestResult();
 void CONTROL_SwitchToFault(Int16U Reason);
 void CONTROL_SetDeviceState(DeviceState NewState, DeviceSubState NewSubState);
 void CONTROL_SetDeviceSubState(DeviceSubState NewSubState);

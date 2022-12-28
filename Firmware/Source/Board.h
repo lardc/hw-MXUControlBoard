@@ -38,8 +38,4 @@ GPIO_PortPinSettingMacro GPIO_ALT_CAN1_RX		= {GPIOA, Pin_11};
 GPIO_PortPinSettingMacro GPIO_ALT_SPI1_CLK		= {GPIOB, Pin_3};
 GPIO_PortPinSettingMacro GPIO_ALT_SPI1_DAT		= {GPIOB, Pin_5};
 
-// Определения для портов внешних прерываний
-//
-EXTI_PortChannelSettingMacro EXTI_SAFETY_IN		= {EXTI_PA, EXTI_7};
-
 #endif // __BOARD_H

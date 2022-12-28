@@ -58,7 +58,8 @@ void INITCFG_ConfigIO()
 void INITCFG_ConfigExtInterrupt()
 {
 	// Вход сигнала безопасности
-	EXTI_Init(EXTI_SAFETY_IN, RISE_TRIG);
+	EXTI_Config(EXTI_PA, EXTI_7, RISE_TRIG, 0);
+	EXTI_EnableInterrupt(EXTI9_5_IRQn, 0, true);
 }
 //------------------------------------------------
 

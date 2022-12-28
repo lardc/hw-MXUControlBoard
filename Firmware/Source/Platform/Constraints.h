@@ -8,29 +8,9 @@
 
 //Definitions
 //
-#define SFTST_V_ALLOWED_ERR_MIN		0
-#define SFTST_V_ALLOWED_ERR_MAX		20
-#define SFTST_V_ALLOWED_ERR_DIF		10
-//
-#define COEF_K_MIN					-INT16S_MAX
-#define COEF_K_MAX					INT16S_MAX
-#define COEF_K_DEF					1
-//
-#define OFFSET_MIN					-INT16S_MAX
-#define OFFSET_MAX					INT16S_MAX
-#define OFFSET_DEF					0
-//
-#define COEF_P2_MIN					-INT16S_MAX
-#define COEF_P2_MAX					INT16S_MAX
-#define COEF_P2_DEF					0
-//
-#define COEF_P1_MIN					-INT16S_MAX
-#define COEF_P1_MAX					INT16S_MAX
-#define COEF_P1_DEF					1
-//
-#define COEF_P0_MIN					-INT16S_MAX
-#define COEF_P0_MAX					INT16U_MAX
-#define COEF_P0_DEF					0
+#define SFTST_V_ALLOWED_ERR_MIN		0		//	(%)
+#define SFTST_V_ALLOWED_ERR_MAX		20		//	(%)
+#define SFTST_V_ALLOWED_ERR_DEF		10		//	(%)
 //
 #define NO							0
 #define YES							1

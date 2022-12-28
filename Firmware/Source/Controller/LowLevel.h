@@ -12,10 +12,16 @@ void LL_ToggleBoardLED();
 void LL_SetStateFPLed(bool State);
 void LL_SetStateSFRedLed(bool State);
 void LL_SetStateSFGreenLed(bool State);
-void LL_WriteSPI(uint8_t SPI_Data[], uint8_t DataLength);
+void LL_ResetRegisters();
+void LL_WriteSPI(uint8_t SPI_Data[], uint8_t Data_Length);
 void LL_StopSPI();
+void LL_SPITurnOnOE();
+void LL_SPITurnOffOE();
+void LL_SPITurnOnSS();
+void LL_SPITurnOffSS();
+void LL_SPIReset();
 void LL_SetStateSF_EN(bool State);
 void LL_SetStateSD_EN(bool State);
-bool LL_SelfTestMeasure();
+float LL_SelfTestMeasure();
 
 #endif //__LOWLEVEL_H
