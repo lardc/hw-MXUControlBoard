@@ -12,8 +12,19 @@
 #define ACT_DBG_SF_GRN_LED						23	// Проверка работы зеленого индикатора системы безопасности
 #define ACT_DBG_WRITE_SPI						24	// Проверка работы коммутации тестовой комбинации
 #define ACT_DBG_STOP_SPI						25	// Остановка и сборс текущей комбинации
-#define ACT_SF_EN								26	// Проверка работы сигнала-разрешения системы безопаснсоти
-#define ACT_DBG_SELF_TEST_MEASURE				27	// Измерение значения напряжение системы самодиагностики
+#define ACT_SF_EN_ON							26	// Проверка работы сигнала-разрешения системы безопаснсоти
+#define ACT_SF_EN_OFF							27	//
+#define ACT_DBG_SELF_TEST_MEASURE				28	// Измерение значения напряжение системы самодиагностики
+#define ACT_DBG_SPI_OE_ON						29	//
+#define ACT_DBG_SPI_OE_OFF						30	//
+#define ACT_DBG_SPI_SS_ON						31	//
+#define ACT_DBG_SPI_SS_OFF						32	//
+#define ACT_DBG_SPI_RST							33	//
+#define ACT_DBG_SPI_PE_OFF						34	//
+#define ACT_DGB_SPI_ILEAK_G_EMIT_POS			35	//
+#define ACT_DGB_SPI_ILEAK_G_EMIT_NEG			36	//
+#define ACT_DBG_SD_EN_OFF						37	//
+#define ACT_DBG_SD_EN_ON						38	//
 
 #define ACT_COMM_NONE							100 // Отключение всех реле
 #define ACT_COMM_ILEAK_GATE_EMITTER_POS_PULSE	101 // Режим измерения тока утечки затвора-эмиттера (положительный импульс)

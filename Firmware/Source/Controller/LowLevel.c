@@ -42,33 +42,74 @@ void LL_ResetRegisters()
 
 void LL_WriteSPI(uint8_t SPI_Data[], uint8_t Data_Length)
 {
+	// Turn outputs OFF
+	GPIO_SetState(GPIO_SPI_OE, true);
+
+	// Latch outputs of shift-registers
+	GPIO_SetState(GPIO_SPI_SS, false);
+
 	// Reset all shift-registers
 	GPIO_SetState(GPIO_SPI_RST, false);
 	DELAY_MS(5);
 	GPIO_SetState(GPIO_SPI_RST, true);
 
-	// Latch outputs of shift-registers
-	GPIO_SetState(GPIO_SPI_SS, false);
-
-	// Send 15 bytes of data
-	for (int i = 0; i<=Data_Length; i++)
-		SPI_WriteByte(SPI3, SPI_Data[i]);
+	for (int i = 0; i <= Data_Length; i++)
+	{
+		SPI_WriteByte8b(SPI1, SPI_Data[i]);
+		DELAY_MS(10);
+		GPIO_SetState(GPIO_SPI_SS, true);
+		DELAY_MS(1);
+		GPIO_SetState(GPIO_SPI_SS, false);
+		DELAY_MS(100);
+	}
 
 	// Turn outputs ON
-	GPIO_SetState(GPIO_SPI_OE, true);
+	GPIO_SetState(GPIO_SPI_OE, false);
 }
 //-----------------------------
 
 void LL_StopSPI()
 {
 	// Turn outputs OFF
-	GPIO_SetState(GPIO_SPI_OE, false);
-
-	GPIO_SetState(GPIO_SPI_SS, true);
+	GPIO_SetState(GPIO_SPI_OE, true);
 
 	// Reset all shift-registers
 	GPIO_SetState(GPIO_SPI_RST, false);
 	DELAY_MS(5);
+	GPIO_SetState(GPIO_SPI_RST, true);
+
+	GPIO_SetState(GPIO_SPI_SS, true);
+}
+//-----------------------------
+
+void LL_SPITurnOnOE()
+{
+	GPIO_SetState(GPIO_SPI_OE, true);
+}
+//-----------------------------
+
+void LL_SPITurnOffOE()
+{
+	GPIO_SetState(GPIO_SPI_OE, false);
+}
+//-----------------------------
+
+void LL_SPITurnOnSS()
+{
+	GPIO_SetState(GPIO_SPI_SS, true);
+}
+//-----------------------------
+
+void LL_SPITurnOffSS()
+{
+	GPIO_SetState(GPIO_SPI_SS, false);
+}
+//-----------------------------
+
+void LL_SPIReset()
+{
+	GPIO_SetState(GPIO_SPI_RST, false);
+	DELAY_MS(10);
 	GPIO_SetState(GPIO_SPI_RST, true);
 }
 //-----------------------------
