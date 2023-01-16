@@ -46,7 +46,7 @@ void COMM_Commutate(Int16U ActionID)
 	{
 		case ACT_COMM_ILEAK_GATE_EMITTER_POS_PULSE:
 			{
-				if (REG_MEASUREMENT_POSITION == 1)
+				if (DataTable[REG_MEASUREMENT_POSITION] == 1)
 				{
 					ZcRD_OutputValuesReset();
 
@@ -73,7 +73,7 @@ void COMM_Commutate(Int16U ActionID)
 
 					ZcRD_RegisterFlushWrite();
 				}
-				else if (REG_MEASUREMENT_POSITION == 2)
+				else if (DataTable[REG_MEASUREMENT_POSITION] == 2)
 				{
 					ZcRD_OutputValuesReset();
 
@@ -105,7 +105,7 @@ void COMM_Commutate(Int16U ActionID)
 
 		case ACT_COMM_ILEAK_GATE_EMITTER_NEG_PULSE:
 			{
-				if (REG_MEASUREMENT_POSITION == 1)
+				if (DataTable[REG_MEASUREMENT_POSITION] == 1)
 				{
 					ZcRD_OutputValuesReset();
 
@@ -132,7 +132,7 @@ void COMM_Commutate(Int16U ActionID)
 
 					ZcRD_RegisterFlushWrite();
 				}
-				else if (REG_MEASUREMENT_POSITION == 2)
+				else if (DataTable[REG_MEASUREMENT_POSITION] == 2)
 				{
 					ZcRD_OutputValuesReset();
 
@@ -164,7 +164,7 @@ void COMM_Commutate(Int16U ActionID)
 
 		case ACT_COMM_UTH_GATE_EMITTER:
 			{
-				if (REG_MEASUREMENT_POSITION == 1)
+				if (DataTable[REG_MEASUREMENT_POSITION] == 1)
 				{
 					ZcRD_OutputValuesReset();
 
@@ -189,7 +189,7 @@ void COMM_Commutate(Int16U ActionID)
 
 					ZcRD_RegisterFlushWrite();
 				}
-				else if (REG_MEASUREMENT_POSITION == 2)
+				else if (DataTable[REG_MEASUREMENT_POSITION] == 2)
 				{
 					ZcRD_OutputValuesReset();
 
@@ -219,7 +219,7 @@ void COMM_Commutate(Int16U ActionID)
 
 		case ACT_COMM_Q_GATE_POS_PULSE:
 			{
-				if (REG_MEASUREMENT_POSITION == 1)
+				if (DataTable[REG_MEASUREMENT_POSITION] == 1)
 				{
 					ZcRD_OutputValuesReset();
 
@@ -237,7 +237,7 @@ void COMM_Commutate(Int16U ActionID)
 
 					ZcRD_RegisterFlushWrite();
 				}
-				else if (REG_MEASUREMENT_POSITION == 2)
+				else if (DataTable[REG_MEASUREMENT_POSITION] == 2)
 				{
 					ZcRD_OutputValuesReset();
 
@@ -260,7 +260,7 @@ void COMM_Commutate(Int16U ActionID)
 
 		case ACT_COMM_Q_GATE_NEG_PULSE:
 			{
-				if (REG_MEASUREMENT_POSITION == 1)
+				if (DataTable[REG_MEASUREMENT_POSITION] == 1)
 				{
 					ZcRD_OutputValuesReset();
 
@@ -278,7 +278,7 @@ void COMM_Commutate(Int16U ActionID)
 
 					ZcRD_RegisterFlushWrite();
 				}
-				else if (REG_MEASUREMENT_POSITION == 2)
+				else if (DataTable[REG_MEASUREMENT_POSITION] == 2)
 				{
 					ZcRD_OutputValuesReset();
 
@@ -301,7 +301,7 @@ void COMM_Commutate(Int16U ActionID)
 
 		case ACT_COMM_USAT_COLLECTOR_EMITTER:
 			{
-				if (REG_MEASUREMENT_POSITION == 1)
+				if (DataTable[REG_MEASUREMENT_POSITION] == 1)
 				{
 					ZcRD_OutputValuesReset();
 
@@ -331,7 +331,7 @@ void COMM_Commutate(Int16U ActionID)
 
 					ZcRD_RegisterFlushWrite();
 				}
-				else if (REG_MEASUREMENT_POSITION == 2)
+				else if (DataTable[REG_MEASUREMENT_POSITION] == 2)
 				{
 					ZcRD_OutputValuesReset();
 
@@ -366,7 +366,7 @@ void COMM_Commutate(Int16U ActionID)
 
 		case ACT_COMM_UFW_CHOPPER_DIODE:
 			{
-				if (REG_MEASUREMENT_POSITION == 1)
+				if (DataTable[REG_MEASUREMENT_POSITION] == 1)
 				{
 					ZcRD_OutputValuesReset();
 
@@ -396,7 +396,7 @@ void COMM_Commutate(Int16U ActionID)
 
 					ZcRD_RegisterFlushWrite();
 				}
-				else if (REG_MEASUREMENT_POSITION == 2)
+				else if (DataTable[REG_MEASUREMENT_POSITION] == 2)
 				{
 					ZcRD_OutputValuesReset();
 
@@ -431,7 +431,7 @@ void COMM_Commutate(Int16U ActionID)
 
 		case ACT_COMM_ILEAK_COLLECTOR_EMITTER:
 			{
-				if (REG_MEASUREMENT_POSITION == 1)
+				if (DataTable[REG_MEASUREMENT_POSITION] == 1)
 				{
 					ZcRD_OutputValuesReset();
 
@@ -439,7 +439,7 @@ void COMM_Commutate(Int16U ActionID)
 
 					ZcRD_RegisterFlushWrite();
 				}
-				else if (REG_MEASUREMENT_POSITION == 2)
+				else if (DataTable[REG_MEASUREMENT_POSITION] == 2)
 				{
 					ZcRD_OutputValuesReset();
 
