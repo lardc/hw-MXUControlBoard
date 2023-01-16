@@ -31,7 +31,7 @@ void COMM_CommutateNone()
 
 void COMM_CommDelay(Int16U ActionID)
 {
-	DELAY_US(COMM_DELAY_LONG_MS * 1000L);
+	DELAY_US(COMM_DELAY_MS * 1000L);
 }
 // ----------------------------------------
 
