@@ -15,10 +15,15 @@
 //
 #define IO_REGISTER_WRITE_DELAY_US	10
 
+#define NUM_REGS_HV_BOARD			5
+#define NUM_REGS_THERM_BOARD		2
+#define NUM_REGS_INPUT_BOARD		3
+#define NUM_REGS_TOTAL ((NUM_REGS_HV_BOARD * 2) + NUM_REGS_THERM_BOARD + NUM_REGS_INPUT_BOARD)
+
 
 // Variables
 //
-static uint8_t CurrentOutputValues[14];
+static uint8_t CurrentOutputValues[(NUM_REGS_TOTAL - 1)];
 
 void ZcRD_RegisterReset()
 {
@@ -32,7 +37,7 @@ void ZcRD_RegisterReset()
 void ZcRD_OutputValuesCompose(Int16U TableID, Boolean TurnOn)
 {
 	if (TurnOn)
-		CurrentOutputValues[CommutationTable[TableID].BoardNum] |= 0x1;
+		CurrentOutputValues[CommutationTable[TableID].BoardNum] |= CommutationTable[TableID].Bit;
 	else
 		CurrentOutputValues[CommutationTable[TableID].BoardNum] &= ~CommutationTable[TableID].Bit;
 }
@@ -43,7 +48,7 @@ void ZcRD_OutputValuesReset()
 {
 	uint8_t i;
 
-	for (i = 0; i < 14; ++i)
+	for (i = 0; i < (NUM_REGS_TOTAL - 1); ++i)
 		CurrentOutputValues[i] = 0x00;
 }
 // ----------------------------------------
@@ -51,15 +56,14 @@ void ZcRD_OutputValuesReset()
 void ZcRD_RegisterFlushWrite()
 {
 	int i;
-	uint8_t CurrentOutputValuesCopy[14];
-	uint8_t Data_Lenght = 14;
+	uint8_t CurrentOutputValuesCopy[(NUM_REGS_TOTAL - 1)];
 
 	for (i = 0; i < 14; ++i)
-		CurrentOutputValuesCopy[i] = CurrentOutputValues[14 - i];
+		CurrentOutputValuesCopy[i] = CurrentOutputValues[(NUM_REGS_TOTAL - 1) - i];
 
 	GPIO_SetState(GPIO_SPI_OE, true);
 
-	for (int i = 0; i <= Data_Lenght; i++)
+	for (int i = 0; i <= (NUM_REGS_TOTAL - 1); i++)
 	{
 		SPI_WriteByte8b(SPI1, CurrentOutputValuesCopy[i]);
 		DELAY_US(1);
