@@ -13,11 +13,11 @@
 // Временные параметры
 #define TIME_LED_BLINK							500		// Мигание светодиодом (в мс)
 #define TIME_FAULT_LED_BLINK					250		// Мигание светодиодом в состоянии Fault
-#define COMM_DELAY_MS							10
+#define COMM_DELAY_MS							1
 
 // Параметры измерения
 #define ADC_REF_VOLTAGE							3300.0f	// Опорное напряжение (в В)
 #define ADC_RESOLUTION							4095	// Разрешение АЦП
-#define ADC_V_CC								0.1f	// Напряжение при замкнутой цепи (в В)
+#define ADC_V_CC								150.0f	// Напряжение при замкнутой цепи (в В)
 
 #endif //  __GLOBAL_H

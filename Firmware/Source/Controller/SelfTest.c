@@ -5,7 +5,6 @@
 // Includes
 //
 #include "Math.h"
-#include "Logic.h"
 #include "Controller.h"
 #include "DataTable.h"
 #include "Delay.h"
@@ -22,17 +21,17 @@
 void SELFTEST_Process()
 {
 	float MeasuredVoltage, Error;
-	int ST_State = 0;
+	static DeviceSubState PrevSubstate = SS_None;
 
 	switch(CONTROL_SubState)
 	{
 		case SS_ST_StartPrepare:
-			ST_State = 0;
-			CONTROL_SetDeviceState(DS_SelfTest, SS_ST_InputRelayCheck_1);
+			PrevSubstate = SS_None;
+			CONTROL_SetDeviceState(DS_InProcess, SS_ST_InputRelayCheck_1);
 			break;
 
 		case SS_ST_InputRelayCheck_1:
-			ST_State = 1;
+			PrevSubstate = SS_ST_StartPrepare;
 
 			ZcRD_OutputValuesReset();
 
@@ -44,11 +43,11 @@ void SELFTEST_Process()
 			ZcRD_OutputValuesCompose(ST_TO_GT_GE, TRUE);
 
 			ZcRD_RegisterFlushWrite();
-			CONTROL_SetDeviceState(DS_SelfTest, SS_ST_CurrentMeasure);
+			CONTROL_SetDeviceState(DS_InProcess, SS_ST_CurrentMeasure);
 			break;
 
 		case SS_ST_InputRelayCheck_2:
-			ST_State = 2;
+			PrevSubstate = SS_ST_InputRelayCheck_1;
 
 			ZcRD_OutputValuesReset();
 
@@ -60,11 +59,11 @@ void SELFTEST_Process()
 			ZcRD_OutputValuesCompose(ST_TO_GT_GE_POT, TRUE);
 
 			ZcRD_RegisterFlushWrite();
-			CONTROL_SetDeviceState(DS_SelfTest, SS_ST_CurrentMeasure);
+			CONTROL_SetDeviceState(DS_InProcess, SS_ST_CurrentMeasure);
 			break;
 
 		case SS_ST_InputRelayCheck_3:
-			ST_State = 3;
+			PrevSubstate = SS_ST_InputRelayCheck_2;
 
 			ZcRD_OutputValuesReset();
 
@@ -76,11 +75,11 @@ void SELFTEST_Process()
 			ZcRD_OutputValuesCompose(ST_TO_LSL_GE, TRUE);
 
 			ZcRD_RegisterFlushWrite();
-			CONTROL_SetDeviceState(DS_SelfTest, SS_ST_CurrentMeasure);
+			CONTROL_SetDeviceState(DS_InProcess, SS_ST_CurrentMeasure);
 			break;
 
 		case SS_ST_InputRelayCheck_4:
-			ST_State = 4;
+			PrevSubstate = SS_ST_InputRelayCheck_3;
 
 			ZcRD_OutputValuesReset();
 
@@ -92,11 +91,11 @@ void SELFTEST_Process()
 			ZcRD_OutputValuesCompose(ST_TO_LSL_POTN, TRUE);
 
 			ZcRD_RegisterFlushWrite();
-			CONTROL_SetDeviceState(DS_SelfTest, SS_ST_CurrentMeasure);
+			CONTROL_SetDeviceState(DS_InProcess, SS_ST_CurrentMeasure);
 			break;
 
 		case SS_ST_MCRelayCheck_1:
-			ST_State = 5;
+			PrevSubstate = SS_ST_InputRelayCheck_4;
 
 			ZcRD_OutputValuesReset();
 
@@ -114,11 +113,11 @@ void SELFTEST_Process()
 			ZcRD_OutputValuesCompose(ST_TO_GT_GE, TRUE);
 
 			ZcRD_RegisterFlushWrite();
-			CONTROL_SetDeviceState(DS_SelfTest, SS_ST_CurrentMeasure);
+			CONTROL_SetDeviceState(DS_InProcess, SS_ST_CurrentMeasure);
 			break;
 
 		case SS_ST_MCRelayCheck_2:
-			ST_State = 6;
+			PrevSubstate = SS_ST_MCRelayCheck_1;
 
 			ZcRD_OutputValuesReset();
 
@@ -136,11 +135,11 @@ void SELFTEST_Process()
 			ZcRD_OutputValuesCompose(ST_TO_GT_GE, TRUE);
 
 			ZcRD_RegisterFlushWrite();
-			CONTROL_SetDeviceState(DS_SelfTest, SS_ST_CurrentMeasure);
+			CONTROL_SetDeviceState(DS_InProcess, SS_ST_CurrentMeasure);
 			break;
 
 		case SS_ST_MCRelayCheck_3:
-			ST_State = 7;
+			PrevSubstate = SS_ST_MCRelayCheck_2;
 
 			ZcRD_OutputValuesReset();
 
@@ -151,11 +150,11 @@ void SELFTEST_Process()
 			ZcRD_OutputValuesCompose(ST_TO_GT_GE, TRUE);
 
 			ZcRD_RegisterFlushWrite();
-			CONTROL_SetDeviceState(DS_SelfTest, SS_ST_CurrentMeasure);
+			CONTROL_SetDeviceState(DS_InProcess, SS_ST_CurrentMeasure);
 			break;
 
 		case SS_ST_MCRelayCheck_4:
-			ST_State = 8;
+			PrevSubstate = SS_ST_MCRelayCheck_3;
 
 			ZcRD_OutputValuesReset();
 
@@ -166,7 +165,7 @@ void SELFTEST_Process()
 			ZcRD_OutputValuesCompose(ST_TO_GT_GE, TRUE);
 
 			ZcRD_RegisterFlushWrite();
-			CONTROL_SetDeviceState(DS_SelfTest, SS_ST_CurrentMeasure);
+			CONTROL_SetDeviceState(DS_InProcess, SS_ST_CurrentMeasure);
 			break;
 
 		case SS_ST_CurrentMeasure:
@@ -181,40 +180,45 @@ void SELFTEST_Process()
 			}
 			else
 			{
-				if (ST_State == 1)
+				if (PrevSubstate == SS_ST_InputRelayCheck_1)
 				{
 					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
-					CONTROL_SetDeviceState(DS_SelfTest, SS_ST_InputRelayCheck_2);
+					CONTROL_SetDeviceState(DS_InProcess, SS_ST_InputRelayCheck_2);
 				}
-				else if (ST_State == 2)
+				else if (PrevSubstate == SS_ST_InputRelayCheck_2)
 				{
 					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
-					CONTROL_SetDeviceState(DS_SelfTest, SS_ST_InputRelayCheck_3);
+					CONTROL_SetDeviceState(DS_InProcess, SS_ST_InputRelayCheck_3);
 				}
-				else if (ST_State == 3)
+				else if (PrevSubstate == SS_ST_InputRelayCheck_3)
 				{
 					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
-					CONTROL_SetDeviceState(DS_SelfTest, SS_ST_InputRelayCheck_4);
+					CONTROL_SetDeviceState(DS_InProcess, SS_ST_InputRelayCheck_4);
 				}
-				else if (ST_State == 4)
+				else if (PrevSubstate == SS_ST_InputRelayCheck_4)
 				{
 					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
-					CONTROL_SetDeviceState(DS_SelfTest, SS_ST_MCRelayCheck_1);
+					CONTROL_SetDeviceState(DS_InProcess, SS_ST_MCRelayCheck_1);
 				}
-				else if (ST_State == 5)
+				else if (PrevSubstate == SS_ST_MCRelayCheck_1)
 				{
 					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
-					CONTROL_SetDeviceState(DS_SelfTest, SS_ST_MCRelayCheck_2);
+					CONTROL_SetDeviceState(DS_InProcess, SS_ST_MCRelayCheck_2);
 				}
-				else if (ST_State == 6)
+				else if (PrevSubstate == SS_ST_MCRelayCheck_2)
 				{
 					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
-					CONTROL_SetDeviceState(DS_SelfTest, SS_ST_MCRelayCheck_3);
+					CONTROL_SetDeviceState(DS_InProcess, SS_ST_MCRelayCheck_3);
 				}
-				else if (ST_State == 7)
+				else if (PrevSubstate == SS_ST_MCRelayCheck_3)
 				{
 					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
-					CONTROL_SetDeviceState(DS_SelfTest, SS_ST_MCRelayCheck_4);
+					CONTROL_SetDeviceState(DS_InProcess, SS_ST_MCRelayCheck_4);
+				}
+				else if (PrevSubstate == SS_ST_MCRelayCheck_4)
+				{
+					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
+					CONTROL_SetDeviceState(DS_InProcess, SS_None);
 				}
 			}
 

@@ -32,35 +32,21 @@ void LL_SetStateSFGreenLed(bool State)
 }
 //-----------------------------
 
-void LL_ResetRegisters()
-{
-	// Reset all shift-registers
-	GPIO_SetState(GPIO_SPI_RST, false);
-	DELAY_MS(5);
-	GPIO_SetState(GPIO_SPI_RST, true);
-}
-
 void LL_WriteSPI(uint8_t SPI_Data[], uint8_t Data_Length)
 {
 	// Turn outputs OFF
 	GPIO_SetState(GPIO_SPI_OE, true);
 
-	// Latch outputs of shift-registers
-	GPIO_SetState(GPIO_SPI_SS, false);
+	// Shift-registers reset
+	LL_SPIReset();
 
-	// Reset all shift-registers
-	GPIO_SetState(GPIO_SPI_RST, false);
-	DELAY_MS(5);
-	GPIO_SetState(GPIO_SPI_RST, true);
+	GPIO_SetState(GPIO_SPI_SS, false);
 
 	for (int i = 0; i <= Data_Length; i++)
 	{
 		SPI_WriteByte8b(SPI1, SPI_Data[i]);
-		DELAY_MS(10);
 		GPIO_SetState(GPIO_SPI_SS, true);
-		DELAY_MS(1);
 		GPIO_SetState(GPIO_SPI_SS, false);
-		DELAY_MS(100);
 	}
 
 	// Turn outputs ON
@@ -68,48 +54,10 @@ void LL_WriteSPI(uint8_t SPI_Data[], uint8_t Data_Length)
 }
 //-----------------------------
 
-void LL_StopSPI()
-{
-	// Turn outputs OFF
-	GPIO_SetState(GPIO_SPI_OE, true);
-
-	// Reset all shift-registers
-	GPIO_SetState(GPIO_SPI_RST, false);
-	DELAY_MS(5);
-	GPIO_SetState(GPIO_SPI_RST, true);
-
-	GPIO_SetState(GPIO_SPI_SS, true);
-}
-//-----------------------------
-
-void LL_SPITurnOnOE()
-{
-	GPIO_SetState(GPIO_SPI_OE, true);
-}
-//-----------------------------
-
-void LL_SPITurnOffOE()
-{
-	GPIO_SetState(GPIO_SPI_OE, false);
-}
-//-----------------------------
-
-void LL_SPITurnOnSS()
-{
-	GPIO_SetState(GPIO_SPI_SS, true);
-}
-//-----------------------------
-
-void LL_SPITurnOffSS()
-{
-	GPIO_SetState(GPIO_SPI_SS, false);
-}
-//-----------------------------
-
 void LL_SPIReset()
 {
 	GPIO_SetState(GPIO_SPI_RST, false);
-	DELAY_MS(10);
+	DELAY_MS(1);
 	GPIO_SetState(GPIO_SPI_RST, true);
 }
 //-----------------------------
@@ -124,7 +72,6 @@ void LL_SetStateSD_EN(bool State)
 {
 	GPIO_SetState(GPIO_SD_EN, State);
 }
-//-----------------------------
 
 float LL_SelfTestMeasure()
 {
@@ -138,8 +85,5 @@ float LL_SelfTestMeasure()
 	// Disable self-test current
 	LL_SetStateSD_EN(false);
 
-	// Compare measured value of voltage to constant value of closed-circuit (normal operation mode) voltage ADC_V_CC
-	// Error = (MeasuredTestVoltage - ADC_V_CC) / ADC_V_CC * 100;
-	// return (Error >= DataTable[REG_SFTST_V_ALLOWED_ERR]) ? false : true;
 	return MeasuredTestVoltage;
 }

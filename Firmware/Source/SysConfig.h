@@ -30,8 +30,10 @@
 #define ADC_V_CHANNEL					1			// Номер канала оцифровки тока
 
 // SPI
-#define SPI3_BAUDRATE_BITS				0x1			// Биты задания битрейта SPI
-#define SPI3_LSB_FIRST					false		// Передача младшим битов вперед
+#define SPI1_BAUDRATE_BITS				0x1			// Биты задания битрейта SPI
+#define SPI1_LSB_FIRST					false		// Передача младшим битов вперед
 // ----------------------------------------------
+
+#define COMM_MODE_2
 
 #endif // __SYSCONFIG_H

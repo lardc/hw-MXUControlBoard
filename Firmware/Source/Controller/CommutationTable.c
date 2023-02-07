@@ -65,7 +65,6 @@
 
 // Constants
 //
-
 const CommutationTableItem CommutationTable[COMMUTATION_TABLE_SIZE] =
 				{
 						{BOARD1, PIN_A1},			// 0	// Gate (G) to PE
@@ -185,5 +184,4 @@ const CommutationTableItem CommutationTable[COMMUTATION_TABLE_SIZE] =
 						{BOARD4, PIN_C3},			// 114	// LSL_POT-: Commutation of LSL_POT- (Open/Close)
 						{BOARD4, PIN_C4},			// 115	// LSL_POT+ to LSL_POT-
 				};
-
 // No more

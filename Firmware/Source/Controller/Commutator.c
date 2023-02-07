@@ -46,7 +46,34 @@ void COMM_Commutate(Int16U ActionID)
 	{
 		case ACT_COMM_ILEAK_GATE_EMITTER_POS_PULSE:
 			{
-				if (DataTable[REG_MEASUREMENT_POSITION] == 1)
+				if (DataTable[REG_MEASUREMENT_POSITION] == 0)
+					{
+						ZcRD_OutputValuesReset();
+
+						ZcRD_OutputValuesCompose(OL_C_POT_COMM1, TRUE);
+						ZcRD_OutputValuesCompose(OL_C_POT_COMM2, TRUE);
+						ZcRD_OutputValuesCompose(OL_C_POT_COMM3, TRUE);
+						ZcRD_OutputValuesCompose(OL_E_POT_COMM1, TRUE);
+						ZcRD_OutputValuesCompose(OL_E_POT_COMM2, TRUE);
+						ZcRD_OutputValuesCompose(OL_E_POT_COMM3, TRUE);
+						ZcRD_OutputValuesCompose(MC_E_POT_LSL_POTP, TRUE);
+						ZcRD_OutputValuesCompose(MC_C_POT_LSL_POTN, TRUE);
+
+						ZcRD_OutputValuesCompose(OL_G_COMM1, TRUE);
+						ZcRD_OutputValuesCompose(OL_G_COMM2, TRUE);
+						ZcRD_OutputValuesCompose(OL_G_COMM3, TRUE);
+						ZcRD_OutputValuesCompose(MC_G_GT_G, TRUE);
+						ZcRD_OutputValuesCompose(IL_GT_G_COMM, TRUE);
+
+						ZcRD_OutputValuesCompose(OL_GE_COMM1, TRUE);
+						ZcRD_OutputValuesCompose(OL_GE_COMM2, TRUE);
+						ZcRD_OutputValuesCompose(OL_GE_COMM3, TRUE);
+						ZcRD_OutputValuesCompose(MC_G_GT_GE, TRUE);
+						ZcRD_OutputValuesCompose(IL_GT_GE_COMM, TRUE);
+
+						ZcRD_RegisterFlushWrite();
+					}
+				else if (DataTable[REG_MEASUREMENT_POSITION] == 1)
 				{
 					ZcRD_OutputValuesReset();
 

@@ -8,14 +8,10 @@
 #include "Delay.h"
 #include "Controller.h"
 #include "DataTable.h"
+#include "ZcRegistersDriver.h"
+#include "CommutationTable.h"
 
 // Variables
-uint8_t SPI_Data[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
-uint8_t SPI_Data_PE_OFF[] = {0xFC, 0x00, 0x00, 0x00, 0x3F};
-uint8_t SPI_Data_Ileak_Gate_Emitter_Pos[] = {0xFF, 0xA3, 0xCE, 0xBC, 0x3F};
-uint8_t SPI_Data_Ileak_Gate_Emitter_Neg[] = {0xFF, 0xA3, 0xAF, 0x3C, 0x3F};
-uint8_t SPI_Debug[] = {0x00, 0x00, 0x01, 0x00, 0x00};
-uint8_t Data_Length = 4;
 
 // Functions
 
@@ -46,68 +42,12 @@ void DBACT_ToggleSFGreenLed()
 }
 //-----------------------
 
-// Write variable SPI_Data via SPI
 void DBACT_WriteSPI()
 {
-	LL_WriteSPI(SPI_Data, Data_Length);
-}
-//-----------------------
-
-// Disable PE-Relays
-void DBACT_SPI_PE_OFF()
-{
-
-	LL_WriteSPI(SPI_Data_PE_OFF, Data_Length);
-}
-//-----------------------
-
-// Commutate Ileak of Gate-Emitter Positive Measurement
-void DBACT_SPI_Ileak_Gate_Emit_Pos()
-{
-
-	LL_WriteSPI(SPI_Data_Ileak_Gate_Emitter_Pos, Data_Length);
-}
-//-----------------------
-
-// Commutate Ileak of Gate-Emitter Negative Measurement
-void DBACT_SPI_Ileak_Gate_Emit_Neg()
-{
-	LL_WriteSPI(SPI_Data_Ileak_Gate_Emitter_Neg, Data_Length);
-}
-//-----------------------
-
-// Stop commutation, reset shift-registers, turn outputs Hi-Z
-void DBACT_StopSPI()
-{
-	LL_StopSPI();
-}
-//-----------------------
-
-// Turn OE On
-void DBACT_SPITurnOnOE()
-{
-	LL_SPITurnOnOE();
-}
-//-----------------------
-
-// Turn OE Off
-void DBACT_SPITurnOffOE()
-{
-	LL_SPITurnOffOE();
-}
-//-----------------------
-
-// Turn SS On
-void DBACT_SPITurnOnSS()
-{
-	LL_SPITurnOnSS();
-}
-//-----------------------
-
-// Turn SS Off
-void DBACT_SPITurnOffSS()
-{
-	LL_SPITurnOffSS();
+	// Чтение номера таблицы коммутации из отладочного регистра
+	ZcRD_OutputValuesCompose(DataTable[REG_DBG], TRUE);
+	// Коммутация выбранной комбинации
+	ZcRD_RegisterFlushWrite();
 }
 //-----------------------
 
@@ -119,28 +59,11 @@ void DBACT_SPIReset()
 //-----------------------
 
 // Safety EN check
-void DBACT_TurnONSF_EN()
+void DBACT_ToggleSF_EN()
 {
 	LL_SetStateSF_EN(true);
-}
-//-----------------------
-
-// Safety EN check
-void DBACT_TurnOFFSF_EN()
-{
-	LL_SetStateSF_EN(false);
-}
-//-----------------------
-
-void DBACT_TurnOFFSD_EN()
-{
-	LL_SetStateSD_EN(false);
-}
-//-----------------------
-
-void DBACT_TurnONSD_EN()
-{
-	LL_SetStateSD_EN(true);
+	DELAY_MS(1000);
+	LL_SetStateSF_EN(true);
 }
 //-----------------------
 

@@ -11,8 +11,11 @@
 
 // Constants
 //
-#define COMMUTATION_EXT_BOARDS	4
-#define COMMUTATION_TABLE_SIZE	((COMMUTATION_EXT_BOARDS * 16) + 52)
+#ifdef COMM_MODE_2
+	#define COMMUTATION_EXT_BOARDS	4
+#endif
+
+#define COMMUTATION_TABLE_SIZE 116
 
 //
 // Commutation

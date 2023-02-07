@@ -39,9 +39,9 @@ void INITCFG_ConfigIO()
 	GPIO_SetState(GPIO_SPI_SS, true);
 	GPIO_SetState(GPIO_SPI_RST, true);
 	GPIO_SetState(GPIO_SPI_OE, true);
-	GPIO_SetState(GPIO_SF_RED_LED, false);
+	GPIO_SetState(GPIO_SF_RED_LED, true);
 	GPIO_SetState(GPIO_SF_GRN_LED, false);
-	GPIO_SetState(GPIO_SF_EN, true);
+	GPIO_SetState(GPIO_SF_EN, false);
 	GPIO_SetState(GPIO_SD_EN, false);
 
 	// Альтернативные функции
@@ -99,6 +99,6 @@ void INITCFG_ConfigADC()
 
 void INITCFG_ConfigSPI8b()
 {
-	SPI_Init8b(SPI3, SPI3_BAUDRATE_BITS, SPI3_LSB_FIRST);
+	SPI_Init8b(SPI1, SPI1_BAUDRATE_BITS, SPI1_LSB_FIRST);
 }
 //------------------------------------------------

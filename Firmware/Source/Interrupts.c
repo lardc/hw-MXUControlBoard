@@ -8,7 +8,6 @@
 #include "Global.h"
 #include "DataTable.h"
 #include "DeviceObjectDictionary.h"
-#include "Logic.h"
 
 // Functions
 //

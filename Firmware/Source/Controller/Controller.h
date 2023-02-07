@@ -14,16 +14,16 @@ typedef enum __DeviceState
 	DS_Fault = 1,
 	DS_Disabled = 2,
 	DS_Ready = 3,
-	DS_InProcess = 4,
-	DS_SelfTest = 5
+	DS_InProcess = 4
 } DeviceState;
 
 typedef enum __DeviceSubState
 {
 	SS_None = 0,
 	SS_StartUp,
+	SS_WaitDelay,
 	SS_StartSelfTest,
-	SS_Commutation,
+	SS_InProcess,
 
 	SS_ST_StartPrepare,
 	SS_ST_InputRelayCheck_1,
@@ -49,11 +49,16 @@ extern Int64U CONTROL_LEDTimeout;
 //
 void CONTROL_Init();
 void CONTROL_Idle();
-void CONTROL_DelayMs(uint32_t Delay);
-bool CONTROL_Delay(Int16U Time);
 void CONTROL_SaveTestResult();
 void CONTROL_SwitchToFault(Int16U Reason);
 void CONTROL_SetDeviceState(DeviceState NewState, DeviceSubState NewSubState);
 void CONTROL_SetDeviceSubState(DeviceSubState NewSubState);
+void CONTROL_ResetToDefaultState();
+bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError);
+void CONTROL_LogicProcess();
+void CONTROL_UpdateWatchDog();
+void CONTROL_ResetOutputRegisters();
+void CONTROL_CommutateNone();
+void CONTROL_ResetSFSystem();
 
 #endif // __CONTROLLER_H
