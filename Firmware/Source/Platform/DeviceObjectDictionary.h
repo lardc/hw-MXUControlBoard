@@ -20,13 +20,12 @@
 #define ACT_COMM_ILEAK_GATE_EMITTER_POS_PULSE	101 // Режим измерения тока утечки затвора-эмиттера (положительный импульс)
 #define ACT_COMM_ILEAK_GATE_EMITTER_NEG_PULSE	102 // Режим измерения тока утечки затвора-эмиттера (отрицательный импульс)
 #define ACT_COMM_UTH_GATE_EMITTER				103 // Режим измерения порогового напряжения затвор-эмиттер
-#define ACT_COMM_Q_GATE_POS_PULSE				104 // Режим измерения заряда затвора (положительный импульс)
-#define ACT_COMM_Q_GATE_NEG_PULSE				105 // Режим измерения заряда затвора (отрицательный импульс)
-#define ACT_COMM_USAT_COLLECTOR_EMITTER			106 // Режим измерения напряжения насыщения коллектор-эмиттер
-#define ACT_COMM_UFW_CHOPPER_DIODE				107 // Режим измерения прямого напряжения обратно-параллельного диода и диода чоппера
-#define ACT_COMM_ILEAK_COLLECTOR_EMITTER		108 // Режим измерения тока утечки коллектор-эмиттер
-#define ACT_COMM_THERMISTOR						109 // Режим измерения сопротивления термистора
-#define ACT_COMM_NO_PE							110 // Отключения защитного заземления
+#define ACT_COMM_Q_GATE							104 // Режим измерения заряда затвора (положительный импульс)
+#define ACT_COMM_USAT_COLLECTOR_EMITTER			105 // Режим измерения напряжения насыщения коллектор-эмиттер
+#define ACT_COMM_UFW_CHOPPER_DIODE				106 // Режим измерения прямого напряжения обратно-параллельного диода и диода чоппера
+#define ACT_COMM_ILEAK_COLLECTOR_EMITTER		107 // Режим измерения тока утечки коллектор-эмиттер
+#define ACT_COMM_THERMISTOR						108 // Режим измерения сопротивления термистора
+#define ACT_COMM_NO_PE							109 // Отключения защитного заземления
 
 #define ACT_SF_DEACTIVATE						120	// Команда деактивации контура безопасности
 
@@ -41,53 +40,53 @@
 
 // Регистры
 // Сохраняемые регистры
-#define REG_PS_FIRST_START_TIME			1	// Время готовности при первом старте
-#define REG_SFTST_V_ALLOWED_ERR			2	// Допустимая погрешность измеренного значения напряжения (%)
+#define REG_PS_FIRST_START_TIME					1	// Время готовности при первом старте
+#define REG_SFTST_V_ALLOWED_ERR					2	// Допустимая погрешность измеренного значения напряжения (%)
 
 // Несохраняемые регистры чтения-записи
-#define REG_MEASUREMENT_POSITION		128	// Регистр выбора позции при измерении (1 или 2)
+#define REG_MEASUREMENT_POSITION				128	// Регистр выбора позции при измерении (1 или 2)
 
-#define REG_DBG							150	// Отладочный регистр
+#define REG_DBG									150	// Отладочный регистр
 
 // Регистры только чтение
-#define REG_DEV_STATE					192	// Регистр состояния
-#define REG_FAULT_REASON				193	// Регистр Fault
-#define REG_DISABLE_REASON				194	// Регистр Disable
-#define REG_WARNING						195	// Регистр Warning
-#define REG_PROBLEM						196	// Регистр Problem
-#define REG_OP_RESULT					197	// Регистр результата операции
-#define REG_SELF_TEST_OP_RESULT			198	// Регистр результата самотестирования
-#define REG_SUB_STATE					199	// Регистр вспомогательного состояния
-#define REG_SELF_TEST_ACTIVE			200	// Флаг состояния системы самотестирования
+#define REG_DEV_STATE							192	// Регистр состояния
+#define REG_FAULT_REASON						193	// Регистр Fault
+#define REG_DISABLE_REASON						194	// Регистр Disable
+#define REG_WARNING								195	// Регистр Warning
+#define REG_PROBLEM								196	// Регистр Problem
+#define REG_OP_RESULT							197	// Регистр результата операции
+#define REG_SELF_TEST_OP_RESULT					198	// Регистр результата самотестирования
+#define REG_SUB_STATE							199	// Регистр вспомогательного состояния
+#define REG_SELF_TEST_ACTIVE					200	// Флаг состояния системы самотестирования
 // -----------------------------
-#define REG_FWINFO_SLAVE_NID			256	// Device CAN slave node ID
-#define REG_FWINFO_MASTER_NID			257	// Device CAN master node ID (if presented)
+#define REG_FWINFO_SLAVE_NID					256	// Device CAN slave node ID
+#define REG_FWINFO_MASTER_NID					257	// Device CAN master node ID (if presented)
 // 258 - 259
-#define REG_FWINFO_STR_LEN				260	// Length of the information string record
-#define REG_FWINFO_STR_BEGIN			261	// Begining of the information string record
+#define REG_FWINFO_STR_LEN						260	// Length of the information string record
+#define REG_FWINFO_STR_BEGIN					261	// Begining of the information string record
 
 
 // Operation results
-#define OPRESULT_NONE					0	// No information or not finished
-#define OPRESULT_OK						1	// Operation was successful
-#define OPRESULT_FAIL					2	// Operation failed
+#define OPRESULT_NONE							0	// No information or not finished
+#define OPRESULT_OK								1	// Operation was successful
+#define OPRESULT_FAIL							2	// Operation failed
 
 //  Fault and disable codes
-#define DF_NONE							0
-#define DF_VOLTAGE_MEASURING			1
+#define DF_NONE									0
+#define DF_VOLTAGE_MEASURING					1
 
 // Problem
-#define PROBLEM_NONE					0
+#define PROBLEM_NONE							0
 
 //  Warning
-#define WARNING_NONE					0
+#define WARNING_NONE							0
 
 //  User Errors
-#define ERR_NONE						0
-#define ERR_CONFIGURATION_LOCKED		1	//  Устройство защищено от записи
-#define ERR_OPERATION_BLOCKED			2	//  Операция не может быть выполнена в текущем состоянии устройства
-#define ERR_DEVICE_NOT_READY			3	//  Устройство не готово для смены состояния
-#define ERR_WRONG_PWD					4	//  Неправильный ключ
+#define ERR_NONE								0
+#define ERR_CONFIGURATION_LOCKED				1	//  Устройство защищено от записи
+#define ERR_OPERATION_BLOCKED					2	//  Операция не может быть выполнена в текущем состоянии устройства
+#define ERR_DEVICE_NOT_READY					3	//  Устройство не готово для смены состояния
+#define ERR_WRONG_PWD							4	//  Неправильный ключ
 
 // Endpoints
 

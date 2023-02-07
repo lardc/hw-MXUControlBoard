@@ -244,7 +244,7 @@ void COMM_Commutate(Int16U ActionID)
 			}
 			break;
 
-		case ACT_COMM_Q_GATE_POS_PULSE:
+		case ACT_COMM_Q_GATE:
 			{
 				if (DataTable[REG_MEASUREMENT_POSITION] == 1)
 				{
@@ -279,47 +279,6 @@ void COMM_Commutate(Int16U ActionID)
 					ZcRD_OutputValuesCompose(OL_GE_2_COMM3, TRUE);
 					ZcRD_OutputValuesCompose(MC_GE_2_GT_GE, TRUE);
 					ZcRD_OutputValuesCompose(IL_GT_GE_COMM, TRUE);
-
-					ZcRD_RegisterFlushWrite();
-				}
-			}
-			break;
-
-		case ACT_COMM_Q_GATE_NEG_PULSE:
-			{
-				if (DataTable[REG_MEASUREMENT_POSITION] == 1)
-				{
-					ZcRD_OutputValuesReset();
-
-					ZcRD_OutputValuesCompose(OL_G_COMM1, TRUE);
-					ZcRD_OutputValuesCompose(OL_G_COMM2, TRUE);
-					ZcRD_OutputValuesCompose(OL_G_COMM3, TRUE);
-					ZcRD_OutputValuesCompose(MC_GE_GT_G, TRUE);
-					ZcRD_OutputValuesCompose(IL_GT_GE_COMM, TRUE);
-
-					ZcRD_OutputValuesCompose(OL_GE_COMM1, TRUE);
-					ZcRD_OutputValuesCompose(OL_GE_COMM2, TRUE);
-					ZcRD_OutputValuesCompose(OL_GE_COMM3, TRUE);
-					ZcRD_OutputValuesCompose(MC_G_GT_GE, TRUE);
-					ZcRD_OutputValuesCompose(IL_GT_G_COMM, TRUE);
-
-					ZcRD_RegisterFlushWrite();
-				}
-				else if (DataTable[REG_MEASUREMENT_POSITION] == 2)
-				{
-					ZcRD_OutputValuesReset();
-
-					ZcRD_OutputValuesCompose(OL_G_COMM1, TRUE);
-					ZcRD_OutputValuesCompose(OL_G_COMM2, TRUE);
-					ZcRD_OutputValuesCompose(OL_G_COMM3, TRUE);
-					ZcRD_OutputValuesCompose(MC_GE_GT_G, TRUE);
-					ZcRD_OutputValuesCompose(IL_GT_GE_COMM, TRUE);
-
-					ZcRD_OutputValuesCompose(OL_GE_COMM1, TRUE);
-					ZcRD_OutputValuesCompose(OL_GE_COMM2, TRUE);
-					ZcRD_OutputValuesCompose(OL_GE_COMM3, TRUE);
-					ZcRD_OutputValuesCompose(MC_G_GT_GE, TRUE);
-					ZcRD_OutputValuesCompose(IL_GT_G_COMM, TRUE);
 
 					ZcRD_RegisterFlushWrite();
 				}
