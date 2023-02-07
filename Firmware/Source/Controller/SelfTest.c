@@ -177,6 +177,7 @@ void SELFTEST_Process()
 			if (Error >= DataTable[REG_SFTST_V_ALLOWED_ERR])
 			{
 				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
+				DataTable[REG_SELF_TEST_SS]	= PrevSubstate;
 				CONTROL_SwitchToFault(DF_VOLTAGE_MEASURING);
 			}
 			else

@@ -181,7 +181,6 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 void CONTROL_LogicProcess()
 {
 	static Int64U Delay = 0;
-	static Int64U CONTROL_TimeCounter = 0;
 
 	if(CONTROL_State == DS_InProcess)
 	{
@@ -194,16 +193,7 @@ void CONTROL_LogicProcess()
 
 			case SS_WaitDelay:
 				if (CONTROL_TimeCounter >= Delay)
-				{
-					CONTROL_TimeCounter = 0;
 					CONTROL_SetDeviceState(DS_InProcess, SS_StartSelfTest);
-				}
-				else
-				{
-					CONTROL_TimeCounter = CONTROL_TimeCounter + 1;
-					CONTROL_SetDeviceState(DS_InProcess, SS_WaitDelay);
-				}
-
 				break;
 
 			case SS_StartSelfTest:
@@ -224,17 +214,7 @@ void CONTROL_LogicProcess()
 						CONTROL_SetDeviceState(DS_Fault, SS_None);
 				break;
 
-			case SS_None:
-			case SS_ST_StartPrepare:
-			case SS_ST_InputRelayCheck_1:
-			case SS_ST_InputRelayCheck_2:
-			case SS_ST_InputRelayCheck_3:
-			case SS_ST_InputRelayCheck_4:
-			case SS_ST_MCRelayCheck_1:
-			case SS_ST_MCRelayCheck_2:
-			case SS_ST_MCRelayCheck_3:
-			case SS_ST_MCRelayCheck_4:
-			case SS_ST_CurrentMeasure:
+			default:
 				break;
 
 		}

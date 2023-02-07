@@ -57,7 +57,7 @@ void LL_WriteSPI(uint8_t SPI_Data[], uint8_t Data_Length)
 void LL_SPIReset()
 {
 	GPIO_SetState(GPIO_SPI_RST, false);
-	DELAY_MS(1);
+	DELAY_US(1);
 	GPIO_SetState(GPIO_SPI_RST, true);
 }
 //-----------------------------
