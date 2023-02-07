@@ -14,7 +14,6 @@
 
 // Defines
 //
-#define ST_V_ALLOWED_ERR_DEF			 10	//	(%)
 
 // Functions
 //
@@ -26,12 +25,12 @@ void SELFTEST_Process()
 	switch(CONTROL_SubState)
 	{
 		case SS_ST_StartPrepare:
-			PrevSubstate = SS_None;
+			PrevSubstate = SS_ST_StartPrepare;
 			CONTROL_SetDeviceState(DS_InProcess, SS_ST_InputRelayCheck_1);
 			break;
 
 		case SS_ST_InputRelayCheck_1:
-			PrevSubstate = SS_ST_StartPrepare;
+			PrevSubstate = SS_ST_InputRelayCheck_1;
 
 			ZcRD_OutputValuesReset();
 
@@ -47,7 +46,7 @@ void SELFTEST_Process()
 			break;
 
 		case SS_ST_InputRelayCheck_2:
-			PrevSubstate = SS_ST_InputRelayCheck_1;
+			PrevSubstate = SS_ST_InputRelayCheck_2;
 
 			ZcRD_OutputValuesReset();
 
@@ -63,7 +62,7 @@ void SELFTEST_Process()
 			break;
 
 		case SS_ST_InputRelayCheck_3:
-			PrevSubstate = SS_ST_InputRelayCheck_2;
+			PrevSubstate = SS_ST_InputRelayCheck_3;
 
 			ZcRD_OutputValuesReset();
 
@@ -79,7 +78,7 @@ void SELFTEST_Process()
 			break;
 
 		case SS_ST_InputRelayCheck_4:
-			PrevSubstate = SS_ST_InputRelayCheck_3;
+			PrevSubstate = SS_ST_InputRelayCheck_4;
 
 			ZcRD_OutputValuesReset();
 
@@ -95,7 +94,7 @@ void SELFTEST_Process()
 			break;
 
 		case SS_ST_MCRelayCheck_1:
-			PrevSubstate = SS_ST_InputRelayCheck_4;
+			PrevSubstate = SS_ST_MCRelayCheck_1;
 
 			ZcRD_OutputValuesReset();
 
@@ -117,7 +116,7 @@ void SELFTEST_Process()
 			break;
 
 		case SS_ST_MCRelayCheck_2:
-			PrevSubstate = SS_ST_MCRelayCheck_1;
+			PrevSubstate = SS_ST_MCRelayCheck_2;
 
 			ZcRD_OutputValuesReset();
 
@@ -139,7 +138,7 @@ void SELFTEST_Process()
 			break;
 
 		case SS_ST_MCRelayCheck_3:
-			PrevSubstate = SS_ST_MCRelayCheck_2;
+			PrevSubstate = SS_ST_MCRelayCheck_3;
 
 			ZcRD_OutputValuesReset();
 
@@ -154,7 +153,7 @@ void SELFTEST_Process()
 			break;
 
 		case SS_ST_MCRelayCheck_4:
-			PrevSubstate = SS_ST_MCRelayCheck_3;
+			PrevSubstate = SS_ST_MCRelayCheck_4;
 
 			ZcRD_OutputValuesReset();
 
@@ -169,11 +168,13 @@ void SELFTEST_Process()
 			break;
 
 		case SS_ST_CurrentMeasure:
+			PrevSubstate = SS_ST_CurrentMeasure;
+
 			MeasuredVoltage = LL_SelfTestMeasure();
 
 			Error = (MeasuredVoltage - ADC_V_CC) / ADC_V_CC * 100;
 
-			if (Error >= ST_V_ALLOWED_ERR_DEF)
+			if (Error >= DataTable[REG_SFTST_V_ALLOWED_ERR])
 			{
 				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
 				CONTROL_SwitchToFault(DF_VOLTAGE_MEASURING);

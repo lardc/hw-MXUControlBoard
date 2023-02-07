@@ -8,8 +8,8 @@
 // Constants
 //
 const TableItemConstraint Constraint[DATA_TABLE_WP_START] = {
-		{SFTST_V_ALLOWED_ERR_MIN, SFTST_V_ALLOWED_ERR_MAX, SFTST_V_ALLOWED_ERR_DEF},// 0
-		{0, 0, 0},																	// 1
+		{0, REG_PS_FIRST_START_TIME, 0},											// 0
+		{SFTST_V_ALLOWED_ERR_MIN, SFTST_V_ALLOWED_ERR_MAX, SFTST_V_ALLOWED_ERR_DEF},// 1
 		{0, 0, 0},																	// 2
 		{0, 0, 0},																	// 3
 		{0, 0, 0},																	// 4
@@ -136,7 +136,7 @@ const TableItemConstraint Constraint[DATA_TABLE_WP_START] = {
 		{0, 0, 0},																	// 125
 		{0, 0, 0},																	// 126
 		{0, 0, 0},																	// 127
-		{0, REG_MEASUREMENT_POSITION, 0},																	// 128
+		{0, REG_MEASUREMENT_POSITION, 0},											// 128
 		{0, 0, 0},																	// 129
 		{0, 0, 0},																	// 130
 		{0, 0, 0},																	// 131
@@ -158,7 +158,7 @@ const TableItemConstraint Constraint[DATA_TABLE_WP_START] = {
 		{0, 0, 0},																	// 147
 		{0, 0, 0},																	// 148
 		{0, 0, 0},																	// 149
-		{0, REG_DBG, 0},																	// 150
+		{0, REG_DBG, 0},															// 150
 		{0, 0, 0},																	// 151
 		{0, 0, 0},																	// 152
 		{0, 0, 0},																	// 153

@@ -42,11 +42,11 @@
 // Регистры
 // Сохраняемые регистры
 #define REG_PS_FIRST_START_TIME			1	// Время готовности при первом старте
+#define REG_SFTST_V_ALLOWED_ERR			2	// Допустимая погрешность измеренного значения напряжения (%)
 
 // Несохраняемые регистры чтения-записи
 #define REG_MEASUREMENT_POSITION		128	// Регистр выбора позции при измерении (1 или 2)
-#define REG_SFTST_V_ALLOWED_ERR			129	// Допустимая погрешность измеренного значения напряжения (%)
-#define REG_SELF_TEST_ACTIVE			130	// Флаг состояния системы самотестирования
+
 #define REG_DBG							150	// Отладочный регистр
 
 // Регистры только чтение
@@ -58,6 +58,7 @@
 #define REG_OP_RESULT					197	// Регистр результата операции
 #define REG_SELF_TEST_OP_RESULT			198	// Регистр результата самотестирования
 #define REG_SUB_STATE					199	// Регистр вспомогательного состояния
+#define REG_SELF_TEST_ACTIVE			200	// Флаг состояния системы самотестирования
 // -----------------------------
 #define REG_FWINFO_SLAVE_NID			256	// Device CAN slave node ID
 #define REG_FWINFO_MASTER_NID			257	// Device CAN master node ID (if presented)

@@ -14,6 +14,7 @@
 #include "SelfTest.h"
 #include "CommutationTable.h"
 #include "Commutator.h"
+#include "ZcRegistersDriver.h"
 
 // Definitions
 //

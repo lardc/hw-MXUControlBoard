@@ -13,7 +13,6 @@
 //
 // Reset output register to zero
 void ZcRD_RegisterReset();
-void ZcRD_OutputValuesReset1();
 // Write cache to physical register
 void ZcRD_RegisterFlushWrite();
 // Compose cached values

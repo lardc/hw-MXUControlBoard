@@ -32,7 +32,7 @@ void ZcRD_RegisterReset()
 void ZcRD_OutputValuesCompose(Int16U TableID, Boolean TurnOn)
 {
 	if (TurnOn)
-		CurrentOutputValues[CommutationTable[TableID].BoardNum] |= CommutationTable[TableID].Bit;
+		CurrentOutputValues[CommutationTable[TableID].BoardNum] |= 0x1;
 	else
 		CurrentOutputValues[CommutationTable[TableID].BoardNum] &= ~CommutationTable[TableID].Bit;
 }
@@ -45,12 +45,6 @@ void ZcRD_OutputValuesReset()
 
 	for (i = 0; i < 14; ++i)
 		CurrentOutputValues[i] = 0x00;
-}
-// ----------------------------------------
-
-void ZcRD_OutputValuesReset1()
-{
-	//CurrentOutputValues[] = {0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF};
 }
 // ----------------------------------------
 
@@ -68,11 +62,11 @@ void ZcRD_RegisterFlushWrite()
 	for (int i = 0; i <= Data_Lenght; i++)
 	{
 		SPI_WriteByte8b(SPI1, CurrentOutputValuesCopy[i]);
-		//DELAY_MS(1);
+		DELAY_US(1);
 		GPIO_SetState(GPIO_SPI_SS, true);
-		//DELAY_MS(1);
+		DELAY_US(1);
 		GPIO_SetState(GPIO_SPI_SS, false);
-		//DELAY_MS(1);
+		DELAY_US(1);
 	}
 
 	GPIO_SetState(GPIO_SPI_OE, false);
