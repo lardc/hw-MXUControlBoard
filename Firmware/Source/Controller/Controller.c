@@ -157,8 +157,8 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 		case ACT_COMM_NONE:
 			if (CONTROL_State == DS_Fault)
 				*pUserError = ERR_OPERATION_BLOCKED;
-			else if(CONTROL_State == DS_None)
-				*pUserError = ERR_DEVICE_NOT_READY;
+			//else if(CONTROL_State == DS_None)
+				//*pUserError = ERR_DEVICE_NOT_READY;
 			else
 			{
 				COMM_Commutate(ActionID);
@@ -248,9 +248,7 @@ void CONTROL_ResetOutputRegisters()
 
 void CONTROL_CommutateNone()
 {
-	#ifdef COMM_MODE_2
-		COMM_CommutateNone();
-	#endif
+	COMM_CommutateNone();
 }
 // ----------------------------------------
 

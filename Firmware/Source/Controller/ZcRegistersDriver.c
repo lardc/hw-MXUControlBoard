@@ -9,21 +9,16 @@
 #include "CommutationTable.h"
 #include "LowLevel.h"
 #include "Delay.h"
+#include "DataTable.h"
 
 
 // Constants
 //
 #define IO_REGISTER_WRITE_DELAY_US	10
 
-#define NUM_REGS_HV_BOARD			5
-#define NUM_REGS_THERM_BOARD		2
-#define NUM_REGS_INPUT_BOARD		3
-#define NUM_REGS_TOTAL ((NUM_REGS_HV_BOARD * 2) + NUM_REGS_THERM_BOARD + NUM_REGS_INPUT_BOARD)
-
-
 // Variables
 //
-static uint8_t CurrentOutputValues[(NUM_REGS_TOTAL - 1)];
+static uint8_t CurrentOutputValues[NUM_REGS_TOTAL] = {};
 
 void ZcRD_RegisterReset()
 {
@@ -34,12 +29,21 @@ void ZcRD_RegisterReset()
 }
 // ----------------------------------------
 
+void ZbIOE_OutputValuesDirect(Int16U BoardID, Int8U Mask)
+{
+	if (BoardID >= COMMUTATION_EXT_BOARDS)
+		return;
+
+	CurrentOutputValues[BoardID] = Mask;
+}
+// ----------------------------------------
+
 void ZcRD_OutputValuesCompose(Int16U TableID, Boolean TurnOn)
 {
 	if (TurnOn)
-		CurrentOutputValues[CommutationTable[TableID].BoardNum] |= CommutationTable[TableID].Bit;
+		CurrentOutputValues[CommutationTable[TableID].RegNum] |= CommutationTable[TableID].Bit;
 	else
-		CurrentOutputValues[CommutationTable[TableID].BoardNum] &= ~CommutationTable[TableID].Bit;
+		CurrentOutputValues[CommutationTable[TableID].RegNum] &= ~CommutationTable[TableID].Bit;
 }
 // ----------------------------------------
 
@@ -48,8 +52,10 @@ void ZcRD_OutputValuesReset()
 {
 	uint8_t i;
 
-	for (i = 0; i < (NUM_REGS_TOTAL - 1); ++i)
-		CurrentOutputValues[i] = 0x00;
+	for (i = 0; i <= NUM_REGS_TOTAL; ++i)
+		CurrentOutputValues[i] = 0;
+
+	ZcRD_RegisterFlushWrite();
 }
 // ----------------------------------------
 
@@ -57,8 +63,9 @@ void ZcRD_RegisterFlushWrite()
 {
 	int i;
 	uint8_t CurrentOutputValuesCopy[(NUM_REGS_TOTAL - 1)];
+	DataTable[REG_DBG] = CurrentOutputValues[14];
 
-	for (i = 0; i < 14; ++i)
+	for (i = 0; i < NUM_REGS_TOTAL; ++i)
 		CurrentOutputValuesCopy[i] = CurrentOutputValues[(NUM_REGS_TOTAL - 1) - i];
 
 	GPIO_SetState(GPIO_SPI_OE, true);

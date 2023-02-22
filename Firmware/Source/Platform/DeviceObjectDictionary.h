@@ -11,10 +11,9 @@
 #define ACT_DBG_SF_RED_LED						22	// Проверка работы красного индикатора системы безопасности
 #define ACT_DBG_SF_GRN_LED						23	// Проверка работы зеленого индикатора системы безопасности
 #define ACT_DBG_WRITE_SPI						24	// Проверка работы коммутации тестовой комбинации
-#define ACT_DBG_SPI_RST							25	// Сьрос сдвиговых регистров
+#define ACT_DBG_SPI_RST							25	// Сброс сдвиговых регистров
 #define ACT_SF_EN								26	// Проверка работы сигнала-разрешения системы безопаснсоти
 #define ACT_DBG_SELF_TEST_MEASURE				27	// Измерение значения напряжение системы самодиагностики
-
 
 #define ACT_COMM_NONE							100 // Отключение всех реле
 #define ACT_COMM_ILEAK_GATE_EMITTER_POS_PULSE	101 // Режим измерения тока утечки затвора-эмиттера (положительный импульс)
@@ -45,6 +44,7 @@
 
 // Несохраняемые регистры чтения-записи
 #define REG_MEASUREMENT_POSITION				128	// Регистр выбора позции при измерении (1 или 2)
+#define REG_FAULT_RELAY							129	// Faulty Relay
 
 #define REG_DBG									150	// Отладочный регистр
 

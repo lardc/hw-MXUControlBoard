@@ -17,6 +17,7 @@ void ZcRD_RegisterReset();
 void ZcRD_RegisterFlushWrite();
 // Compose cached values
 void ZcRD_OutputValuesCompose(Int16U TableID, Boolean TurnOn);
+void ZbIOE_OutputValuesDirect(Int16U BoardID, Int8U Mask);
 // Reset cached values to zero
 void ZcRD_OutputValuesReset();
 

@@ -11,6 +11,7 @@
 #define SFTST_V_ALLOWED_ERR_MIN		0		//	(%)
 #define SFTST_V_ALLOWED_ERR_MAX		20		//	(%)
 #define SFTST_V_ALLOWED_ERR_DEF		10		//	(%)
+#define PS_FIRST_START_TIME			10
 //
 #define NO							0
 #define YES							1

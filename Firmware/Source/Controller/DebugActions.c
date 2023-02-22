@@ -55,6 +55,8 @@ void DBACT_WriteSPI()
 void DBACT_SPIReset()
 {
 	LL_SPIReset();
+
+	ZcRD_OutputValuesReset();
 }
 //-----------------------
 
@@ -76,9 +78,10 @@ void DBACT_SelfTestMeasure()
 
 	Error = (Result - ADC_V_CC) / Result * 100;
 
-	if (Error >= 20)
+	if (Error <= 20)
 	{
 		DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
+		DataTable[REG_FAULT_RELAY] = MC_G_GT_G;
 	}
 	else
 	{

@@ -8,7 +8,7 @@
 // Constants
 //
 const TableItemConstraint Constraint[DATA_TABLE_WP_START] = {
-		{0, REG_PS_FIRST_START_TIME, 0},											// 0
+		{0, PS_FIRST_START_TIME, 0},												// 0
 		{SFTST_V_ALLOWED_ERR_MIN, SFTST_V_ALLOWED_ERR_MAX, SFTST_V_ALLOWED_ERR_DEF},// 1
 		{0, 0, 0},																	// 2
 		{0, 0, 0},																	// 3

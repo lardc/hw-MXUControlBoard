@@ -178,6 +178,8 @@ void SELFTEST_Process()
 			{
 				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
 				DataTable[REG_SELF_TEST_SS]	= PrevSubstate;
+				DataTable[REG_FAULT_RELAY] = PrevSubstate;
+				ZcRD_RegisterReset();
 				CONTROL_SwitchToFault(DF_VOLTAGE_MEASURING);
 			}
 			else
