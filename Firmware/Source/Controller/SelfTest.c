@@ -267,7 +267,7 @@ void SELFTEST_Process()
 
 				bool OpenResult;
 				OpenResult = LL_TestOpenRelay();
-				if (OpenResult >= true)
+				if (OpenResult == true)
 				{
 					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
 					DataTable[REG_FAULT_RELAY] = TestCommutation[i];
