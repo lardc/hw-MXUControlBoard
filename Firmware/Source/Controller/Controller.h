@@ -35,7 +35,12 @@ typedef enum __DeviceSubState
 	SS_ST_MCRelayCheck_2 = 11,
 	SS_ST_MCRelayCheck_3 = 12,
 	SS_ST_MCRelayCheck_4 = 13,
-	SS_ST_CurrentMeasure = 14
+	SS_ST_CurrentMeasure = 14,
+	SS_ST_InputRelayOpenCheck_1 = 15,
+	SS_ST_InputRelayOpenCheck_2 = 16,
+	SS_ST_Get_ArrayLenght = 17,
+	SS_ST_OpenRelayCheck = 18
+
 } DeviceSubState;
 
 // Variables

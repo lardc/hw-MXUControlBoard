@@ -44,7 +44,6 @@
 
 // Несохраняемые регистры чтения-записи
 #define REG_MEASUREMENT_POSITION				128	// Регистр выбора позции при измерении (1 или 2)
-#define REG_FAULT_RELAY							129	// Faulty Relay
 
 #define REG_DBG									150	// Отладочный регистр
 
@@ -59,6 +58,7 @@
 #define REG_SUB_STATE							199	// Регистр вспомогательного состояния
 #define REG_SELF_TEST_ACTIVE					200	// Флаг состояния системы самотестирования
 #define REG_SELF_TEST_SS						201	// Sub-state register
+#define REG_FAULT_RELAY							210	// Faulty Relay
 // -----------------------------
 #define REG_FWINFO_SLAVE_NID					256	// Device CAN slave node ID
 #define REG_FWINFO_MASTER_NID					257	// Device CAN master node ID (if presented)

@@ -14,12 +14,15 @@
 
 // Defines
 //
-
+uint8_t TestCommutation[] = {};
 // Functions
 //
 void SELFTEST_Process()
 {
 	static DeviceSubState PrevSubstate = SS_None;
+	uint8_t TestCommutation_IR1[] = {IL_GT_G_COMM, IL_GT_GE_COMM, IL_GT_G_GE, ST_TI_GT_G, ST_TO_GT_GE, INT8U_MAX};
+	uint8_t TestCommutation_IR2[] = {IL_GT_G_POT_COMM, IL_GT_GE_POT_COMM, IL_GT_G_GE_POT, ST_TI_GT_G_POT, ST_TO_GT_GE_POT, INT8U_MAX};
+	uint8_t ArrayLength = 0;
 
 	switch(CONTROL_SubState)
 	{
@@ -222,10 +225,64 @@ void SELFTEST_Process()
 				else if (PrevSubstate == SS_ST_MCRelayCheck_4)
 				{
 					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
-					CONTROL_SetDeviceState(DS_InProcess, SS_SelfTestCheck);
+					CONTROL_SetDeviceState(DS_InProcess, SS_ST_InputRelayOpenCheck_1);
 				}
 			}
 
+			break;
+
+		case SS_ST_InputRelayOpenCheck_1:
+			PrevSubstate = SS_ST_InputRelayOpenCheck_1;
+			ArrayLength = ST_GetArrayLength(TestCommutation_IR1);
+			for (uint8_t i = 0; i < ArrayLength; i++)
+			{
+				TestCommutation[i] = TestCommutation_IR1[i];
+			}
+			CONTROL_SetDeviceState(DS_InProcess, SS_ST_Get_ArrayLenght);
+			break;
+
+		case SS_ST_InputRelayOpenCheck_2:
+			PrevSubstate = SS_ST_InputRelayOpenCheck_2;
+			ArrayLength = ST_GetArrayLength(TestCommutation_IR2);
+			for (uint8_t i = 0; i < ArrayLength; i++)
+			{
+				TestCommutation[i] = TestCommutation_IR2[i];
+			}
+			CONTROL_SetDeviceState(DS_InProcess, SS_ST_Get_ArrayLenght);
+			break;
+
+
+
+		case SS_ST_OpenRelayCheck:
+			for(uint8_t i = 0; i < ArrayLength; i++)
+			{
+				// Включение всех реле
+				for(uint8_t j = 0; j < ArrayLength; j++)
+					ZcRD_OutputValuesCompose(TestCommutation[j], TRUE);
+
+				// Отключение тестируемого реле
+				ZcRD_OutputValuesCompose(TestCommutation[i], FALSE);
+
+				// Тестирование
+
+				bool OpenResult;
+				OpenResult = LL_TestOpenRelay();
+				if (OpenResult >= true)
+				{
+					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
+					DataTable[REG_FAULT_RELAY] = TestCommutation[i];
+					ZcRD_RegisterReset();
+					CONTROL_SwitchToFault(DF_VOLTAGE_MEASURING);
+				}
+				else
+				{
+					if (PrevSubstate == SS_ST_InputRelayOpenCheck_1)
+					{
+						DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
+						CONTROL_SetDeviceState(DS_InProcess, SS_ST_InputRelayOpenCheck_2);
+					}
+				}
+			}
 			break;
 
 		default:
@@ -234,3 +291,16 @@ void SELFTEST_Process()
 }
 //-----------------------------------------------
 
+int ST_GetArrayLength(uint8_t Data[])
+{
+	uint8_t ArrayLen = 0;
+	for(uint8_t i = 0; i < INT8U_MAX; i++)
+	{
+		if(Data[i] == INT8U_MAX)
+		{
+			ArrayLen = i;
+			break;
+		}
+	}
+	return ArrayLen;
+}

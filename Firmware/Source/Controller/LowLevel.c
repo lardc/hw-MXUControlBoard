@@ -95,3 +95,9 @@ bool LL_TestClosedRelay()
 	return LL_SelfTestMeasure() > DataTable[REG_SFTST_V_ALLOWED_VOLTAGE];
 }
 //-----------------------------
+
+bool LL_TestOpenRelay()
+{
+	return LL_SelfTestMeasure() < DataTable[REG_SFTST_V_ALLOWED_VOLTAGE];
+}
+//-----------------------------

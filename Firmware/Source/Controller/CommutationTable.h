@@ -184,6 +184,8 @@
 #define MC_T2_GT_G				144
 #define MC_T1_GT_GE_POT			154
 #define MC_T1_GT_GE				155
+
+#define RELAY_NONE				200
 //
 
 // Types
