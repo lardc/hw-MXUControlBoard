@@ -14,7 +14,8 @@ typedef enum __DeviceState
 	DS_Fault = 1,
 	DS_Disabled = 2,
 	DS_Ready = 3,
-	DS_InProcess = 4
+	DS_SelfTest = 4,
+	DS_InProcess = 5
 } DeviceState;
 
 typedef enum __DeviceSubState
@@ -23,7 +24,7 @@ typedef enum __DeviceSubState
 	SS_StartUp = 1,
 	SS_WaitDelay = 2,
 	SS_StartSelfTest = 3,
-	SS_InProcess = 4,
+	SS_SelfTestCheck = 4,
 
 	SS_ST_StartPrepare = 5,
 	SS_ST_InputRelayCheck_1 = 6,

@@ -114,7 +114,7 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			if(CONTROL_State == DS_None)
 			{
 				CONTROL_ResetOutputRegisters();
-				CONTROL_SetDeviceState(DS_None, SS_None);
+				CONTROL_SetDeviceState(DS_InProcess, SS_StartUp);
 			}
 			else if(CONTROL_State != DS_Ready)
 				*pUserError = ERR_OPERATION_BLOCKED;
@@ -199,16 +199,16 @@ void CONTROL_LogicProcess()
 			case SS_StartSelfTest:
 				if(DataTable[REG_SELF_TEST_ACTIVE])
 				{
-					CONTROL_SetDeviceState(DS_InProcess, SS_ST_StartPrepare);
+					CONTROL_SetDeviceState(DS_SelfTest, SS_ST_StartPrepare);
 				}
 				else
-					CONTROL_SetDeviceState(DS_InProcess, SS_InProcess);
+					CONTROL_SetDeviceState(DS_InProcess, SS_SelfTestCheck);
 				break;
 
-			case SS_InProcess:
-					if(REG_SELF_TEST_OP_RESULT == 1)
+			case SS_SelfTestCheck:
+					if(DataTable[REG_SELF_TEST_OP_RESULT] == OPRESULT_OK)
 					{
-						CONTROL_SetDeviceState(DS_InProcess, SS_InProcess);
+						CONTROL_SetDeviceState(DS_Ready, SS_None);
 					}
 					else
 						CONTROL_SetDeviceState(DS_Fault, SS_None);
@@ -219,7 +219,7 @@ void CONTROL_LogicProcess()
 
 		}
 	}
-	else if(CONTROL_State == DS_InProcess)
+	else if(CONTROL_State == DS_SelfTest)
 	{
 		SELFTEST_Process();
 	}

@@ -60,7 +60,6 @@ void ZcRD_OutputValuesReset()
 void ZcRD_RegisterFlushWrite()
 {
 	uint8_t CurrentOutputValuesCopy[(NUM_REGS_TOTAL - 1)];
-	DataTable[REG_DBG] = CurrentOutputValues[14];
 
 	for (uint8_t i = 0; i < NUM_REGS_TOTAL; ++i)
 		CurrentOutputValuesCopy[i] = CurrentOutputValues[(NUM_REGS_TOTAL - 1) - i];

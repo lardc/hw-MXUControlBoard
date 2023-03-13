@@ -222,7 +222,7 @@ void SELFTEST_Process()
 				else if (PrevSubstate == SS_ST_MCRelayCheck_4)
 				{
 					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
-					CONTROL_SetDeviceState(DS_InProcess, SS_None);
+					CONTROL_SetDeviceState(DS_InProcess, SS_SelfTestCheck);
 				}
 			}
 
