@@ -22,6 +22,8 @@ void SELFTEST_Process()
 	static DeviceSubState PrevSubstate = SS_None;
 	uint8_t TestCommutation_IR1[] = {IL_GT_G_COMM, IL_GT_GE_COMM, IL_GT_G_GE, ST_TI_GT_G, ST_TO_GT_GE, INT8U_MAX};
 	uint8_t TestCommutation_IR2[] = {IL_GT_G_POT_COMM, IL_GT_GE_POT_COMM, IL_GT_G_GE_POT, ST_TI_GT_G_POT, ST_TO_GT_GE_POT, INT8U_MAX};
+	uint8_t TestCommutation_IR3[] = {IL_LSL_G_COMM, IL_LSL_GE_COMM, IL_LSL_G_GE, ST_TI_LSL_G, ST_TO_LSL_GE, INT8U_MAX};
+	uint8_t TestCommutation_IR4[] = {IL_LSL_POTP_COMM, IL_LSL_POTN_COMM, IL_LSL_POTS, ST_TI_LSL_POTP, ST_TO_LSL_POTN, INT8U_MAX};
 	uint8_t ArrayLength = 0;
 
 	switch(CONTROL_SubState)
@@ -238,7 +240,7 @@ void SELFTEST_Process()
 			{
 				TestCommutation[i] = TestCommutation_IR1[i];
 			}
-			CONTROL_SetDeviceState(DS_InProcess, SS_ST_Get_ArrayLenght);
+			CONTROL_SetDeviceState(DS_InProcess, SS_ST_OpenRelayCheck);
 			break;
 
 		case SS_ST_InputRelayOpenCheck_2:
@@ -248,9 +250,28 @@ void SELFTEST_Process()
 			{
 				TestCommutation[i] = TestCommutation_IR2[i];
 			}
-			CONTROL_SetDeviceState(DS_InProcess, SS_ST_Get_ArrayLenght);
+			CONTROL_SetDeviceState(DS_InProcess, SS_ST_OpenRelayCheck);
 			break;
 
+		case SS_ST_InputRelayOpenCheck_3:
+			PrevSubstate = SS_ST_InputRelayOpenCheck_3;
+			ArrayLength = ST_GetArrayLength(TestCommutation_IR3);
+			for (uint8_t i = 0; i < ArrayLength; i++)
+			{
+				TestCommutation[i] = TestCommutation_IR3[i];
+			}
+			CONTROL_SetDeviceState(DS_InProcess, SS_ST_OpenRelayCheck);
+			break;
+
+		case SS_ST_InputRelayOpenCheck_4:
+			PrevSubstate = SS_ST_InputRelayOpenCheck_4;
+			ArrayLength = ST_GetArrayLength(TestCommutation_IR4);
+			for (uint8_t i = 0; i < ArrayLength; i++)
+			{
+				TestCommutation[i] = TestCommutation_IR4[i];
+			}
+			CONTROL_SetDeviceState(DS_InProcess, SS_ST_OpenRelayCheck);
+			break;
 
 
 		case SS_ST_OpenRelayCheck:
@@ -280,6 +301,21 @@ void SELFTEST_Process()
 					{
 						DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
 						CONTROL_SetDeviceState(DS_InProcess, SS_ST_InputRelayOpenCheck_2);
+					}
+					else if (PrevSubstate == SS_ST_InputRelayOpenCheck_2)
+					{
+						DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
+						CONTROL_SetDeviceState(DS_InProcess, SS_ST_InputRelayOpenCheck_3);
+					}
+					else if (PrevSubstate == SS_ST_InputRelayOpenCheck_3)
+					{
+						DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
+						CONTROL_SetDeviceState(DS_InProcess, SS_ST_InputRelayOpenCheck_4);
+					}
+					else if (PrevSubstate == SS_ST_InputRelayOpenCheck_4)
+					{
+						DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
+						CONTROL_SetDeviceState(DS_InProcess, SS_ST_MCRelayOpenCheck_1);
 					}
 				}
 			}

@@ -38,8 +38,14 @@ typedef enum __DeviceSubState
 	SS_ST_CurrentMeasure = 14,
 	SS_ST_InputRelayOpenCheck_1 = 15,
 	SS_ST_InputRelayOpenCheck_2 = 16,
-	SS_ST_Get_ArrayLenght = 17,
-	SS_ST_OpenRelayCheck = 18
+	SS_ST_InputRelayOpenCheck_3	= 17,
+	SS_ST_InputRelayOpenCheck_4	= 18,
+	SS_ST_MCRelayOpenCheck_1 = 19,
+	SS_ST_MCRelayOpenCheck_2 = 20,
+	SS_ST_MCRelayOpenCheck_3 = 21,
+	SS_ST_MCRelayOpenCheck_4 = 22,
+	SS_ST_Get_ArrayLenght = 25,
+	SS_ST_OpenRelayCheck = 26
 
 } DeviceSubState;
 
