@@ -14,7 +14,7 @@
 // Switch commutation to none
 void COMM_CommutateNone();
 // Switch PE
-void COMM_PE();
+void COMM_ConnectPE();
 // Switch in main commutation mode
 void COMM_Commutate(Int16U ActionID);
 
