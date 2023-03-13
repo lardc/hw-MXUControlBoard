@@ -14,9 +14,5 @@ void DBACT_WriteSPI();
 void DBACT_SPIReset();
 void DBACT_ToggleSF_EN();
 void DBACT_SelfTestMeasure();
-void DBACT_GLON();
-void DBACT_GLOF();
-void DBACT_RLON();
-void DBACT_RLOF();
 
 #endif //__DEBUGACTIONS_H

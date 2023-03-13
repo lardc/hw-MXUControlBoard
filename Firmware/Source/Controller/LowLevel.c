@@ -72,6 +72,7 @@ void LL_SetStateSD_EN(bool State)
 {
 	GPIO_SetState(GPIO_SD_EN, State);
 }
+//-----------------------------
 
 float LL_SelfTestMeasure()
 {
@@ -87,3 +88,10 @@ float LL_SelfTestMeasure()
 
 	return MeasuredTestVoltage;
 }
+//-----------------------------
+
+bool LL_TestClosedRelay()
+{
+	return LL_SelfTestMeasure() > DataTable[REG_SFTST_V_ALLOWED_VOLTAGE];
+}
+//-----------------------------

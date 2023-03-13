@@ -72,20 +72,13 @@ void DBACT_ToggleSF_EN()
 // Turn self-test current ON, measure voltage with ADC, compare result with DataTable constant
 void DBACT_SelfTestMeasure()
 {
-	float Result, Error;
-	Result = LL_SelfTestMeasure();
-	DataTable[REG_DBG] = Result;
+	bool TestResult;
 
-	Error = (Result - ADC_V_CC) / Result * 100;
+	TestResult = LL_TestClosedRelay();
 
-	if (Error <= 20)
-	{
+	if (TestResult == true)
 		DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
-		DataTable[REG_FAULT_RELAY] = MC_G_GT_G;
-	}
 	else
-	{
 		DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
-	}
 }
 //-----------------------

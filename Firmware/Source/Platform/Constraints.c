@@ -9,7 +9,7 @@
 //
 const TableItemConstraint Constraint[DATA_TABLE_WP_START] = {
 		{0, PS_FIRST_START_TIME, 0},												// 0
-		{SFTST_V_ALLOWED_ERR_MIN, SFTST_V_ALLOWED_ERR_MAX, SFTST_V_ALLOWED_ERR_DEF},// 1
+		{REG_SFTST_V_ALLOWED_VOLTAGE_MIN, REG_SFTST_V_ALLOWED_VOLTAGE_MAX, 0},		// 1
 		{0, 0, 0},																	// 2
 		{0, 0, 0},																	// 3
 		{0, 0, 0},																	// 4

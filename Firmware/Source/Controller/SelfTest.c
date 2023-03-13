@@ -19,7 +19,6 @@
 //
 void SELFTEST_Process()
 {
-	float MeasuredVoltage, Error;
 	static DeviceSubState PrevSubstate = SS_None;
 
 	switch(CONTROL_SubState)
@@ -170,11 +169,12 @@ void SELFTEST_Process()
 		case SS_ST_CurrentMeasure:
 			PrevSubstate = SS_ST_CurrentMeasure;
 
-			MeasuredVoltage = LL_SelfTestMeasure();
+			bool MeasureResult;
 
-			Error = (MeasuredVoltage - ADC_V_CC) / ADC_V_CC * 100;
+			MeasureResult = LL_TestClosedRelay();
 
-			if (Error >= DataTable[REG_SFTST_V_ALLOWED_ERR])
+
+			if (MeasureResult >= true)
 			{
 				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
 				DataTable[REG_SELF_TEST_SS]	= PrevSubstate;
