@@ -50,9 +50,7 @@ void ZcRD_OutputValuesCompose(Int16U TableID, Boolean TurnOn)
 
 void ZcRD_OutputValuesReset()
 {
-	uint8_t i;
-
-	for (i = 0; i <= NUM_REGS_TOTAL; ++i)
+	for (uint8_t i = 0; i < NUM_REGS_TOTAL; ++i)
 		CurrentOutputValues[i] = 0;
 
 	ZcRD_RegisterFlushWrite();
@@ -61,16 +59,15 @@ void ZcRD_OutputValuesReset()
 
 void ZcRD_RegisterFlushWrite()
 {
-	int i;
 	uint8_t CurrentOutputValuesCopy[(NUM_REGS_TOTAL - 1)];
 	DataTable[REG_DBG] = CurrentOutputValues[14];
 
-	for (i = 0; i < NUM_REGS_TOTAL; ++i)
+	for (uint8_t i = 0; i < NUM_REGS_TOTAL; ++i)
 		CurrentOutputValuesCopy[i] = CurrentOutputValues[(NUM_REGS_TOTAL - 1) - i];
 
 	GPIO_SetState(GPIO_SPI_OE, true);
 
-	for (int i = 0; i <= (NUM_REGS_TOTAL - 1); i++)
+	for (uint8_t i = 0; i < NUM_REGS_TOTAL; i++)
 	{
 		SPI_WriteByte8b(SPI1, CurrentOutputValuesCopy[i]);
 		DELAY_US(1);

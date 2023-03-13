@@ -32,8 +32,6 @@ void COMM_CommutateNone()
 
 void COMM_ConnectPE()
 {
-	ZcRD_RegisterReset();
-
 	ZcRD_OutputValuesCompose(C_POT_PE1, TRUE);
 	ZcRD_OutputValuesCompose(C_POT_PE2, TRUE);
 	ZcRD_OutputValuesCompose(C_POT_PE3, TRUE);

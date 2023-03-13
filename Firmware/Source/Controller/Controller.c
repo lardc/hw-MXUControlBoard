@@ -61,7 +61,7 @@ void CONTROL_Init()
 
 void CONTROL_Idle()
 {
-	//CONTROL_LogicProcess();
+	CONTROL_LogicProcess();
 
 	DEVPROFILE_ProcessRequests();
 	CONTROL_UpdateWatchDog();
@@ -157,8 +157,8 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 		case ACT_COMM_NONE:
 			if (CONTROL_State == DS_Fault)
 				*pUserError = ERR_OPERATION_BLOCKED;
-			//else if(CONTROL_State == DS_None)
-				//*pUserError = ERR_DEVICE_NOT_READY;
+			else if(CONTROL_State == DS_None)
+				*pUserError = ERR_DEVICE_NOT_READY;
 			else
 			{
 				COMM_Commutate(ActionID);
