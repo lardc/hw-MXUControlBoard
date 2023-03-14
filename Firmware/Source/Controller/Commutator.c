@@ -30,7 +30,7 @@ void COMM_CommutateNone()
 }
 // ----------------------------------------
 
-void COMM_ConnectPE()
+void COMM_DisconnectPE()
 {
 	ZcRD_OutputValuesCompose(C_POT_PE1, TRUE);
 	ZcRD_OutputValuesCompose(C_POT_PE2, TRUE);
@@ -105,7 +105,7 @@ void COMM_Commutate(Int16U ActionID)
 				{
 					ZcRD_OutputValuesReset();
 
-					COMM_ConnectPE();
+					COMM_DisconnectPE();
 					OldPostion = 1;
 
 					ZcRD_OutputValuesCompose(OL_C_POT_COMM1, TRUE);
@@ -139,7 +139,7 @@ void COMM_Commutate(Int16U ActionID)
 				{
 					ZcRD_OutputValuesReset();
 
-					COMM_ConnectPE();
+					COMM_DisconnectPE();
 
 					OldPostion = 2;
 
@@ -179,7 +179,7 @@ void COMM_Commutate(Int16U ActionID)
 				{
 					ZcRD_OutputValuesReset();
 
-					COMM_ConnectPE();
+					COMM_DisconnectPE();
 
 					OldPostion = 1;
 
@@ -214,7 +214,7 @@ void COMM_Commutate(Int16U ActionID)
 				{
 					ZcRD_OutputValuesReset();
 
-					COMM_ConnectPE();
+					COMM_DisconnectPE();
 
 					OldPostion = 2;
 
@@ -254,7 +254,7 @@ void COMM_Commutate(Int16U ActionID)
 				{
 					ZcRD_OutputValuesReset();
 
-					COMM_ConnectPE();
+					COMM_DisconnectPE();
 
 					OldPostion = 1;
 
@@ -287,7 +287,7 @@ void COMM_Commutate(Int16U ActionID)
 				{
 					ZcRD_OutputValuesReset();
 
-					COMM_ConnectPE();
+					COMM_DisconnectPE();
 
 					OldPostion = 2;
 
@@ -325,7 +325,7 @@ void COMM_Commutate(Int16U ActionID)
 				{
 					ZcRD_OutputValuesReset();
 
-					COMM_ConnectPE();
+					COMM_DisconnectPE();
 
 					OldPostion = 1;
 
@@ -349,7 +349,7 @@ void COMM_Commutate(Int16U ActionID)
 				{
 					ZcRD_OutputValuesReset();
 
-					COMM_ConnectPE();
+					COMM_DisconnectPE();
 
 					OldPostion = 2;
 
@@ -378,7 +378,7 @@ void COMM_Commutate(Int16U ActionID)
 				{
 					ZcRD_OutputValuesReset();
 
-					COMM_ConnectPE();
+					COMM_DisconnectPE();
 
 					OldPostion = 1;
 
@@ -416,7 +416,7 @@ void COMM_Commutate(Int16U ActionID)
 				{
 					ZcRD_OutputValuesReset();
 
-					COMM_ConnectPE();
+					COMM_DisconnectPE();
 
 					OldPostion = 2;
 
@@ -459,7 +459,7 @@ void COMM_Commutate(Int16U ActionID)
 				{
 					ZcRD_OutputValuesReset();
 
-					COMM_ConnectPE();
+					COMM_DisconnectPE();
 
 					OldPostion = 1;
 
@@ -497,7 +497,7 @@ void COMM_Commutate(Int16U ActionID)
 				{
 					ZcRD_OutputValuesReset();
 
-					COMM_ConnectPE();
+					COMM_DisconnectPE();
 
 					OldPostion = 2;
 
@@ -540,7 +540,7 @@ void COMM_Commutate(Int16U ActionID)
 				{
 					ZcRD_OutputValuesReset();
 
-					COMM_ConnectPE();
+					COMM_DisconnectPE();
 
 					OldPostion = 1;
 
@@ -552,7 +552,7 @@ void COMM_Commutate(Int16U ActionID)
 				{
 					ZcRD_OutputValuesReset();
 
-					COMM_ConnectPE();
+					COMM_DisconnectPE();
 
 					OldPostion = 2;
 
@@ -567,7 +567,7 @@ void COMM_Commutate(Int16U ActionID)
 			{
 				ZcRD_OutputValuesReset();
 
-				COMM_ConnectPE();
+				COMM_DisconnectPE();
 
 				OldPostion = 0;
 
@@ -593,6 +593,7 @@ void COMM_Commutate(Int16U ActionID)
 			{
 				OldPostion = 0;
 				ZcRD_OutputValuesReset();
+				COMM_DisconnectPE();
 				ZcRD_RegisterFlushWrite();
 			}
 			break;

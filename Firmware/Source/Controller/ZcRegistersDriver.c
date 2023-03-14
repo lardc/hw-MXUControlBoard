@@ -52,8 +52,6 @@ void ZcRD_OutputValuesReset()
 {
 	for (uint8_t i = 0; i < NUM_REGS_TOTAL; ++i)
 		CurrentOutputValues[i] = 0;
-
-	ZcRD_RegisterFlushWrite();
 }
 // ----------------------------------------
 
