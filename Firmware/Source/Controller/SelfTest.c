@@ -14,12 +14,13 @@
 
 // Defines
 //
-uint8_t TestCommutation[] = {};
+
 // Functions
 //
 void SELFTEST_Process()
 {
 	static DeviceSubState PrevSubstate = SS_None;
+	uint8_t TestCommutation[] = {};
 	uint8_t TestCommutation_IR1[] = {IL_GT_G_COMM, IL_GT_GE_COMM, IL_GT_G_GE, ST_TI_GT_G, ST_TO_GT_GE, INT8U_MAX};
 	uint8_t TestCommutation_IR2[] = {IL_GT_G_POT_COMM, IL_GT_GE_POT_COMM, IL_GT_G_GE_POT, ST_TI_GT_G_POT, ST_TO_GT_GE_POT, INT8U_MAX};
 	uint8_t TestCommutation_IR3[] = {IL_LSL_G_COMM, IL_LSL_GE_COMM, IL_LSL_G_GE, ST_TI_LSL_G, ST_TO_LSL_GE, INT8U_MAX};
@@ -174,12 +175,7 @@ void SELFTEST_Process()
 		case SS_ST_CurrentMeasure:
 			PrevSubstate = SS_ST_CurrentMeasure;
 
-			bool MeasureResult;
-
-			MeasureResult = LL_TestClosedRelay();
-
-
-			if (MeasureResult >= true)
+			if (LL_TestClosedRelay())
 			{
 				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
 				DataTable[REG_SELF_TEST_SS]	= PrevSubstate;
@@ -286,9 +282,7 @@ void SELFTEST_Process()
 
 				// Тестирование
 
-				bool OpenResult;
-				OpenResult = LL_TestOpenRelay();
-				if (OpenResult == true)
+				if (LL_TestOpenRelay())
 				{
 					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
 					DataTable[REG_FAULT_RELAY] = TestCommutation[i];
