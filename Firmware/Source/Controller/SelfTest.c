@@ -1,4 +1,4 @@
-// Header
+ï»¿// Header
 //
 #include "SelfTest.h"
 
@@ -255,15 +255,15 @@ void SELFTEST_Process()
 		case STS_OpenRelayCheck:
 			if(TestIndex < SelectedTestArrayLength)
 			{
-				// Âêëþ÷åíèå âñåõ ðåëå
+				// Ð’ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ðµ Ð²ÑÐµÑ… Ñ€ÐµÐ»Ðµ
 				for(uint8_t i = 0; i < SelectedTestArrayLength; i++)
 					ZcRD_OutputValuesCompose(SelectedTestArray[i], TRUE);
 
-				// Îòêëþ÷åíèå òåñòèðóåìîãî ðåëå
+				// ÐžÑ‚ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ðµ Ñ‚ÐµÑÑ‚Ð¸Ñ€ÑƒÐµÐ¼Ð¾Ð³Ð¾ Ñ€ÐµÐ»Ðµ
 				ZcRD_OutputValuesCompose(SelectedTestArray[TestIndex], FALSE);
 				ZcRD_RegisterFlushWrite();
 
-				// Òåñòèðîâàíèå
+				// Ð¢ÐµÑÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ
 				if(LL_OpenRelayFailed())
 				{
 					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
