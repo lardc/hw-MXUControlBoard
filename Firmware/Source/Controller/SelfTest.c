@@ -19,6 +19,11 @@ static const uint8_t TestCommutation_IR2[] = {IL_GT_G_POT_COMM, IL_GT_GE_POT_COM
 static const uint8_t TestCommutation_IR3[] = {IL_LSL_G_COMM, IL_LSL_GE_COMM, IL_LSL_G_GE, ST_TI_LSL_G, ST_TO_LSL_GE};
 static const uint8_t TestCommutation_IR4[] = {IL_LSL_POTP_COMM, IL_LSL_POTN_COMM, IL_LSL_POTS, ST_TI_LSL_POTP, ST_TO_LSL_POTN};
 
+static const uint8_t TestCommutation_MCR1[] = {MC_G_GT_G, OL_G_COMM1, OL_G_COMM2, OL_G_COMM3, MC_G_GE, OL_GE_COMM1, OL_GE_COMM2, OL_GE_COMM3, MC_GE_GT_GE, ST_TI_GT_G, ST_TO_GT_GE};
+static const uint8_t TestCommutation_MCR2[] = {MC_G_2_GT_G, OL_G_2_COMM1, OL_G_2_COMM2, OL_G_2_COMM3, MC_G_2_GE, OL_GE_2_COMM1, OL_GE_2_COMM2, OL_GE_2_COMM3, MC_GE_2_GT_GE, ST_TI_GT_G, ST_TO_GT_GE};
+static const uint8_t TestCommutation_MCR3[] = {MC_G_GT_G, MC_G_GT_GE, ST_TI_GT_G, ST_TO_GT_GE};
+static const uint8_t TestCommutation_MCR4[] = {MC_G_2_GT_G, MC_G_2_GT_GE, ST_TI_GT_G, ST_TO_GT_GE};
+
 // Functions
 //
 void SELFTEST_Process()
@@ -251,6 +256,45 @@ void SELFTEST_Process()
 			CONTROL_SetDeviceState(DS_InProcess, STS_OpenRelayCheck);
 			break;
 
+		case STS_MCRelayOpenCheck_1:
+			PrevSubstate = STS_MCRelayOpenCheck_1;
+
+			TestIndex = 0;
+			SelectedTestArray = (uint8_t *)TestCommutation_MCR1;
+			SelectedTestArrayLength = sizeof(TestCommutation_MCR1);
+
+			CONTROL_SetDeviceState(DS_InProcess, STS_OpenRelayCheck);
+			break;
+
+		case STS_MCRelayOpenCheck_2:
+			PrevSubstate = STS_MCRelayOpenCheck_2;
+
+			TestIndex = 0;
+			SelectedTestArray = (uint8_t *)TestCommutation_MCR2;
+			SelectedTestArrayLength = sizeof(TestCommutation_MCR2);
+
+			CONTROL_SetDeviceState(DS_InProcess, STS_OpenRelayCheck);
+			break;
+
+		case STS_MCRelayOpenCheck_3:
+			PrevSubstate = STS_MCRelayOpenCheck_3;
+
+			TestIndex = 0;
+			SelectedTestArray = (uint8_t *)TestCommutation_MCR3;
+			SelectedTestArrayLength = sizeof(TestCommutation_MCR3);
+
+			CONTROL_SetDeviceState(DS_InProcess, STS_OpenRelayCheck);
+			break;
+
+		case STS_MCRelayOpenCheck_4:
+			PrevSubstate = STS_MCRelayOpenCheck_4;
+
+			TestIndex = 0;
+			SelectedTestArray = (uint8_t *)TestCommutation_MCR4;
+			SelectedTestArrayLength = sizeof(TestCommutation_MCR4);
+
+			CONTROL_SetDeviceState(DS_InProcess, STS_OpenRelayCheck);
+			break;
 
 		case STS_OpenRelayCheck:
 			if(TestIndex < SelectedTestArrayLength)
@@ -281,16 +325,26 @@ void SELFTEST_Process()
 					case STS_InputRelayOpenCheck_1:
 						CONTROL_SetDeviceState(DS_InProcess, STS_InputRelayOpenCheck_2);
 						break;
-
 					case STS_InputRelayOpenCheck_2:
 						CONTROL_SetDeviceState(DS_InProcess, STS_InputRelayOpenCheck_3);
 						break;
-
 					case STS_InputRelayOpenCheck_3:
 						CONTROL_SetDeviceState(DS_InProcess, STS_InputRelayOpenCheck_4);
 						break;
-
 					case STS_InputRelayOpenCheck_4:
+						CONTROL_SetDeviceState(DS_InProcess, STS_MCRelayOpenCheck_1);
+						break;
+
+					case STS_MCRelayOpenCheck_1:
+						CONTROL_SetDeviceState(DS_InProcess, STS_MCRelayOpenCheck_2);
+						break;
+					case STS_MCRelayOpenCheck_2:
+						CONTROL_SetDeviceState(DS_InProcess, STS_MCRelayOpenCheck_3);
+						break;
+					case STS_MCRelayOpenCheck_3:
+						CONTROL_SetDeviceState(DS_InProcess, STS_MCRelayOpenCheck_4);
+						break;
+					case STS_MCRelayOpenCheck_4:
 						DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
 						ZcRD_RegisterReset();
 						CONTROL_SetDeviceState(DS_Ready, STS_None);
