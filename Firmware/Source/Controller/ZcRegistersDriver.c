@@ -11,30 +11,18 @@
 #include "Delay.h"
 #include "DataTable.h"
 
-
-// Constants
-//
-#define IO_REGISTER_WRITE_DELAY_US	10
-
 // Variables
 //
-static uint8_t CurrentOutputValues[NUM_REGS_TOTAL] = {};
+static uint8_t CurrentOutputValues[NUM_REGS_TOTAL] = {0};
 
+// Functions
+//
 void ZcRD_RegisterReset()
 {
 	// Set values to zero
 	ZcRD_OutputValuesReset();
 	// Reset physical register
 	LL_SPIReset();
-}
-// ----------------------------------------
-
-void ZbIOE_OutputValuesDirect(Int16U BoardID, Int8U Mask)
-{
-	if (BoardID >= COMMUTATION_EXT_BOARDS)
-		return;
-
-	CurrentOutputValues[BoardID] = Mask;
 }
 // ----------------------------------------
 
@@ -47,7 +35,6 @@ void ZcRD_OutputValuesCompose(Int16U TableID, Boolean TurnOn)
 }
 // ----------------------------------------
 
-
 void ZcRD_OutputValuesReset()
 {
 	for (uint8_t i = 0; i < NUM_REGS_TOTAL; ++i)
@@ -57,25 +44,16 @@ void ZcRD_OutputValuesReset()
 
 void ZcRD_RegisterFlushWrite()
 {
-	uint8_t CurrentOutputValuesCopy[(NUM_REGS_TOTAL - 1)];
-
-	for (uint8_t i = 0; i < NUM_REGS_TOTAL; ++i)
-		CurrentOutputValuesCopy[i] = CurrentOutputValues[(NUM_REGS_TOTAL - 1) - i];
-
 	GPIO_SetState(GPIO_SPI_OE, true);
+	DELAY_US(1);
 
 	for (uint8_t i = 0; i < NUM_REGS_TOTAL; i++)
-	{
-		SPI_WriteByte8b(SPI1, CurrentOutputValuesCopy[i]);
-		DELAY_US(1);
-		GPIO_SetState(GPIO_SPI_SS, true);
-		DELAY_US(1);
-		GPIO_SetState(GPIO_SPI_SS, false);
-		DELAY_US(1);
-	}
+		SPI_WriteByte8b(SPI1, CurrentOutputValues[i]);
 
+	GPIO_SetState(GPIO_SPI_SS, true);
+	DELAY_US(1);
+	GPIO_SetState(GPIO_SPI_SS, false);
+	DELAY_US(1);
 	GPIO_SetState(GPIO_SPI_OE, false);
 }
 // ----------------------------------------
-
-// No more.
