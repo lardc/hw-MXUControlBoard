@@ -16,10 +16,6 @@
 #include "Commutator.h"
 #include "ZcRegistersDriver.h"
 
-// Definitions
-//
-
-
 // Types
 //
 typedef void (*FUNC_AsyncDelegate)();
@@ -27,11 +23,9 @@ typedef void (*FUNC_AsyncDelegate)();
 // Variables
 //
 volatile DeviceState CONTROL_State = DS_None;
-volatile DeviceSubState CONTROL_SubState = SS_None;
+volatile DeviceSelfTestState CONTROL_SubState = STS_None;
 static Boolean CycleActive = false;
-//
 volatile Int64U CONTROL_TimeCounter = 0;
-//
 
 // Forward functions
 //
@@ -39,7 +33,6 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError);
 void CONTROL_UpdateWatchDog();
 void CONTROL_ResetToDefaultState();
 void CONTROL_LogicProcess();
-void CONTROL_SaveTestResult();
 
 // Functions
 //
@@ -68,30 +61,18 @@ void CONTROL_Idle()
 }
 //------------------------------------------
 
-void CONTROL_SaveTestResult()
-{
-	DataTable[REG_OP_RESULT] = OPRESULT_OK;
-}
-//-----------------------------------------------
-
 void CONTROL_SwitchToFault(Int16U Reason)
 {
-	CONTROL_SetDeviceState(DS_Fault, SS_None);
+	CONTROL_SetDeviceState(DS_Fault, STS_None);
 	DataTable[REG_FAULT_REASON] = Reason;
 }
 //------------------------------------------
 
-void CONTROL_SetDeviceState(DeviceState NewState, DeviceSubState NewSubState)
+void CONTROL_SetDeviceState(DeviceState NewState, DeviceSelfTestState NewSubState)
 {
 	CONTROL_State = NewState;
 	DataTable[REG_DEV_STATE] = NewState;
 
-	CONTROL_SetDeviceSubState(NewSubState);
-}
-//------------------------------------------
-
-void CONTROL_SetDeviceSubState(DeviceSubState NewSubState)
-{
 	CONTROL_SubState = NewSubState;
 	DataTable[REG_SUB_STATE] = NewSubState;
 }
@@ -100,7 +81,7 @@ void CONTROL_SetDeviceSubState(DeviceSubState NewSubState)
 void CONTROL_ResetToDefaultState()
 {
 	CONTROL_ResetOutputRegisters();
-	CONTROL_SetDeviceState(DS_None, SS_None);
+	CONTROL_SetDeviceState(DS_None, STS_None);
 }
 //------------------------------------------
 
@@ -113,8 +94,9 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 		case ACT_ENABLE_POWER:
 			if(CONTROL_State == DS_None)
 			{
-				CONTROL_ResetOutputRegisters();
-				CONTROL_SetDeviceState(DS_InProcess, SS_StartUp);
+				DataTable[REG_SELF_TEST_FAILED_SS] = STS_None;
+				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
+				CONTROL_SetDeviceState(DS_InProcess, STS_InputRelayCheck_1);
 			}
 			else if(CONTROL_State != DS_Ready)
 				*pUserError = ERR_OPERATION_BLOCKED;
@@ -123,7 +105,7 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 		case ACT_DISABLE_POWER:
 			if(CONTROL_State == DS_Ready)
 			{
-				CONTROL_SetDeviceState(DS_None, SS_None);
+				CONTROL_SetDeviceState(DS_None, STS_None);
 			}
 			else if(CONTROL_State != DS_None)
 					*pUserError = ERR_OPERATION_BLOCKED;
@@ -132,7 +114,7 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 		case ACT_CLR_FAULT:
 			if (CONTROL_State == DS_Fault)
 			{
-				CONTROL_SetDeviceState(DS_None, SS_None);
+				CONTROL_SetDeviceState(DS_None, STS_None);
 				DataTable[REG_FAULT_REASON] = DF_NONE;
 			}
 			break;
@@ -142,7 +124,7 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			break;
 
 		case ACT_SF_DEACTIVATE:
-			CONTROL_ResetSFSystem();
+			LL_SetStateSF_EN(false);
 			break;
 
 		case ACT_COMM_ILEAK_GATE_EMITTER_POS_PULSE:
@@ -164,8 +146,8 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 				COMM_Commutate(ActionID);
 				if (CONTROL_State == DS_Fault)
 				{
-					CONTROL_CommutateNone();
-					CONTROL_SetDeviceState(DS_None, SS_None);
+					COMM_CommutateNone();
+					CONTROL_SetDeviceState(DS_None, STS_None);
 				}
 			}
 			break;
@@ -180,49 +162,8 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 
 void CONTROL_LogicProcess()
 {
-	static Int64U Delay = 0;
-
 	if(CONTROL_State == DS_InProcess)
-	{
-		switch(CONTROL_SubState)
-		{
-			case SS_StartUp:
-				Delay = 0;
-				CONTROL_SetDeviceState(DS_InProcess, SS_WaitDelay);
-				break;
-
-			case SS_WaitDelay:
-				if (CONTROL_TimeCounter >= Delay)
-					CONTROL_SetDeviceState(DS_InProcess, SS_StartSelfTest);
-				break;
-
-			case SS_StartSelfTest:
-				if(DataTable[REG_SELF_TEST_ACTIVE])
-				{
-					CONTROL_SetDeviceState(DS_SelfTest, SS_ST_StartPrepare);
-				}
-				else
-					CONTROL_SetDeviceState(DS_InProcess, SS_SelfTestCheck);
-				break;
-
-			case SS_SelfTestCheck:
-					if(DataTable[REG_SELF_TEST_OP_RESULT] == OPRESULT_OK)
-					{
-						CONTROL_SetDeviceState(DS_Ready, SS_None);
-					}
-					else
-						CONTROL_SetDeviceState(DS_Fault, SS_None);
-				break;
-
-			default:
-				break;
-
-		}
-	}
-	else if(CONTROL_State == DS_SelfTest)
-	{
 		SELFTEST_Process();
-	}
 }
 //-----------------------------------------------
 
@@ -243,17 +184,5 @@ void CONTROL_ResetOutputRegisters()
 	//
 	DEVPROFILE_ResetScopes(0);
 	DEVPROFILE_ResetEPReadState();
-}
-//------------------------------------------
-
-void CONTROL_CommutateNone()
-{
-	COMM_CommutateNone();
-}
-// ----------------------------------------
-
-void CONTROL_ResetSFSystem()
-{
-	LL_SetStateSF_EN(false);
 }
 //------------------------------------------

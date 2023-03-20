@@ -8,6 +8,5 @@
 // Functions
 //
 void SELFTEST_Process();
-int ST_GetArrayLength(uint8_t Data[]);
 
-#endif /* CONTROLLER_SELFTEST_H_ */
+#endif // CONTROLLER_SELFTEST_H_
