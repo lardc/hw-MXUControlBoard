@@ -187,7 +187,7 @@ void CONTROL_LogicProcess()
 		switch(CONTROL_SubState)
 		{
 			case SS_StartUp:
-				Delay = CONTROL_TimeCounter + DataTable[REG_PS_FIRST_START_TIME];
+				Delay = 0;
 				CONTROL_SetDeviceState(DS_InProcess, SS_WaitDelay);
 				break;
 

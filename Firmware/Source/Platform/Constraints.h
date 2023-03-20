@@ -8,13 +8,13 @@
 
 //Definitions
 //
-#define REG_SFTST_V_ALLOWED_VOLTAGE_MIN		150		//	в мВ
-#define REG_SFTST_V_ALLOWED_VOLTAGE_MAX		200		//	в мВ
-#define PS_FIRST_START_TIME					10
+// в мВ
+#define SFTST_ALLOWED_VOLTAGE_MIN		0
+#define SFTST_ALLOWED_VOLTAGE_MAX		200
+#define SFTST_ALLOWED_VOLTAGE_DEF		50
 //
-#define NO									0
-#define YES									1
-//
+#define POS1							1
+#define POS2							2
 
 // Types
 typedef struct __TableItemConstraint
