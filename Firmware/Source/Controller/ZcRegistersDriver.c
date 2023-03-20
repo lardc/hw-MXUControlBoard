@@ -23,6 +23,8 @@ void ZcRD_RegisterReset()
 	ZcRD_OutputValuesReset();
 	// Reset physical register
 	LL_SPIReset();
+
+	DELAY_US(COMM_DELAY_MS * 1000L);
 }
 // ----------------------------------------
 
@@ -55,5 +57,7 @@ void ZcRD_RegisterFlushWrite()
 	GPIO_SetState(GPIO_SPI_SS, false);
 	DELAY_US(1);
 	GPIO_SetState(GPIO_SPI_OE, false);
+
+	DELAY_US(COMM_DELAY_MS * 1000L);
 }
 // ----------------------------------------

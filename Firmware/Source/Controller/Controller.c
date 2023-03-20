@@ -95,6 +95,7 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			if(CONTROL_State == DS_None)
 			{
 				DataTable[REG_SELF_TEST_FAILED_SS] = STS_None;
+				DataTable[REG_SELF_TEST_FAILED_RELAY] = 0;
 				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
 				CONTROL_SetDeviceState(DS_InProcess, STS_InputRelayCheck_1);
 			}
@@ -142,19 +143,11 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			else if(CONTROL_State == DS_None)
 				*pUserError = ERR_DEVICE_NOT_READY;
 			else
-			{
 				COMM_Commutate(ActionID);
-				if (CONTROL_State == DS_Fault)
-				{
-					COMM_CommutateNone();
-					CONTROL_SetDeviceState(DS_None, STS_None);
-				}
-			}
 			break;
 
 		default:
 			return DIAG_HandleDiagnosticAction(ActionID, pUserError);
-
 	}
 	return true;
 }

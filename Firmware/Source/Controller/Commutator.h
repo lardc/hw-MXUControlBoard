@@ -8,14 +8,9 @@
 // Include
 #include "stdinc.h"
 
-
 // Functions
 //
-// Switch commutation to none
-void COMM_CommutateNone();
-// Switch PE
 void COMM_DisconnectPE();
-// Switch in main commutation mode
 void COMM_Commutate(Int16U ActionID);
 
 #endif // __COMMUTATOR_H

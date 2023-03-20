@@ -12,7 +12,6 @@
 #include "DataTable.h"
 #include "Delay.h"
 
-
 // Variables
 //
 static Int16U OldActionID = ACT_COMM_NONE;
@@ -20,16 +19,6 @@ static Int16U OldPostion = 0;
 
 // Functions
 //
-void COMM_CommutateNone()
-{
-	// Reset registers anyway
-	ZcRD_RegisterReset();
-
-	if (OldActionID == ACT_COMM_NONE) return;
-	OldActionID = ACT_COMM_NONE;
-}
-// ----------------------------------------
-
 void COMM_DisconnectPE()
 {
 	ZcRD_OutputValuesCompose(C_POT_PE1, TRUE);
@@ -82,23 +71,22 @@ void COMM_DisconnectPE()
 	ZcRD_OutputValuesCompose(T2_PE3, TRUE);
 	ZcRD_OutputValuesCompose(T2_PE4, TRUE);
 }
-
-void COMM_CommDelay(Int16U ActionID)
-{
-	DELAY_US(COMM_DELAY_MS * 1000L);
-}
 // ----------------------------------------
 
 void COMM_Commutate(Int16U ActionID)
 {
-	if (ActionID == OldActionID && DataTable[REG_MEASUREMENT_POSITION] == OldPostion)
+	if (ActionID == OldActionID && \
+			(DataTable[REG_MEASUREMENT_POSITION] == OldPostion || \
+					OldActionID == ACT_COMM_NONE || OldActionID == ACT_COMM_NO_PE || OldActionID == ACT_COMM_THERMISTOR))
 		return;
-
-	if (ActionID != ACT_COMM_NONE && OldActionID != ACT_COMM_NONE)
-		COMM_CommutateNone();
 
 	switch(ActionID)
 	{
+		case ACT_COMM_NONE:
+			OldPostion = 0;
+			ZcRD_RegisterReset();
+			break;
+
 		case ACT_COMM_ILEAK_GATE_EMITTER_POS_PULSE:
 			{
 				if (DataTable[REG_MEASUREMENT_POSITION] == 1)
@@ -598,15 +586,10 @@ void COMM_Commutate(Int16U ActionID)
 			}
 			break;
 
-		case ACT_COMM_NONE:
 		default:
-			COMM_CommutateNone();
 			break;
 	}
 
-	COMM_CommDelay(ActionID);
 	OldActionID = ActionID;
 }
 // ----------------------------------------
-
-// No more.
