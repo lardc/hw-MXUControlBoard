@@ -90,13 +90,13 @@ float LL_SelfTestMeasure()
 }
 //-----------------------------
 
-bool LL_TestClosedRelay()
+bool LL_ClosedRelayFailed()
 {
 	return LL_SelfTestMeasure() > DataTable[REG_SFTST_V_ALLOWED_VOLTAGE];
 }
 //-----------------------------
 
-bool LL_TestOpenRelay()
+bool LL_OpenRelayFailed()
 {
 	return LL_SelfTestMeasure() < DataTable[REG_SFTST_V_ALLOWED_VOLTAGE];
 }

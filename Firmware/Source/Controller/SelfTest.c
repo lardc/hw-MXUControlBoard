@@ -168,9 +168,7 @@ void SELFTEST_Process()
 			break;
 
 		case STS_CurrentMeasure:
-			PrevSubstate = STS_CurrentMeasure;
-
-			if (LL_TestClosedRelay())
+			if(LL_ClosedRelayFailed())
 			{
 				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
 				DataTable[REG_SELF_TEST_FAILED_SS] = PrevSubstate;
@@ -179,48 +177,38 @@ void SELFTEST_Process()
 			}
 			else
 			{
-				if (PrevSubstate == STS_InputRelayCheck_1)
+				switch(PrevSubstate)
 				{
-					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
-					CONTROL_SetDeviceState(DS_InProcess, STS_InputRelayCheck_2);
-				}
-				else if (PrevSubstate == STS_InputRelayCheck_2)
-				{
-					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
-					CONTROL_SetDeviceState(DS_InProcess, STS_InputRelayCheck_3);
-				}
-				else if (PrevSubstate == STS_InputRelayCheck_3)
-				{
-					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
-					CONTROL_SetDeviceState(DS_InProcess, STS_InputRelayCheck_4);
-				}
-				else if (PrevSubstate == STS_InputRelayCheck_4)
-				{
-					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
-					CONTROL_SetDeviceState(DS_InProcess, STS_MCRelayCheck_1);
-				}
-				else if (PrevSubstate == STS_MCRelayCheck_1)
-				{
-					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
-					CONTROL_SetDeviceState(DS_InProcess, STS_MCRelayCheck_2);
-				}
-				else if (PrevSubstate == STS_MCRelayCheck_2)
-				{
-					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
-					CONTROL_SetDeviceState(DS_InProcess, STS_MCRelayCheck_3);
-				}
-				else if (PrevSubstate == STS_MCRelayCheck_3)
-				{
-					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
-					CONTROL_SetDeviceState(DS_InProcess, STS_MCRelayCheck_4);
-				}
-				else if (PrevSubstate == STS_MCRelayCheck_4)
-				{
-					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
-					CONTROL_SetDeviceState(DS_InProcess, STS_InputRelayOpenCheck_1);
+					case STS_InputRelayCheck_1:
+						CONTROL_SetDeviceState(DS_InProcess, STS_InputRelayCheck_2);
+						break;
+					case STS_InputRelayCheck_2:
+						CONTROL_SetDeviceState(DS_InProcess, STS_InputRelayCheck_3);
+						break;
+					case STS_InputRelayCheck_3:
+						CONTROL_SetDeviceState(DS_InProcess, STS_InputRelayCheck_4);
+						break;
+					case STS_InputRelayCheck_4:
+						CONTROL_SetDeviceState(DS_InProcess, STS_MCRelayCheck_1);
+						break;
+
+					case STS_MCRelayCheck_1:
+						CONTROL_SetDeviceState(DS_InProcess, STS_MCRelayCheck_2);
+						break;
+					case STS_MCRelayCheck_2:
+						CONTROL_SetDeviceState(DS_InProcess, STS_MCRelayCheck_3);
+						break;
+					case STS_MCRelayCheck_3:
+						CONTROL_SetDeviceState(DS_InProcess, STS_MCRelayCheck_4);
+						break;
+					case STS_MCRelayCheck_4:
+						CONTROL_SetDeviceState(DS_InProcess, STS_InputRelayOpenCheck_1);
+						break;
+
+					default:
+						break;
 				}
 			}
-
 			break;
 
 		case STS_InputRelayOpenCheck_1:
@@ -276,7 +264,7 @@ void SELFTEST_Process()
 				ZcRD_RegisterFlushWrite();
 
 				// Тестирование
-				if(LL_TestOpenRelay())
+				if(LL_OpenRelayFailed())
 				{
 					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
 					DataTable[REG_SELF_TEST_FAILED_SS] = PrevSubstate;

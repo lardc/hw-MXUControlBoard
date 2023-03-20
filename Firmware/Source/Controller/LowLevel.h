@@ -17,7 +17,7 @@ void LL_SPIReset();
 void LL_SetStateSF_EN(bool State);
 void LL_SetStateSD_EN(bool State);
 float LL_SelfTestMeasure();
-bool LL_TestClosedRelay();
-bool LL_TestOpenRelay();
+bool LL_ClosedRelayFailed();
+bool LL_OpenRelayFailed();
 
 #endif //__LOWLEVEL_H

@@ -74,7 +74,7 @@ void DBACT_SelfTestMeasure()
 {
 	bool TestResult;
 
-	TestResult = LL_TestClosedRelay();
+	TestResult = LL_ClosedRelayFailed();
 
 	if (TestResult == true)
 		DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
