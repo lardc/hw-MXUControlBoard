@@ -49,7 +49,7 @@ void ZcRD_RegisterFlushWrite()
 	GPIO_SetState(GPIO_SPI_OE, true);
 	DELAY_US(1);
 
-	for (uint8_t i = 0; i < NUM_REGS_TOTAL; i++)
+	for (int8_t i = NUM_REGS_TOTAL - 1; i >= 0; i--)
 		SPI_WriteByte8b(SPI1, CurrentOutputValues[i]);
 
 	GPIO_SetState(GPIO_SPI_SS, true);
