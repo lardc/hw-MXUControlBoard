@@ -11,7 +11,6 @@ void DBACT_ToggleFPLed();
 void DBACT_ToggleSFRedLed();
 void DBACT_ToggleSFGreenLed();
 void DBACT_WriteSPI();
-void DBACT_SPIReset();
 void DBACT_ToggleSF_EN();
 void DBACT_SelfTestMeasure();
 

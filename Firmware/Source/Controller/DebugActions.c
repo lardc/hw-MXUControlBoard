@@ -11,10 +11,8 @@
 #include "ZcRegistersDriver.h"
 #include "CommutationTable.h"
 
-// Variables
-
 // Functions
-
+//
 // Send pulse to Front Panel LED
 void DBACT_ToggleFPLed()
 {
@@ -51,15 +49,6 @@ void DBACT_WriteSPI()
 }
 //-----------------------
 
-// Reset All Registers
-void DBACT_SPIReset()
-{
-	LL_SPIReset();
-
-	ZcRD_OutputValuesReset();
-}
-//-----------------------
-
 // Safety EN check
 void DBACT_ToggleSF_EN()
 {
@@ -72,13 +61,6 @@ void DBACT_ToggleSF_EN()
 // Turn self-test current ON, measure voltage with ADC, compare result with DataTable constant
 void DBACT_SelfTestMeasure()
 {
-	bool TestResult;
-
-	TestResult = LL_ClosedRelayFailed();
-
-	if (TestResult == true)
-		DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
-	else
-		DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
+	DataTable[REG_SELF_TEST_OP_RESULT] = LL_ClosedRelayFailed() ? OPRESULT_FAIL : OPRESULT_OK;
 }
 //-----------------------
