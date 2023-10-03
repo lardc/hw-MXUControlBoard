@@ -64,7 +64,7 @@ void LL_SPIReset()
 
 void LL_SetStateSF_EN(bool State)
 {
-	GPIO_SetState(GPIO_SF_EN, State);
+	GPIO_SetState(GPIO_SF_EN, !State);
 }
 //-----------------------------
 
@@ -99,5 +99,11 @@ bool LL_ClosedRelayFailed()
 bool LL_OpenRelayFailed()
 {
 	return LL_SelfTestMeasure() < DataTable[REG_SFTST_V_ALLOWED_VOLTAGE];
+}
+//-----------------------------
+
+bool LL_IsSafetyTrig()
+{
+	return !GPIO_GetState(GPIO_SF_TRIG);
 }
 //-----------------------------

@@ -19,5 +19,6 @@ void LL_SetStateSD_EN(bool State);
 float LL_SelfTestMeasure();
 bool LL_ClosedRelayFailed();
 bool LL_OpenRelayFailed();
+bool LL_IsSafetyTrig();
 
 #endif //__LOWLEVEL_H

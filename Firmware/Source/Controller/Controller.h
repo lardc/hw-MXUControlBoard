@@ -10,11 +10,13 @@
 //
 typedef enum __DeviceState
 {
-	DS_None = 0,
-	DS_Fault = 1,
-	DS_Disabled = 2,
-	DS_Ready = 3,
-	DS_InProcess = 4
+	DS_None				= 0,
+	DS_Fault			= 1,
+	DS_Disabled			= 2,
+	DS_Enabled			= 3,
+	DS_SafetyActive		= 4,
+	DS_SafetyTrig		= 5,
+	DS_InSelftTest		= 6
 } DeviceState;
 
 typedef enum __DeviceSelfTestState
@@ -59,7 +61,8 @@ void CONTROL_Init();
 void CONTROL_Idle();
 void CONTROL_SaveTestResult();
 void CONTROL_SwitchToFault(Int16U Reason);
-void CONTROL_SetDeviceState(DeviceState NewState, DeviceSelfTestState NewSubState);
+void CONTROL_SetDeviceState(DeviceState NewState);
+void CONTROL_SetDeviceSubState(DeviceSelfTestState NewSubState);
 void CONTROL_ResetToDefaultState();
 bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError);
 void CONTROL_LogicProcess();

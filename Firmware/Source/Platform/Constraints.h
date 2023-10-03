@@ -15,6 +15,10 @@
 //
 #define POS1							1
 #define POS2							2
+//
+#define SFTY_DELAY_MIN					0
+#define SFTY_DELAY_MAX					100
+#define SFTY_DELAY_DEF					20
 
 // Types
 typedef struct __TableItemConstraint

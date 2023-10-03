@@ -55,14 +55,6 @@ void INITCFG_ConfigIO()
 
 //------------------------------------------------
 
-void INITCFG_ConfigExtInterrupt()
-{
-	// Вход сигнала безопасности
-	EXTI_Config(EXTI_PA, EXTI_7, RISE_TRIG, 0);
-	EXTI_EnableInterrupt(EXTI9_5_IRQn, 0, true);
-}
-//------------------------------------------------
-
 void INITCFG_ConfigUART()
 {
 	USART_Init(USART1, SYSCLK, USART_BAUDRATE);
