@@ -58,14 +58,14 @@
 #define GE_2_PE2				82
 #define GE_2_PE3				83
 #define GE_2_PE4				84
-#define T2_PE1					136
-#define T2_PE2					137
-#define T2_PE3					138
-#define T2_PE4					139
-#define T1_PE1					146
-#define T1_PE2					147
-#define T1_PE3					148
-#define T1_PE4					149
+#define T2_PE1					112
+#define T2_PE2					113
+#define T2_PE3					114
+#define T2_PE4					115
+#define T1_PE1					128
+#define T1_PE2					129
+#define T1_PE3					130
+#define T1_PE4					131
 //
 // Out Lines Self-Commutation
 #define OL_C_POT_COMM1			4
@@ -108,42 +108,42 @@
 #define OL_E_POT_2_COMM3		99
 #define OL_E_POT_2_COMM4		100
 
-#define OL_T2_COMM1				140
-#define OL_T2_COMM2				141
-#define OL_T2_COMM3				142
-#define OL_T2_COMM4				143
+#define OL_T2_COMM1				116
+#define OL_T2_COMM2				117
+#define OL_T2_COMM3				118
+#define OL_T2_COMM4				119
 
-#define OL_T1_COMM1				150
-#define OL_T1_COMM2				151
-#define OL_T1_COMM3				152
-#define OL_T1_COMM4				153
+#define OL_T1_COMM1				122
+#define OL_T1_COMM2				123
+#define OL_T1_COMM3				124
+#define OL_T1_COMM4				125
 //
 // In Lines Self-Commutation
-#define IL_GT_G_COMM			114
-#define IL_GT_GE_COMM			115
-#define IL_GT_G_POT_COMM		119
-#define IL_GT_GE_POT_COMM		120
-#define IL_LSL_G_COMM			124
-#define IL_LSL_GE_COMM			125
-#define IL_LSL_POTP_COMM		129
-#define IL_LSL_POTN_COMM		130
+#define IL_GT_G_COMM			138
+#define IL_GT_GE_COMM			139
+#define IL_GT_G_POT_COMM		143
+#define IL_GT_GE_POT_COMM		144
+#define IL_LSL_G_COMM			148
+#define IL_LSL_GE_COMM			149
+#define IL_LSL_POTP_COMM		153
+#define IL_LSL_POTN_COMM		154
 
 //
 // Self-Test Commutation
-#define ST_TI_GT_G				112
-#define ST_TI_GT_G_POT			117
-#define ST_TI_LSL_G				122
-#define ST_TI_LSL_POTP			127
-#define ST_TO_GT_GE				113
-#define ST_TO_GT_GE_POT			118
-#define ST_TO_LSL_GE			123
-#define ST_TO_LSL_POTN			128
+#define ST_TI_GT_G				136
+#define ST_TI_GT_G_POT			141
+#define ST_TI_LSL_G				146
+#define ST_TI_LSL_POTP			151
+#define ST_TO_GT_GE				137
+#define ST_TO_GT_GE_POT			142
+#define ST_TO_LSL_GE			147
+#define ST_TO_LSL_POTN			152
 //
 // In Lines Commutation
-#define IL_GT_G_GE				116
-#define IL_GT_G_GE_POT			121
-#define IL_LSL_G_GE				126
-#define IL_LSL_POTS				131
+#define IL_GT_G_GE				140
+#define IL_GT_G_GE_POT			145
+#define IL_LSL_G_GE				150
+#define IL_LSL_POTS				155
 //
 // Main Commutation
 #define MC_C_POT_LSL_POTN		12
@@ -180,10 +180,10 @@
 #define MC_E_POT_2_GT_GE_POT	103
 #define MC_E_POT_2_LSL_POTP		102
 #define MC_E_POT_2_LSL_POTN		101
-#define MC_T2_GT_G_POT			145
-#define MC_T2_GT_G				144
-#define MC_T1_GT_GE_POT			154
-#define MC_T1_GT_GE				155
+#define MC_T2_GT_G_POT			121
+#define MC_T2_GT_G				120
+#define MC_T1_GT_GE_POT			126
+#define MC_T1_GT_GE				127
 
 // Types
 //

@@ -218,53 +218,53 @@ const CommutationTableItem CommutationTable[COMMUTATION_TABLE_SIZE] =
 						{BOARD2, PIN_G6, REG14},		// 109	//
 						{BOARD2, PIN_G7, REG14},		// 110	//
 						{BOARD2, PIN_G8, REG14},		// 111	//
-						{BOARD3, PIN_A1, REG15},		// 112	// GT_G to TEST-IN
-						{BOARD3, PIN_A2, REG15},		// 113	// GT_GE to TEST-OUT
-						{BOARD3, PIN_A3, REG15},		// 114	// GT_G: Commutation of GT_G (Open/Close)
-						{BOARD3, PIN_A4, REG15},		// 115	// GT_GE: Commutation of GT_GE (Open/Close)
-						{BOARD3, PIN_A5, REG15},		// 116	// GT_G to GT_GE
-						{BOARD3, PIN_A6, REG15},		// 117	// GT_G_POT to TEST-IN
-						{BOARD3, PIN_A7, REG15},		// 118	// GT_GE_POT to TEST-OUT
-						{BOARD3, PIN_A8, REG15},		// 119	// GT_G_POT: Commutation of GT_G_POT (Open/Close)
-						{BOARD3, PIN_B1, REG16},		// 120	// GT_GE_POT: Commutation of GT_GE_POT (Open/Close)
-						{BOARD3, PIN_B2, REG16},		// 121	// GT_G_POT to GT_GE_POT
-						{BOARD3, PIN_B3, REG16},		// 122	// LSL_G to TEST-IN
-						{BOARD3, PIN_B4, REG16},		// 123	// LSL_GE to TEST-OUT
-						{BOARD3, PIN_B5, REG16},		// 124	// LSL_G: Commutation of LSL_G (Open/Close)
-						{BOARD3, PIN_B6, REG16},		// 125	// LSL_GE: Commutation of LSL_GE (Open/Close)
-						{BOARD3, PIN_B7, REG16},		// 126	// LSL_G to LSL_GE
-						{BOARD3, PIN_B8, REG16},		// 127	// LSL_POT+ to TEST-IN
-						{BOARD3, PIN_B1, REG17},		// 128	// LSL_POT- to TEST-OUT
-						{BOARD3, PIN_B2, REG17},		// 129	// LSL_POT+: Commutation of LSL_POT+ (Open/Close)
-						{BOARD3, PIN_B3, REG17},		// 130	// LSL_POT-: Commutation of LSL_POT- (Open/Close)
-						{BOARD3, PIN_B4, REG17},		// 131	// LSL_POT+ to LSL_POT-
-						{BOARD3, PIN_B5, REG17},		// 132	//
-						{BOARD3, PIN_B6, REG17},		// 133	//
-						{BOARD3, PIN_B7, REG17},		// 134	//
-						{BOARD3, PIN_B8, REG17},		// 135	//
-						{BOARD4, PIN_A1, REG18},		// 136	// Thermistor_2 (T2) to PE
-						{BOARD4, PIN_A2, REG18},		// 137	// Thermistor_2 (T2) to PE
-						{BOARD4, PIN_A3, REG18},		// 138	// Thermistor_2 (T2) to PE
-						{BOARD4, PIN_A4, REG18},		// 139	// Thermistor_2 (T2) to PE
-						{BOARD4, PIN_A5, REG18},		// 140	// Thermistor_2: Commutation of T2 (Open/Close)
-						{BOARD4, PIN_A6, REG18},		// 141	// Thermistor_2: Commutation of T2 (Open/Close)
-						{BOARD4, PIN_A7, REG18},		// 142	// Thermistor_2: Commutation of T2 (Open/Close)
-						{BOARD4, PIN_A8, REG18},		// 143	// Thermistor_2: Commutation of T2 (Open/Close)
-						{BOARD4, PIN_B1, REG19},		// 144	// T2 to GT_G
-						{BOARD4, PIN_B2, REG19},		// 145	// T2 to GT_G_POT
-						{BOARD4, PIN_B3, REG19},		// 146	// Thermistor_1 (T1) to PE
-						{BOARD4, PIN_B4, REG19},		// 147	// Thermistor_1 (T1) to PE
-						{BOARD4, PIN_B5, REG19},		// 148	// Thermistor_1 (T1) to PE
-						{BOARD4, PIN_B6, REG19},		// 149	// Thermistor_1 (T1) to PE
-						{BOARD4, PIN_B7, REG19},		// 150	// Thermistor_1: Commutation of T1 (Open/Close)
-						{BOARD4, PIN_B8, REG19},		// 151	// Thermistor_1: Commutation of T1 (Open/Close)
-						{BOARD4, PIN_C1, REG20},		// 152	// Thermistor_1: Commutation of T1 (Open/Close)
-						{BOARD4, PIN_C1, REG20},		// 153	// Thermistor_1: Commutation of T1 (Open/Close)
-						{BOARD4, PIN_C1, REG20},		// 154	// T1 to GT_GE_POT
-						{BOARD4, PIN_C1, REG20},		// 155	// T1 to GT_GE
-						{BOARD4, PIN_C1, REG20},		// 156	//
-						{BOARD4, PIN_C1, REG20},		// 157	//
-						{BOARD4, PIN_C1, REG20},		// 158	//
-						{BOARD4, PIN_C1, REG20}			// 159	//
+						{BOARD3, PIN_A1, REG15},		// 112	// Thermistor_2 (T2) to PE
+						{BOARD3, PIN_A2, REG15},		// 113	// Thermistor_2 (T2) to PE
+						{BOARD3, PIN_A3, REG15},		// 114	// Thermistor_2 (T2) to PE
+						{BOARD3, PIN_A4, REG15},		// 115	// Thermistor_2 (T2) to PE
+						{BOARD3, PIN_A5, REG15},		// 116	// Thermistor_2: Commutation of T2 (Open/Close)
+						{BOARD3, PIN_A6, REG15},		// 117	// Thermistor_2: Commutation of T2 (Open/Close)
+						{BOARD3, PIN_A7, REG15},		// 118	// Thermistor_2: Commutation of T2 (Open/Close)
+						{BOARD3, PIN_A8, REG15},		// 119	// Thermistor_2: Commutation of T2 (Open/Close)
+						{BOARD3, PIN_B1, REG16},		// 120	// T2 to GT_G
+						{BOARD3, PIN_B2, REG16},		// 121	// T2 to GT_G_POT
+						{BOARD3, PIN_B3, REG16},		// 122	// Thermistor_1: Commutation of T1 (Open/Close)
+						{BOARD3, PIN_B4, REG16},		// 123	// Thermistor_1: Commutation of T1 (Open/Close)
+						{BOARD3, PIN_B5, REG16},		// 124	// Thermistor_1: Commutation of T1 (Open/Close)
+						{BOARD3, PIN_B6, REG16},		// 125	// Thermistor_1: Commutation of T1 (Open/Close)
+						{BOARD3, PIN_B7, REG16},		// 126	// T1 to GT_GE_POT
+						{BOARD3, PIN_B8, REG16},		// 127	// T1 to GT_GE
+						{BOARD3, PIN_C1, REG17},		// 128	// Thermistor_1 (T1) to PE
+						{BOARD3, PIN_C2, REG17},		// 129	// Thermistor_1 (T1) to PE
+						{BOARD3, PIN_C3, REG17},		// 130	// Thermistor_1 (T1) to PE
+						{BOARD3, PIN_C4, REG17},		// 131	// Thermistor_1 (T1) to PE
+						{BOARD3, PIN_C5, REG17},		// 132	//
+						{BOARD3, PIN_C6, REG17},		// 133	//
+						{BOARD3, PIN_C7, REG17},		// 134	//
+						{BOARD3, PIN_C8, REG17},		// 135	//
+						{BOARD4, PIN_A1, REG18},		// 136	// GT_G to TEST-IN
+						{BOARD4, PIN_A2, REG18},		// 137	// GT_GE to TEST-OUT
+						{BOARD4, PIN_A3, REG18},		// 138	// GT_G: Commutation of GT_G (Open/Close)
+						{BOARD4, PIN_A4, REG18},		// 139	// GT_GE: Commutation of GT_GE (Open/Close)
+						{BOARD4, PIN_A5, REG18},		// 140	// GT_G to GT_GE
+						{BOARD4, PIN_A6, REG18},		// 141	// GT_G_POT to TEST-IN
+						{BOARD4, PIN_A7, REG18},		// 142	// GT_GE_POT to TEST-OUT
+						{BOARD4, PIN_A8, REG18},		// 143	// GT_G_POT: Commutation of GT_G_POT (Open/Close)
+						{BOARD4, PIN_B1, REG19},		// 144	// GT_GE_POT: Commutation of GT_GE_POT (Open/Close)
+						{BOARD4, PIN_B2, REG19},		// 145	// GT_G_POT to GT_GE_POT
+						{BOARD4, PIN_B3, REG19},		// 146	// LSL_G to TEST-IN
+						{BOARD4, PIN_B4, REG19},		// 147	// LSL_GE to TEST-OUT
+						{BOARD4, PIN_B5, REG19},		// 148	// LSL_G: Commutation of LSL_G (Open/Close)
+						{BOARD4, PIN_B6, REG19},		// 149	// LSL_GE: Commutation of LSL_GE (Open/Close)
+						{BOARD4, PIN_B7, REG19},		// 150	// LSL_G to LSL_GE
+						{BOARD4, PIN_B8, REG19},		// 151	// LSL_POT+ to TEST-IN
+						{BOARD4, PIN_C1, REG20},		// 152	// LSL_POT- to TEST-OUT
+						{BOARD4, PIN_C2, REG20},		// 153	// LSL_POT+: Commutation of LSL_POT+ (Open/Close)
+						{BOARD4, PIN_C3, REG20},		// 154	// LSL_POT-: Commutation of LSL_POT- (Open/Close)
+						{BOARD4, PIN_C4, REG20},		// 155	// LSL_POT+ to LSL_POT-
+						{BOARD4, PIN_C5, REG20},		// 156	//
+						{BOARD4, PIN_C6, REG20},		// 157	//
+						{BOARD4, PIN_C7, REG20},		// 158	//
+						{BOARD4, PIN_C8, REG20}			// 159	//
 				};
 // No more
