@@ -38,7 +38,7 @@ void INITCFG_ConfigIO()
 	GPIO_SetState(GPIO_FP_LED, false);
 	GPIO_SetState(GPIO_SPI_SS, true);
 	GPIO_SetState(GPIO_SPI_RST, true);
-	GPIO_SetState(GPIO_SPI_OE, true);
+	GPIO_SetState(GPIO_SPI_OE, false);
 	GPIO_SetState(GPIO_SF_RED_LED, true);
 	GPIO_SetState(GPIO_SF_GRN_LED, false);
 	GPIO_SetState(GPIO_SF_EN, false);

@@ -46,17 +46,12 @@ void ZcRD_OutputValuesReset()
 
 void ZcRD_RegisterFlushWrite()
 {
-	GPIO_SetState(GPIO_SPI_OE, true);
-	DELAY_US(1);
-
 	for (int8_t i = NUM_REGS_TOTAL - 1; i >= 0; i--)
 		SPI_WriteByte8b(SPI1, CurrentOutputValues[i]);
 
 	GPIO_SetState(GPIO_SPI_SS, true);
 	DELAY_US(1);
 	GPIO_SetState(GPIO_SPI_SS, false);
-	DELAY_US(1);
-	GPIO_SetState(GPIO_SPI_OE, false);
 
 	DELAY_US(COMM_DELAY_MS * 1000L);
 }
