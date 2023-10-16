@@ -21,6 +21,7 @@ typedef enum __PMXUState
 bool PMXU_IsReady();
 bool PMXU_InFault();
 bool PMXU_ClearFault();
+bool PMXU_CheckWarning(Int16U* Register);
 bool PMXU_ClearWarning();
 bool PMXU_SwitchCommutation(Int16U CommutationNumber);
 bool PMXU_Enable();

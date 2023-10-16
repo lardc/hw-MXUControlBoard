@@ -16,7 +16,7 @@ typedef enum __DeviceState
 	DS_Enabled			= 3,
 	DS_SafetyActive		= 4,
 	DS_SafetyTrig		= 5,
-	DS_InSelftTest		= 6
+	DS_InSelfTest		= 6
 } DeviceState;
 
 typedef enum __DeviceSelfTestState

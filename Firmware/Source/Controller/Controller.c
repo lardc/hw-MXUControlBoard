@@ -15,6 +15,7 @@
 #include "CommutationTable.h"
 #include "Commutator.h"
 #include "ZcRegistersDriver.h"
+#include "PMXU.h"
 
 // Types
 //
@@ -32,8 +33,8 @@ volatile Int64U CONTROL_TimeCounter = 0;
 bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError);
 void CONTROL_UpdateWatchDog();
 void CONTROL_ResetToDefaultState();
-void CONTROL_LogicProcess();
 void CONTROL_SafetyCheck();
+void CONTROL_PMXU_CheckState();
 
 // Functions
 //
@@ -55,11 +56,21 @@ void CONTROL_Init()
 
 void CONTROL_Idle()
 {
-	CONTROL_LogicProcess();
+	SELFTEST_Process();
 	CONTROL_SafetyCheck();
+	CONTROL_PMXU_CheckState();
 
 	DEVPROFILE_ProcessRequests();
 	CONTROL_UpdateWatchDog();
+}
+//------------------------------------------
+
+void CONTROL_PMXU_CheckState()
+{
+	if(PMXU_InFault())
+		CONTROL_SwitchToFault(DF_PMXU);
+
+	PMXU_CheckWarning((Int16U *)&DataTable[REG_WARNING]);
 }
 //------------------------------------------
 
@@ -101,11 +112,8 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 		case ACT_ENABLE_POWER:
 			if(CONTROL_State == DS_None)
 			{
-				DataTable[REG_SELF_TEST_FAILED_SS] = STS_None;
-				DataTable[REG_SELF_TEST_FAILED_RELAY] = 0;
-				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
-				CONTROL_SetDeviceState(DS_InSelftTest);
-				CONTROL_SetDeviceSubState(STS_InputRelayCheck_1);
+				if(PMXU_Enable())
+					CONTROL_SetDeviceState(DS_Enabled);
 			}
 			else if(CONTROL_State != DS_Enabled)
 				*pUserError = ERR_OPERATION_BLOCKED;
@@ -114,8 +122,8 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 		case ACT_DISABLE_POWER:
 			if(CONTROL_State == DS_Enabled)
 			{
-				CONTROL_SetDeviceState(DS_None);
-				CONTROL_SetDeviceSubState(STS_None);
+				if(PMXU_Disable())
+					CONTROL_SetDeviceState(DS_None);
 			}
 			else if(CONTROL_State != DS_None)
 					*pUserError = ERR_OPERATION_BLOCKED;
@@ -124,13 +132,18 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 		case ACT_CLR_FAULT:
 			if (CONTROL_State == DS_Fault)
 			{
-				CONTROL_SetDeviceState(DS_None);
-				CONTROL_SetDeviceSubState(STS_None);
-				DataTable[REG_FAULT_REASON] = DF_NONE;
+				if(PMXU_ClearFault())
+				{
+					CONTROL_SetDeviceState(DS_None);
+					CONTROL_SetDeviceSubState(STS_None);
+
+					DataTable[REG_FAULT_REASON] = DF_NONE;
+				}
 			}
 			break;
 
 		case ACT_CLR_WARNING:
+			PMXU_ClearFault();
 			DataTable[REG_WARNING] = WARNING_NONE;
 			break;
 
@@ -157,19 +170,32 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 				*pUserError = ERR_DEVICE_NOT_READY;
 			break;
 
-		case ACT_COMM_ILEAK_GATE_EMITTER_POS_PULSE:
-		case ACT_COMM_ILEAK_GATE_EMITTER_NEG_PULSE:
-		case ACT_COMM_UTH_GATE_EMITTER:
-		case ACT_COMM_Q_GATE:
-		case ACT_COMM_USAT_COLLECTOR_EMITTER:
+		case ACT_SELFT_TEST:
+			if(CONTROL_State == DS_Enabled)
+			{
+				DataTable[REG_SELF_TEST_FAILED_SS] = STS_None;
+				DataTable[REG_SELF_TEST_FAILED_RELAY] = 0;
+				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
+				CONTROL_SetDeviceState(DS_InSelfTest);
+				CONTROL_SetDeviceSubState(STS_InputRelayCheck_1);
+			}
+			else if(CONTROL_State != DS_Enabled)
+				*pUserError = ERR_OPERATION_BLOCKED;
+			break;
+
+		case ACT_COMM_IGES_POS_PULSE:
+		case ACT_COMM_IGES_NEG_PULSE:
+		case ACT_COMM_UGE_TH:
+		case ACT_COMM_QG:
+		case ACT_COMM_UCE_SAT:
 		case ACT_COMM_UFW_CHOPPER_DIODE:
-		case ACT_COMM_ILEAK_COLLECTOR_EMITTER:
+		case ACT_COMM_ICES:
 		case ACT_COMM_THERMISTOR:
 		case ACT_COMM_NO_PE:
 		case ACT_COMM_NONE:
-			if (CONTROL_State == DS_Fault)
+			if (CONTROL_State == DS_Fault || PMXU_InFault())
 				*pUserError = ERR_OPERATION_BLOCKED;
-			else if(CONTROL_State == DS_None)
+			else if(CONTROL_State == DS_None || !PMXU_IsReady())
 				*pUserError = ERR_DEVICE_NOT_READY;
 			else
 				COMM_Commutate(ActionID);
@@ -179,13 +205,6 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			return DIAG_HandleDiagnosticAction(ActionID, pUserError);
 	}
 	return true;
-}
-//-----------------------------------------------
-
-void CONTROL_LogicProcess()
-{
-	if(CONTROL_State == DS_InSelftTest)
-		SELFTEST_Process();
 }
 //-----------------------------------------------
 

@@ -52,7 +52,5 @@ void ZcRD_RegisterFlushWrite()
 	GPIO_SetState(GPIO_SPI_SS, true);
 	DELAY_US(1);
 	GPIO_SetState(GPIO_SPI_SS, false);
-
-	DELAY_US(COMM_DELAY_MS * 1000L);
 }
 // ----------------------------------------
