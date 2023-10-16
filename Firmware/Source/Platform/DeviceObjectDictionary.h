@@ -42,6 +42,8 @@
 // Сохраняемые регистры
 #define REG_SFTST_V_ALLOWED_VOLTAGE				0	// Допустимое значение напряжения на замкнутом реле
 #define REG_SAFETY_DELAY						1	// Задержка отключения коммутации, мс
+#define REG_PMXU_CAN_ID							2	// PMXU CAN ID
+#define REG_PMXU_EMULATED						3	// PMXU emulation
 
 // Несохраняемые регистры чтения-записи
 #define REG_MEASUREMENT_POSITION				128	// Регистр выбора позции при измерении (1 или 2)
@@ -77,6 +79,7 @@
 #define DF_NONE									0
 #define DF_RELAY_SHORT							1	// Обнаружено залипшее реле
 #define DF_RELAY_HIGH_RES						2	// Обнаружено повышенное сопротивление на реле
+#define DF_PMXU_INTERFACE						3	// Проблема связи по интерфейсу с PMXU
 
 // Problem
 #define PROBLEM_NONE							0
@@ -92,5 +95,73 @@
 #define ERR_WRONG_PWD							4	//  Неправильный ключ
 
 // Endpoints
+
+
+
+// PMXU actions
+//
+#define ACT_PMXU_ENABLE_POWER					1	// Включение блока
+#define ACT_PMXU_DISABLE_POWER					2	// Выключение блока
+#define ACT_PMXU_CLR_FAULT						3	// Очистка всех fault
+#define ACT_PMXU_CLR_WARNING					4	// Очистка всех warning
+//
+#define ACT_PMXU_COMM_PE						100 // Отключение всех реле, замыкание шин на PE
+
+#define ACT_PMXU_COMM_ICES_UP					101 // Режим измерения тока утечки коллектор-эмиттер, позиция UP DUT
+#define ACT_PMXU_COMM_ICES_DOWN					102 // Режим измерения тока утечки коллектор-эмиттер, позиция DOWN DUT
+
+#define ACT_PMXU_COMM_IDSS_UP					103 // Режим измерения тока утечки сток-исток, позиция UP DUT
+#define ACT_PMXU_COMM_IDSS_DOWN					104 // Режим измерения тока утечки сток-исток, позиция DOWN DUT
+
+#define ACT_PMXU_COMM_IR_UP						105 // Режим измерения повторяющегося импульсного обратного тока диодов, позиция UP DUT
+#define ACT_PMXU_COMM_IR_DOWN					106 // Режим измерения повторяющегося импульсного обратного тока диодов, позиция DOWN DUT
+
+#define ACT_PMXU_COMM_QG_UP						107 // Режим измерения заряда затвора, позиция UP DUT
+#define ACT_PMXU_COMM_QG_UP_REV					108 // Режим измерения заряда затвора, позиция UP DUT инверсное подключение
+#define ACT_PMXU_COMM_QG_DOWN					109 // Режим измерения заряда затвора, позиция DOWN DUT
+#define ACT_PMXU_COMM_QG_DOWN_REV				110 // Режим измерения заряда затвора, позиция DOWN DUT инверсное подключение
+
+#define ACT_PMXU_COMM_VCESAT_UP					111 // Режим измерения напряжения насыщения коллектор-эмиттер IGBT транзисторов, позиция UP DUT
+#define ACT_PMXU_COMM_VCESAT_UP_REV				112 // Режим измерения напряжения насыщения коллектор-эмиттер IGBT транзисторов, позиция UP DUT инверсное подключение
+#define ACT_PMXU_COMM_VCESAT_DOWN				113 // Режим измерения напряжения насыщения коллектор-эмиттер IGBT транзисторов, позиция DOWN DUT
+#define ACT_PMXU_COMM_VCESAT_DOWN_REV			114 // Режим измерения напряжения насыщения коллектор-эмиттер IGBT транзисторов, позиция DOWN DUT инверсное подключение
+
+#define ACT_PMXU_COMM_VSD_UP					115 // Режим измерения напряжения сток-исток в открытом состоянии, позиция UP DUT
+#define ACT_PMXU_COMM_VSD_UP_REV				116 // Режим измерения напряжения сток-исток в открытом состоянии, позиция UP DUT инверсное подключение
+#define ACT_PMXU_COMM_VSD_DOWN					117 // Режим измерения напряжения сток-исток в открытом состоянии, позиция DOWN DUT
+#define ACT_PMXU_COMM_VSD_DOWN_REV				118 // Режим измерения напряжения сток-исток в открытом состоянии, позиция DOWN DUT инверсное подключение
+
+#define ACT_PMXU_COMM_RDSON_UP					119 // Режим измерения сопротивления канала сток-исток SiC транзисторов, позиция UP DUT
+#define ACT_PMXU_COMM_RDSON_UP_REV				120 // Режим измерения сопротивления канала сток-исток SiC транзисторов, позиция UP DUT инверсное подключение
+#define ACT_PMXU_COMM_RDSON_DOWN				121 // Режим измерения сопротивления канала сток-исток SiC транзисторов, позиция DOWN DUT
+#define ACT_PMXU_COMM_RDSON_DOWN_REV			122 // Режим измерения сопротивления канала сток-исток SiC транзисторов, позиция DOWN DUT инверсное подключение
+
+#define ACT_PMXU_COMM_VF_UP						123 // Режим измерения постоянного прямого напряжения диода чоппера и обратно-параллельного диода, позиция UP DUT
+#define ACT_PMXU_COMM_VF_UP_REV					124 // Режим измерения постоянного прямого напряжения диода чоппера и обратно-параллельного диода, позиция UP DUT инверсное подключение
+#define ACT_PMXU_COMM_VF_DOWN					125 // Режим измерения постоянного прямого напряжения диода чоппера и обратно-параллельного диода, позиция DOWN DUT
+#define ACT_PMXU_COMM_VF_DOWN_REV				126 // Режим измерения постоянного прямого напряжения диода чоппера и обратно-параллельного диода, позиция DOWN DUT инверсное подключение
+//
+
+// PMXU registers
+//
+#define REG_PMXU_DEV_STATE						192	// Регистр состояния
+#define REG_PMXU_FAULT_REASON					193	// Регистр Fault
+#define REG_PMXU_DISABLE_REASON					194	// Регистр Disable
+#define REG_PMXU_WARNING						195	// Регистр Warning
+//
+
+// PMXU faults
+//
+#define DF_PMXU_NONE							0
+#define DF_PMXU_PMXU_RELAY_SHORT				1	// Обнаружено залипшее реле
+#define DF_PMXU_CHAIN_BREAK						2	// Обнаружен разрыв при прозвонке
+#define DF_PMXU_CONTACTOR_COMMUTATION_FAULT		3	// Ошибка коммутации контакторов, номер неисправного контактора в регистре REG_PROBLEM
+#define DF_PMXU_LOW_PRESSURE					4	// Низкое давление в пневмосистеме
+#define DF_PMXU_SAFETY_ERROR					5	// Ошибка защитной цепи
+
+// PMXU warnings
+//
+#define WARNING_PMXU_NONE						0
+#define WARNING_PMXU_CONTACTORS_CHECK			1	// Требуется проверка контактных сопротивлений контакторов, номер контактора в регистре REG_PROBLEM
 
 #endif //  __DEV_OBJ_DIC_H
