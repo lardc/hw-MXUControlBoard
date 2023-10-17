@@ -68,5 +68,6 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError);
 void CONTROL_LogicProcess();
 void CONTROL_UpdateWatchDog();
 void CONTROL_ResetOutputRegisters();
+void CONTROL_HandleFrontPanelLamp(bool Forced);
 
 #endif // __CONTROLLER_H

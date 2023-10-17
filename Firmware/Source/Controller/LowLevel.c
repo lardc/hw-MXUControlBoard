@@ -20,6 +20,12 @@ void LL_SetStateFPLed(bool State)
 }
 //-----------------------------
 
+void LL_ToggleFPLed()
+{
+	GPIO_Toggle(GPIO_FP_LED);
+}
+//-----------------------------
+
 void LL_SetStateSFRedLed(bool State)
 {
 	GPIO_SetState(GPIO_SF_RED_LED, State);

@@ -34,6 +34,8 @@ void SELFTEST_Process()
 
 	if(CONTROL_State == DS_InSelfTest)
 	{
+		CONTROL_HandleFrontPanelLamp(true);
+
 		switch(CONTROL_SubState)
 		{
 			case STS_InputRelayCheck_1:

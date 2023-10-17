@@ -239,3 +239,34 @@ void CONTROL_ResetOutputRegisters()
 	DEVPROFILE_ResetEPReadState();
 }
 //------------------------------------------
+
+void CONTROL_HandleFrontPanelLamp(bool Forced)
+{
+	static Int64U FPLampCounter = 0;
+
+	if(CONTROL_State == DS_Fault)
+	{
+		if(++FPLampCounter > TIME_FP_LED_FAULT_BLINK)
+		{
+			LL_ToggleFPLed();
+			FPLampCounter = 0;
+		}
+	}
+	else
+	{
+		if(CONTROL_State != DS_None)
+		{
+			if(Forced)
+			{
+				LL_SetStateFPLed(true);;
+				FPLampCounter = CONTROL_TimeCounter + TIME_FP_LED_ON_STATE;
+			}
+			else
+			{
+				if(CONTROL_TimeCounter >= FPLampCounter)
+					LL_SetStateFPLed(false);
+			}
+		}
+	}
+}
+//-----------------------------------------------
