@@ -508,7 +508,7 @@ void COMM_Commutate(Int16U ActionID)
 			{
 				if (DataTable[REG_DUT_POSITION] == DUT_POSITION_1)
 				{
-					if(PMXU_SwitchCommutation(ACT_PMXU_COMM_VF_POS1_REV))
+					if(PMXU_SwitchCommutation(ACT_PMXU_COMM_VF_POS1))
 					{
 						ZcRD_OutputValuesReset();
 
@@ -539,7 +539,7 @@ void COMM_Commutate(Int16U ActionID)
 				}
 				else if (DataTable[REG_DUT_POSITION] == DUT_POSITION_2)
 				{
-					if(PMXU_SwitchCommutation(ACT_PMXU_COMM_VF_POS2_REV))
+					if(PMXU_SwitchCommutation(ACT_PMXU_COMM_VF_POS2))
 					{
 						ZcRD_OutputValuesReset();
 
