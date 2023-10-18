@@ -19,10 +19,10 @@ static const uint8_t TestCommutation_IR2[] = {IL_GT_G_POT_COMM, IL_GT_GE_POT_COM
 static const uint8_t TestCommutation_IR3[] = {IL_LSL_G_COMM, IL_LSL_GE_COMM, IL_LSL_G_GE, ST_TI_LSL_G, ST_TO_LSL_GE};
 static const uint8_t TestCommutation_IR4[] = {IL_LSL_POTP_COMM, IL_LSL_POTN_COMM, IL_LSL_POTS, ST_TI_LSL_POTP, ST_TO_LSL_POTN};
 
-static const uint8_t TestCommutation_MCR1[] = {MC_G_GT_G, OL_G_COMM1, OL_G_COMM2, OL_G_COMM3, MC_G_GE, OL_GE_COMM1, OL_GE_COMM2, OL_GE_COMM3, MC_GE_GT_GE, ST_TI_GT_G, ST_TO_GT_GE};
-static const uint8_t TestCommutation_MCR2[] = {MC_G_2_GT_G, OL_G_2_COMM1, OL_G_2_COMM2, OL_G_2_COMM3, MC_G_2_GE, OL_GE_2_COMM1, OL_GE_2_COMM2, OL_GE_2_COMM3, MC_GE_2_GT_GE, ST_TI_GT_G, ST_TO_GT_GE};
-static const uint8_t TestCommutation_MCR3[] = {MC_G_GT_G, MC_G_GT_GE, ST_TI_GT_G, ST_TO_GT_GE};
-static const uint8_t TestCommutation_MCR4[] = {MC_G_2_GT_G, MC_G_2_GT_GE, ST_TI_GT_G, ST_TO_GT_GE};
+static const uint8_t TestCommutation_MCR1[] = {MC_G_GT_G_1, OL_G_COMM_1, MC_G_GE_1, OL_GE_COMM_1, MC_GE_GT_GE_1, ST_TI_GT_G, ST_TO_GT_GE};
+static const uint8_t TestCommutation_MCR2[] = {MC_G_GT_G_2, OL_G_COMM_2, MC_G_GE_2, OL_GE_COMM_2, MC_GE_GT_GE_2, ST_TI_GT_G, ST_TO_GT_GE};
+static const uint8_t TestCommutation_MCR3[] = {MC_G_GT_G_1, MC_G_GT_GE_1, ST_TI_GT_G, ST_TO_GT_GE};
+static const uint8_t TestCommutation_MCR4[] = {MC_G_GT_G_2, MC_G_GT_GE_2, ST_TI_GT_G, ST_TO_GT_GE};
 
 // Functions
 //
@@ -107,15 +107,11 @@ void SELFTEST_Process()
 
 				ZcRD_OutputValuesReset();
 
-				ZcRD_OutputValuesCompose(MC_G_GT_G, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_G_GE, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(MC_GE_GT_GE, TRUE);
+				ZcRD_OutputValuesCompose(MC_G_GT_G_1, TRUE);
+				ZcRD_OutputValuesCompose(OL_G_COMM_1, TRUE);
+				ZcRD_OutputValuesCompose(MC_G_GE_1, TRUE);
+				ZcRD_OutputValuesCompose(OL_GE_COMM_1, TRUE);
+				ZcRD_OutputValuesCompose(MC_GE_GT_GE_1, TRUE);
 
 				ZcRD_OutputValuesCompose(ST_TI_GT_G, TRUE);
 				ZcRD_OutputValuesCompose(ST_TO_GT_GE, TRUE);
@@ -129,15 +125,11 @@ void SELFTEST_Process()
 
 				ZcRD_OutputValuesReset();
 
-				ZcRD_OutputValuesCompose(MC_G_2_GT_G, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_2_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_2_COMM2, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_2_COMM3, TRUE);
-				ZcRD_OutputValuesCompose(MC_G_2_GE, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_2_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_2_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_2_COMM1, TRUE);
-				ZcRD_OutputValuesCompose(MC_GE_2_GT_GE, TRUE);
+				ZcRD_OutputValuesCompose(MC_G_GT_G_2, TRUE);
+				ZcRD_OutputValuesCompose(OL_G_COMM_2, TRUE);
+				ZcRD_OutputValuesCompose(MC_G_GE_2, TRUE);
+				ZcRD_OutputValuesCompose(OL_GE_COMM_2, TRUE);
+				ZcRD_OutputValuesCompose(MC_GE_GT_GE_2, TRUE);
 
 				ZcRD_OutputValuesCompose(ST_TI_GT_G, TRUE);
 				ZcRD_OutputValuesCompose(ST_TO_GT_GE, TRUE);
@@ -151,8 +143,8 @@ void SELFTEST_Process()
 
 				ZcRD_OutputValuesReset();
 
-				ZcRD_OutputValuesCompose(MC_G_GT_G, TRUE);
-				ZcRD_OutputValuesCompose(MC_G_GT_GE, TRUE);
+				ZcRD_OutputValuesCompose(MC_G_GT_G_1, TRUE);
+				ZcRD_OutputValuesCompose(MC_G_GT_GE_1, TRUE);
 
 				ZcRD_OutputValuesCompose(ST_TI_GT_G, TRUE);
 				ZcRD_OutputValuesCompose(ST_TO_GT_GE, TRUE);
@@ -166,8 +158,8 @@ void SELFTEST_Process()
 
 				ZcRD_OutputValuesReset();
 
-				ZcRD_OutputValuesCompose(MC_G_2_GT_G, TRUE);
-				ZcRD_OutputValuesCompose(MC_G_2_GT_GE, TRUE);
+				ZcRD_OutputValuesCompose(MC_G_GT_G_2, TRUE);
+				ZcRD_OutputValuesCompose(MC_G_GT_GE_2, TRUE);
 
 				ZcRD_OutputValuesCompose(ST_TI_GT_G, TRUE);
 				ZcRD_OutputValuesCompose(ST_TO_GT_GE, TRUE);
