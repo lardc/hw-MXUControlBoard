@@ -173,11 +173,8 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 		case ACT_SELFT_TEST:
 			if(CONTROL_State == DS_Enabled)
 			{
-				DataTable[REG_SELF_TEST_FAILED_SS] = STS_None;
-				DataTable[REG_SELF_TEST_FAILED_RELAY] = 0;
-				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
 				CONTROL_SetDeviceState(DS_InSelfTest);
-				CONTROL_SetDeviceSubState(STS_InputRelayCheck_1);
+				CONTROL_SetDeviceSubState(STS_InputBoard);
 			}
 			else if(CONTROL_State != DS_Enabled)
 				*pUserError = ERR_OPERATION_BLOCKED;
