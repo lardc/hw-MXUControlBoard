@@ -22,29 +22,11 @@ typedef enum __DeviceState
 typedef enum __DeviceSelfTestState
 {
 	STS_None = 0,
-	STS_CurrentMeasure = 1,
-	STS_OpenRelayCheck = 2,
-	STS_Get_ArrayLenght = 3,
 
-	STS_InputRelayCheck_1 = 10,
-	STS_InputRelayCheck_2,
-	STS_InputRelayCheck_3,
-	STS_InputRelayCheck_4,
-
-	STS_MCRelayCheck_1 = 15,
-	STS_MCRelayCheck_2,
-	STS_MCRelayCheck_3,
-	STS_MCRelayCheck_4,
-
-	STS_InputRelayOpenCheck_1 = 20,
-	STS_InputRelayOpenCheck_2,
-	STS_InputRelayOpenCheck_3,
-	STS_InputRelayOpenCheck_4,
-
-	STS_MCRelayOpenCheck_1 = 25,
-	STS_MCRelayOpenCheck_2,
-	STS_MCRelayOpenCheck_3,
-	STS_MCRelayOpenCheck_4,
+	STS_InputBoard 	= 10,
+	STS_ThermBoard 	= 20,
+	STS_HVBoard1	= 30,
+	STS_HVBoard2	= 40
 
 } DeviceSelfTestState;
 

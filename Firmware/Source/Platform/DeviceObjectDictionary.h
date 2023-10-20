@@ -62,8 +62,7 @@
 #define REG_SELF_TEST_OP_RESULT					198	// Регистр результата самотестирования
 #define REG_SUB_STATE							199	// Регистр вспомогательного состояния
 
-#define REG_SELF_TEST_FAILED_SS					201	// Вспомогательное состояние на котором обнаружен отказ
-#define REG_SELF_TEST_FAILED_RELAY				202	// Номер коммутации на котором обнаружен отказ
+#define REG_SELF_TEST_FAILED_RELAY				200	// Номер коммутации на котором обнаружен отказ
 // -----------------------------
 #define REG_FWINFO_SLAVE_NID					256	// Device CAN slave node ID
 #define REG_FWINFO_MASTER_NID					257	// Device CAN master node ID (if presented)
@@ -79,8 +78,7 @@
 
 //  Fault and disable codes
 #define DF_NONE									0
-#define DF_RELAY_SHORT							1	// Обнаружено залипшее реле
-#define DF_RELAY_HIGH_RES						2	// Обнаружено повышенное сопротивление на реле
+#define DF_SELF_TEST							1	// Проблема реле
 #define DF_PMXU_INTERFACE						3	// Проблема связи по интерфейсу с PMXU
 #define DF_PMXU									4	// PMXU в состоянии Fault
 

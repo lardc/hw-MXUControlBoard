@@ -11,351 +11,159 @@
 #include "LowLevel.h"
 #include "CommutationTable.h"
 #include "ZcRegistersDriver.h"
+#include "SelfTestRelaysArrays.h"
 
-// Variables
+
+// Functions prototypes
 //
-static const uint8_t TestCommutation_IR1[] = {IL_GT_G_COMM, IL_GT_GE_COMM, IL_GT_G_GE, ST_TI_GT_G, ST_TO_GT_GE};
-static const uint8_t TestCommutation_IR2[] = {IL_GT_G_POT_COMM, IL_GT_GE_POT_COMM, IL_GT_G_GE_POT, ST_TI_GT_G_POT, ST_TO_GT_GE_POT};
-static const uint8_t TestCommutation_IR3[] = {IL_LSL_G_COMM, IL_LSL_GE_COMM, IL_LSL_G_GE, ST_TI_LSL_G, ST_TO_LSL_GE};
-static const uint8_t TestCommutation_IR4[] = {IL_LSL_POTP_COMM, IL_LSL_POTN_COMM, IL_LSL_POTS, ST_TI_LSL_POTP, ST_TO_LSL_POTN};
-
-static const uint8_t TestCommutation_MCR1[] = {MC_G_GT_G_1, OL_G_COMM_1, MC_G_GE_1, OL_GE_COMM_1, MC_GE_GT_GE_1, ST_TI_GT_G, ST_TO_GT_GE};
-static const uint8_t TestCommutation_MCR2[] = {MC_G_GT_G_2, OL_G_COMM_2, MC_G_GE_2, OL_GE_COMM_2, MC_GE_GT_GE_2, ST_TI_GT_G, ST_TO_GT_GE};
-static const uint8_t TestCommutation_MCR3[] = {MC_G_GT_G_1, MC_G_GT_GE_1, ST_TI_GT_G, ST_TO_GT_GE};
-static const uint8_t TestCommutation_MCR4[] = {MC_G_GT_G_2, MC_G_GT_GE_2, ST_TI_GT_G, ST_TO_GT_GE};
+bool SELFTEST_InputBoard(pFloat32 RelayCode);
+bool SELFTEST_ThermBoard(pFloat32 RelayCode);
+bool SELFTEST_HVBoard1(pFloat32 RelayCode);
+bool SELFTEST_HVBoard2(pFloat32 RelayCode);
+bool SELFTEST_CheckRelays(const Int16U *RelayArray, Int16U ArraySize, pFloat32 RelayCode);
 
 // Functions
 //
 void SELFTEST_Process()
 {
-	static DeviceSelfTestState PrevSubstate = STS_None;
-	static uint8_t *SelectedTestArray = NULL;
-	static uint8_t SelectedTestArrayLength = 0, TestIndex = 0;
-
 	if(CONTROL_State == DS_InSelfTest)
 	{
+		DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
+		DataTable[REG_SELF_TEST_FAILED_RELAY] = 0;
 		CONTROL_HandleFrontPanelLamp(true);
 
 		switch(CONTROL_SubState)
 		{
-			case STS_InputRelayCheck_1:
-				PrevSubstate = STS_InputRelayCheck_1;
-
-				ZcRD_OutputValuesReset();
-
-				ZcRD_OutputValuesCompose(IL_GT_G_COMM, TRUE);
-				ZcRD_OutputValuesCompose(IL_GT_GE_COMM, TRUE);
-				ZcRD_OutputValuesCompose(IL_GT_G_GE, TRUE);
-
-				ZcRD_OutputValuesCompose(ST_TI_GT_G, TRUE);
-				ZcRD_OutputValuesCompose(ST_TO_GT_GE, TRUE);
-
-				ZcRD_RegisterFlushWrite();
-				CONTROL_SetDeviceSubState(STS_CurrentMeasure);
-				break;
-
-			case STS_InputRelayCheck_2:
-				PrevSubstate = STS_InputRelayCheck_2;
-
-				ZcRD_OutputValuesReset();
-
-				ZcRD_OutputValuesCompose(IL_GT_G_POT_COMM, TRUE);
-				ZcRD_OutputValuesCompose(IL_GT_GE_POT_COMM, TRUE);
-				ZcRD_OutputValuesCompose(IL_GT_G_GE_POT, TRUE);
-
-				ZcRD_OutputValuesCompose(ST_TI_GT_G_POT, TRUE);
-				ZcRD_OutputValuesCompose(ST_TO_GT_GE_POT, TRUE);
-
-				ZcRD_RegisterFlushWrite();
-				CONTROL_SetDeviceSubState(STS_CurrentMeasure);
-				break;
-
-			case STS_InputRelayCheck_3:
-				PrevSubstate = STS_InputRelayCheck_3;
-
-				ZcRD_OutputValuesReset();
-
-				ZcRD_OutputValuesCompose(IL_LSL_G_COMM, TRUE);
-				ZcRD_OutputValuesCompose(IL_LSL_GE_COMM, TRUE);
-				ZcRD_OutputValuesCompose(IL_LSL_G_GE, TRUE);
-
-				ZcRD_OutputValuesCompose(ST_TI_LSL_G, TRUE);
-				ZcRD_OutputValuesCompose(ST_TO_LSL_GE, TRUE);
-
-				ZcRD_RegisterFlushWrite();
-				CONTROL_SetDeviceSubState(STS_CurrentMeasure);
-				break;
-
-			case STS_InputRelayCheck_4:
-				PrevSubstate = STS_InputRelayCheck_4;
-
-				ZcRD_OutputValuesReset();
-
-				ZcRD_OutputValuesCompose(IL_LSL_POTP_COMM, TRUE);
-				ZcRD_OutputValuesCompose(IL_LSL_POTN_COMM, TRUE);
-				ZcRD_OutputValuesCompose(IL_LSL_POTS, TRUE);
-
-				ZcRD_OutputValuesCompose(ST_TI_LSL_POTP, TRUE);
-				ZcRD_OutputValuesCompose(ST_TO_LSL_POTN, TRUE);
-
-				ZcRD_RegisterFlushWrite();
-				CONTROL_SetDeviceSubState(STS_CurrentMeasure);
-				break;
-
-			case STS_MCRelayCheck_1:
-				PrevSubstate = STS_MCRelayCheck_1;
-
-				ZcRD_OutputValuesReset();
-
-				ZcRD_OutputValuesCompose(MC_G_GT_G_1, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_COMM_1, TRUE);
-				ZcRD_OutputValuesCompose(MC_G_GE_1, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_COMM_1, TRUE);
-				ZcRD_OutputValuesCompose(MC_GE_GT_GE_1, TRUE);
-
-				ZcRD_OutputValuesCompose(ST_TI_GT_G, TRUE);
-				ZcRD_OutputValuesCompose(ST_TO_GT_GE, TRUE);
-
-				ZcRD_RegisterFlushWrite();
-				CONTROL_SetDeviceSubState(STS_CurrentMeasure);
-				break;
-
-			case STS_MCRelayCheck_2:
-				PrevSubstate = STS_MCRelayCheck_2;
-
-				ZcRD_OutputValuesReset();
-
-				ZcRD_OutputValuesCompose(MC_G_GT_G_2, TRUE);
-				ZcRD_OutputValuesCompose(OL_G_COMM_2, TRUE);
-				ZcRD_OutputValuesCompose(MC_G_GE_2, TRUE);
-				ZcRD_OutputValuesCompose(OL_GE_COMM_2, TRUE);
-				ZcRD_OutputValuesCompose(MC_GE_GT_GE_2, TRUE);
-
-				ZcRD_OutputValuesCompose(ST_TI_GT_G, TRUE);
-				ZcRD_OutputValuesCompose(ST_TO_GT_GE, TRUE);
-
-				ZcRD_RegisterFlushWrite();
-				CONTROL_SetDeviceSubState(STS_CurrentMeasure);
-				break;
-
-			case STS_MCRelayCheck_3:
-				PrevSubstate = STS_MCRelayCheck_3;
-
-				ZcRD_OutputValuesReset();
-
-				ZcRD_OutputValuesCompose(MC_G_GT_G_1, TRUE);
-				ZcRD_OutputValuesCompose(MC_G_GT_GE_1, TRUE);
-
-				ZcRD_OutputValuesCompose(ST_TI_GT_G, TRUE);
-				ZcRD_OutputValuesCompose(ST_TO_GT_GE, TRUE);
-
-				ZcRD_RegisterFlushWrite();
-				CONTROL_SetDeviceSubState(STS_CurrentMeasure);
-				break;
-
-			case STS_MCRelayCheck_4:
-				PrevSubstate = STS_MCRelayCheck_4;
-
-				ZcRD_OutputValuesReset();
-
-				ZcRD_OutputValuesCompose(MC_G_GT_G_2, TRUE);
-				ZcRD_OutputValuesCompose(MC_G_GT_GE_2, TRUE);
-
-				ZcRD_OutputValuesCompose(ST_TI_GT_G, TRUE);
-				ZcRD_OutputValuesCompose(ST_TO_GT_GE, TRUE);
-
-				ZcRD_RegisterFlushWrite();
-				CONTROL_SetDeviceSubState(STS_CurrentMeasure);
-				break;
-
-			case STS_CurrentMeasure:
-				if(LL_ClosedRelayFailed())
-				{
-					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
-					DataTable[REG_SELF_TEST_FAILED_SS] = PrevSubstate;
-					ZcRD_RegisterReset();
-					CONTROL_SwitchToFault(DF_RELAY_HIGH_RES);
-				}
-				else
-				{
-					switch(PrevSubstate)
-					{
-						case STS_InputRelayCheck_1:
-							CONTROL_SetDeviceSubState(STS_InputRelayCheck_2);
-							break;
-						case STS_InputRelayCheck_2:
-							CONTROL_SetDeviceSubState(STS_InputRelayCheck_3);
-							break;
-						case STS_InputRelayCheck_3:
-							CONTROL_SetDeviceSubState(STS_InputRelayCheck_4);
-							break;
-						case STS_InputRelayCheck_4:
-							CONTROL_SetDeviceSubState(STS_MCRelayCheck_1);
-							break;
-
-						case STS_MCRelayCheck_1:
-							CONTROL_SetDeviceSubState(STS_MCRelayCheck_2);
-							break;
-						case STS_MCRelayCheck_2:
-							CONTROL_SetDeviceSubState(STS_MCRelayCheck_3);
-							break;
-						case STS_MCRelayCheck_3:
-							CONTROL_SetDeviceSubState(STS_MCRelayCheck_4);
-							break;
-						case STS_MCRelayCheck_4:
-							CONTROL_SetDeviceSubState(STS_InputRelayOpenCheck_1);
-							break;
-
-						default:
-							break;
-					}
-				}
-				break;
-
-			case STS_InputRelayOpenCheck_1:
-				PrevSubstate = STS_InputRelayOpenCheck_1;
-
-				TestIndex = 0;
-				SelectedTestArray = (uint8_t *)TestCommutation_IR1;
-				SelectedTestArrayLength = sizeof(TestCommutation_IR1);
-
-				CONTROL_SetDeviceSubState(STS_OpenRelayCheck);
-				break;
-
-			case STS_InputRelayOpenCheck_2:
-				PrevSubstate = STS_InputRelayOpenCheck_2;
-
-				TestIndex = 0;
-				SelectedTestArray = (uint8_t *)TestCommutation_IR2;
-				SelectedTestArrayLength = sizeof(TestCommutation_IR2);
-
-				CONTROL_SetDeviceSubState(STS_OpenRelayCheck);
-				break;
-
-			case STS_InputRelayOpenCheck_3:
-				PrevSubstate = STS_InputRelayOpenCheck_3;
-
-				TestIndex = 0;
-				SelectedTestArray = (uint8_t *)TestCommutation_IR3;
-				SelectedTestArrayLength = sizeof(TestCommutation_IR3);
-
-				CONTROL_SetDeviceSubState(STS_OpenRelayCheck);
-				break;
-
-			case STS_InputRelayOpenCheck_4:
-				PrevSubstate = STS_InputRelayOpenCheck_4;
-
-				TestIndex = 0;
-				SelectedTestArray = (uint8_t *)TestCommutation_IR4;
-				SelectedTestArrayLength = sizeof(TestCommutation_IR4);
-
-				CONTROL_SetDeviceSubState(STS_OpenRelayCheck);
-				break;
-
-			case STS_MCRelayOpenCheck_1:
-				PrevSubstate = STS_MCRelayOpenCheck_1;
-
-				TestIndex = 0;
-				SelectedTestArray = (uint8_t *)TestCommutation_MCR1;
-				SelectedTestArrayLength = sizeof(TestCommutation_MCR1);
-
-				CONTROL_SetDeviceSubState(STS_OpenRelayCheck);
-				break;
-
-			case STS_MCRelayOpenCheck_2:
-				PrevSubstate = STS_MCRelayOpenCheck_2;
-
-				TestIndex = 0;
-				SelectedTestArray = (uint8_t *)TestCommutation_MCR2;
-				SelectedTestArrayLength = sizeof(TestCommutation_MCR2);
-
-				CONTROL_SetDeviceSubState(STS_OpenRelayCheck);
-				break;
-
-			case STS_MCRelayOpenCheck_3:
-				PrevSubstate = STS_MCRelayOpenCheck_3;
-
-				TestIndex = 0;
-				SelectedTestArray = (uint8_t *)TestCommutation_MCR3;
-				SelectedTestArrayLength = sizeof(TestCommutation_MCR3);
-
-				CONTROL_SetDeviceSubState(STS_OpenRelayCheck);
-				break;
-
-			case STS_MCRelayOpenCheck_4:
-				PrevSubstate = STS_MCRelayOpenCheck_4;
-
-				TestIndex = 0;
-				SelectedTestArray = (uint8_t *)TestCommutation_MCR4;
-				SelectedTestArrayLength = sizeof(TestCommutation_MCR4);
-
-				CONTROL_SetDeviceSubState(STS_OpenRelayCheck);
-				break;
-
-			case STS_OpenRelayCheck:
-				if(TestIndex < SelectedTestArrayLength)
-				{
-					// Включение всех реле
-					for(uint8_t i = 0; i < SelectedTestArrayLength; i++)
-						ZcRD_OutputValuesCompose(SelectedTestArray[i], TRUE);
-
-					// Отключение тестируемого реле
-					ZcRD_OutputValuesCompose(SelectedTestArray[TestIndex], FALSE);
-					ZcRD_RegisterFlushWrite();
-
-					// Тестирование
-					if(LL_OpenRelayFailed())
-					{
-						DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
-						DataTable[REG_SELF_TEST_FAILED_SS] = PrevSubstate;
-						DataTable[REG_SELF_TEST_FAILED_RELAY] = SelectedTestArray[TestIndex];
-						ZcRD_RegisterReset();
-						CONTROL_SwitchToFault(DF_RELAY_SHORT);
-					}
-					TestIndex++;
-				}
-				else
-				{
-					switch(PrevSubstate)
-					{
-						case STS_InputRelayOpenCheck_1:
-							CONTROL_SetDeviceSubState(STS_InputRelayOpenCheck_2);
-							break;
-						case STS_InputRelayOpenCheck_2:
-							CONTROL_SetDeviceSubState(STS_InputRelayOpenCheck_3);
-							break;
-						case STS_InputRelayOpenCheck_3:
-							CONTROL_SetDeviceSubState(STS_InputRelayOpenCheck_4);
-							break;
-						case STS_InputRelayOpenCheck_4:
-							CONTROL_SetDeviceSubState(STS_MCRelayOpenCheck_1);
-							break;
-
-						case STS_MCRelayOpenCheck_1:
-							CONTROL_SetDeviceSubState(STS_MCRelayOpenCheck_2);
-							break;
-						case STS_MCRelayOpenCheck_2:
-							CONTROL_SetDeviceSubState(STS_MCRelayOpenCheck_3);
-							break;
-						case STS_MCRelayOpenCheck_3:
-							CONTROL_SetDeviceSubState(STS_MCRelayOpenCheck_4);
-							break;
-						case STS_MCRelayOpenCheck_4:
-							DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
-							ZcRD_RegisterReset();
-							CONTROL_SetDeviceState(DS_Enabled);
-							CONTROL_SetDeviceSubState(STS_None);
-							break;
-
-						default:
-							break;
-					}
-				}
-				break;
+		case STS_InputBoard:
+			if(SELFTEST_InputBoard((float *)&DataTable[REG_SELF_TEST_FAILED_RELAY]))
+			{
+				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
+				CONTROL_SetDeviceSubState(STS_ThermBoard);
+			}
+			break;
+
+		case STS_ThermBoard:
+			if(SELFTEST_ThermBoard((float *)&DataTable[REG_SELF_TEST_FAILED_RELAY]))
+			{
+				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
+				CONTROL_SetDeviceSubState(STS_HVBoard1);
+			}
+			break;
+
+		case STS_HVBoard1:
+			if(SELFTEST_HVBoard1((float *)&DataTable[REG_SELF_TEST_FAILED_RELAY]))
+			{
+				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
+				CONTROL_SetDeviceSubState(STS_HVBoard2);
+			}
+			break;
+
+		case STS_HVBoard2:
+			if(SELFTEST_HVBoard2((float *)&DataTable[REG_SELF_TEST_FAILED_RELAY]))
+			{
+				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
+
+				CONTROL_SetDeviceSubState(STS_None);
+				CONTROL_SetDeviceState(DS_Enabled);
+			}
+			break;
 
 			default:
 				break;
 		}
+
+		if(DataTable[REG_SELF_TEST_OP_RESULT] == OPRESULT_FAIL)
+		{
+			CONTROL_SetDeviceSubState(STS_None);
+			CONTROL_SwitchToFault(DF_SELF_TEST);
+		}
 	}
+}
+//-----------------------------------------------
+
+bool SELFTEST_InputBoard(pFloat32 RelayCode)
+{
+	for(int i = 0; i < ST_INPUT_BOARD_STAGES; i++)
+	{
+		if(!SELFTEST_CheckRelays(&SelfTestInputBoard[i][0], sizeof(SelfTestInputBoard[i]), RelayCode))
+				return false;
+	}
+
+	return true;
+}
+//-----------------------------------------------
+
+bool SELFTEST_ThermBoard(pFloat32 RelayCode)
+{
+	for(int i = 0; i < ST_THERM_BOARD_STAGES; i++)
+	{
+		if(!SELFTEST_CheckRelays(&SelfTestThermBoard[i][0], sizeof(SelfTestThermBoard[i]), RelayCode))
+				return false;
+	}
+
+	return true;
+}
+//-----------------------------------------------
+
+bool SELFTEST_HVBoard1(pFloat32 RelayCode)
+{
+	for(int i = 0; i < ST_HV_BOARD_STAGES; i++)
+	{
+		if(!SELFTEST_CheckRelays(&SelfTestHV1Board[i][0], sizeof(SelfTestHV1Board[i]), RelayCode))
+				return false;
+	}
+
+	return true;
+}
+//-----------------------------------------------
+
+bool SELFTEST_HVBoard2(pFloat32 RelayCode)
+{
+	for(int i = 0; i < ST_HV_BOARD_STAGES; i++)
+	{
+		if(!SELFTEST_CheckRelays(&SelfTestHV2Board[i][0], sizeof(SelfTestHV2Board[i]), RelayCode))
+				return false;
+	}
+
+	return true;
+}
+//-----------------------------------------------
+
+bool SELFTEST_CheckRelays(const Int16U *RelayArray, Int16U ArraySize, pFloat32 RelayCode)
+{
+	ZcRD_RegisterReset();
+
+	// Вкл. все реле
+	for(int i = 0; i < ArraySize; i++)
+		ZcRD_OutputValuesCompose(*(RelayArray + i), true);
+	ZcRD_RegisterFlushWrite();
+
+	DELAY_MS(COMM_DELAY_MS);
+
+	for(int i = 0; i < ArraySize; i++)
+	{
+		// Выкл. реле
+		ZcRD_OutputValuesCompose(*(RelayArray + i), false);
+		ZcRD_RegisterFlushWrite();
+		DELAY_MS(COMM_DELAY_MS);
+
+		if(LL_SelfTestMeasure() <= DataTable[REG_SFTST_V_ALLOWED_VOLTAGE])
+		{
+			*RelayCode = *(RelayArray + i);
+			return false;
+		}
+
+		//Вкл. реле
+		ZcRD_OutputValuesCompose(*(RelayArray + i), true);
+		ZcRD_RegisterFlushWrite();
+		DELAY_MS(COMM_DELAY_MS);
+
+		if(LL_SelfTestMeasure() >= DataTable[REG_SFTST_V_ALLOWED_VOLTAGE])
+		{
+			*RelayCode = *(RelayArray + i);
+			return false;
+		}
+	}
+	return true;
 }
 //-----------------------------------------------

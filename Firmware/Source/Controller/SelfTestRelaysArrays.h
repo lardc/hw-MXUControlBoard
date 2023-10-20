@@ -1,0 +1,27 @@
+#ifndef CONTROLLER_SELFTESTRELAYSARRAYS_H_
+#define CONTROLLER_SELFTESTRELAYSARRAYS_H_
+
+// Include
+//
+#include "CommutationTable.h"
+
+// Definitions
+//
+#define ST_INPUT_BOARD_STAGES	4
+#define ST_THERM_BOARD_STAGES	2
+#define ST_HV_BOARD_STAGES		4
+
+//
+#define ST_INPUT_BOARD_RELAYS	5
+#define ST_THERM_BOARD_RELAYS	8
+#define ST_HV_BOARD_RELAYS		17
+//
+
+// Arrays
+//
+extern const Int16U SelfTestInputBoard[ST_INPUT_BOARD_STAGES][ST_INPUT_BOARD_RELAYS];
+extern const Int16U SelfTestThermBoard[ST_THERM_BOARD_STAGES][ST_THERM_BOARD_RELAYS];
+extern const Int16U SelfTestHV1Board[ST_HV_BOARD_STAGES][ST_HV_BOARD_RELAYS];
+extern const Int16U SelfTestHV2Board[ST_HV_BOARD_STAGES][ST_HV_BOARD_RELAYS];
+
+#endif /* CONTROLLER_SELFTESTRELAYSARRAYS_H_ */
