@@ -138,23 +138,14 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 
 		case ACT_SET_ACTIVE:
 			if(CONTROL_State == DS_Enabled || CONTROL_State == DS_SafetyActive)
-			{
-				LL_SetStateSF_EN(TRUE);
 				CONTROL_SetDeviceState(DS_SafetyActive);
-			}
 			else
 				*pUserError = ERR_DEVICE_NOT_READY;
 			break;
 
 		case ACT_SET_INACTIVE:
 			if(CONTROL_State == DS_Enabled || CONTROL_State == DS_SafetyActive || CONTROL_State == DS_SafetyTrig)
-			{
-				if (CONTROL_State == DS_SafetyTrig)
-					ZcRD_RegisterReset();
-
-				LL_SetStateSF_EN(FALSE);
 				CONTROL_SetDeviceState(DS_Enabled);
-			}
 			else
 				*pUserError = ERR_DEVICE_NOT_READY;
 			break;
@@ -198,12 +189,13 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 
 void CONTROL_SafetyCheck()
 {
-	if(CONTROL_State == DS_SafetyActive && LL_IsSafetyTrig())
+	if(LL_IsSafetyTrig())
 	{
 		DELAY_MS(DataTable[REG_SAFETY_DELAY]);
 		ZcRD_RegisterReset();
 
-		CONTROL_SetDeviceState(DS_SafetyTrig);
+		if(CONTROL_State == DS_SafetyActive)
+			CONTROL_SetDeviceState(DS_SafetyTrig);
 	}
 }
 //-----------------------------------------------
