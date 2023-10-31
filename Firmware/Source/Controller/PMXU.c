@@ -41,20 +41,6 @@ bool PMXU_InFault()
 }
 //--------------------------------------
 
-bool PMXU_CheckWarning(Int16U* Register)
-{
-	if(DataTable[REG_PMXU_EMULATED])
-		return true;
-
-	if(BHL_ReadRegister(DataTable[REG_PMXU_CAN_ID], REG_PMXU_WARNING, Register))
-		return true;
-	else
-		CONTROL_SwitchToFault(DF_PMXU_INTERFACE);
-
-	return false;
-}
-//--------------------------------------
-
 bool PMXU_CheckState(PMXUState State)
 {
 	Int16U PMXU_State = 0;
@@ -65,15 +51,6 @@ bool PMXU_CheckState(PMXUState State)
 		CONTROL_SwitchToFault(DF_PMXU_INTERFACE);
 
 	return false;
-}
-//--------------------------------------
-
-bool PMXU_UpdateState(Int16U* Register)
-{
-	if(DataTable[REG_PMXU_EMULATED])
-		return true;
-
-	return BHL_ReadRegister(DataTable[REG_PMXU_CAN_ID], REG_PMXU_DEV_STATE, Register);
 }
 //--------------------------------------
 
