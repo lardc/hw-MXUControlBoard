@@ -62,6 +62,10 @@
 #define REG_SUB_STATE							199	// Регистр вспомогательного состояния
 
 #define REG_SELF_TEST_FAILED_RELAY				200	// Номер коммутации на котором обнаружен отказ
+
+#define REG_EXT_UNIT_ERROR_CODE					220	// Ошибка интерфейса PAU: код ошибки
+#define REG_EXT_UNIT_FUNCTION					221	// Ошибка интерфейса PAU: код функции
+#define REG_EXT_UNIT_EXT_DATA					222	// Ошибка интерфейса PAU: расширенная информация
 // -----------------------------
 #define REG_FWINFO_SLAVE_NID					256	// Device CAN slave node ID
 #define REG_FWINFO_MASTER_NID					257	// Device CAN master node ID (if presented)
