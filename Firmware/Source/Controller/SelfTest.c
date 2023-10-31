@@ -36,26 +36,23 @@ void SELFTEST_Process()
 		{
 		case STS_InputBoard:
 			if(SELFTEST_InputBoard((float *)&DataTable[REG_SELF_TEST_FAILED_RELAY]))
-			{
-				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
 				CONTROL_SetDeviceSubState(STS_ThermBoard);
-			}
+			else
+				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
 			break;
 
 		case STS_ThermBoard:
 			if(SELFTEST_ThermBoard((float *)&DataTable[REG_SELF_TEST_FAILED_RELAY]))
-			{
-				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
 				CONTROL_SetDeviceSubState(STS_HVBoard1);
-			}
+			else
+				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
 			break;
 
 		case STS_HVBoard1:
 			if(SELFTEST_HVBoard1((float *)&DataTable[REG_SELF_TEST_FAILED_RELAY]))
-			{
-				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
 				CONTROL_SetDeviceSubState(STS_HVBoard2);
-			}
+			else
+				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
 			break;
 
 		case STS_HVBoard2:
@@ -66,6 +63,8 @@ void SELFTEST_Process()
 				CONTROL_SetDeviceSubState(STS_None);
 				CONTROL_SetDeviceState(DS_Enabled);
 			}
+			else
+				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
 			break;
 
 			default:
