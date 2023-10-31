@@ -34,7 +34,6 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError);
 void CONTROL_UpdateWatchDog();
 void CONTROL_ResetToDefaultState();
 void CONTROL_SafetyCheck();
-void CONTROL_PMXU_CheckState();
 
 // Functions
 //
@@ -58,19 +57,9 @@ void CONTROL_Idle()
 {
 	SELFTEST_Process();
 	CONTROL_SafetyCheck();
-	CONTROL_PMXU_CheckState();
 
 	DEVPROFILE_ProcessRequests();
 	CONTROL_UpdateWatchDog();
-}
-//------------------------------------------
-
-void CONTROL_PMXU_CheckState()
-{
-	if(PMXU_InFault())
-		CONTROL_SwitchToFault(DF_PMXU);
-
-	PMXU_CheckWarning((Int16U *)&DataTable[REG_WARNING]);
 }
 //------------------------------------------
 
@@ -190,10 +179,12 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 		case ACT_COMM_THERMISTOR:
 		case ACT_COMM_NO_PE:
 		case ACT_COMM_NONE:
-			if (CONTROL_State == DS_Fault || PMXU_InFault())
+			if (CONTROL_State == DS_Fault)
 				*pUserError = ERR_OPERATION_BLOCKED;
 			else if(CONTROL_State == DS_None || !PMXU_IsReady())
 				*pUserError = ERR_DEVICE_NOT_READY;
+			else if(PMXU_InFault())
+				CONTROL_SwitchToFault(DF_PMXU);
 			else
 				COMM_Commutate(ActionID);
 			break;
