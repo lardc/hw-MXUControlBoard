@@ -16,6 +16,7 @@
 #include "Commutator.h"
 #include "ZcRegistersDriver.h"
 #include "PMXU.h"
+#include "BCCIMHighLevel.h"
 
 // Types
 //
@@ -65,6 +66,14 @@ void CONTROL_Idle()
 
 void CONTROL_SwitchToFault(Int16U Reason)
 {
+	if(Reason == DF_PMXU_INTERFACE)
+	{
+		BHLError Error = BHL_GetError();
+		DataTable[REG_EXT_UNIT_ERROR_CODE] = Error.ErrorCode;
+		DataTable[REG_EXT_UNIT_FUNCTION] = Error.Func;
+		DataTable[REG_EXT_UNIT_EXT_DATA] = Error.ExtData;
+	}
+
 	CONTROL_SetDeviceState(DS_Fault);
 	DataTable[REG_FAULT_REASON] = Reason;
 }
@@ -102,7 +111,10 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			if(CONTROL_State == DS_None)
 			{
 				if(PMXU_Enable())
-					CONTROL_SetDeviceState(DS_Enabled);
+				{
+					CONTROL_SetDeviceState(DS_InSelfTest);
+					CONTROL_SetDeviceSubState(STS_InputBoard);
+				}
 			}
 			else if(CONTROL_State != DS_Enabled)
 				*pUserError = ERR_OPERATION_BLOCKED;
@@ -132,7 +144,7 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			break;
 
 		case ACT_CLR_WARNING:
-			PMXU_ClearFault();
+			PMXU_ClearWarning();
 			DataTable[REG_WARNING] = WARNING_NONE;
 			break;
 
