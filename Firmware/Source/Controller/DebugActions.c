@@ -49,15 +49,6 @@ void DBACT_WriteSPI()
 }
 //-----------------------
 
-// Safety EN check
-void DBACT_ToggleSF_EN()
-{
-	LL_SetStateSF_EN(true);
-	DELAY_MS(1000);
-	LL_SetStateSF_EN(true);
-}
-//-----------------------
-
 // Turn self-test current ON, measure voltage with ADC, compare result with DataTable constant
 void DBACT_SelfTestMeasure()
 {

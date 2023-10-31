@@ -33,10 +33,6 @@ bool DIAG_HandleDiagnosticAction(uint16_t ActionID, uint16_t *pUserError)
 			ZcRD_RegisterReset();
 			break;
 
-		case ACT_SF_EN:
-			DBACT_ToggleSF_EN();
-			break;
-
 		case ACT_DBG_SELF_TEST_MEASURE:
 			DBACT_SelfTestMeasure();
 			break;
