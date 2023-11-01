@@ -35,6 +35,7 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError);
 void CONTROL_UpdateWatchDog();
 void CONTROL_ResetToDefaultState();
 void CONTROL_SafetyCheck();
+void CONTROL_PMXUCheckFault();
 
 // Functions
 //
@@ -58,9 +59,24 @@ void CONTROL_Idle()
 {
 	SELFTEST_Process();
 	CONTROL_SafetyCheck();
+	CONTROL_PMXUCheckFault();
 
 	DEVPROFILE_ProcessRequests();
 	CONTROL_UpdateWatchDog();
+}
+//------------------------------------------
+
+void CONTROL_PMXUCheckFault()
+{
+	static Int64U LinkPeriodCounter = 0;
+
+	if(CONTROL_TimeCounter >= LinkPeriodCounter)
+	{
+		LinkPeriodCounter = CONTROL_TimeCounter + TIME_PMXU_LINK;
+
+		if(PMXU_InFault())
+			CONTROL_SwitchToFault(DF_PMXU);
+	}
 }
 //------------------------------------------
 
@@ -186,8 +202,6 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 				*pUserError = ERR_OPERATION_BLOCKED;
 			else if(CONTROL_State == DS_None || !PMXU_IsReady())
 				*pUserError = ERR_DEVICE_NOT_READY;
-			else if(PMXU_InFault())
-				CONTROL_SwitchToFault(DF_PMXU);
 			else
 				COMM_Commutate(ActionID);
 			break;
