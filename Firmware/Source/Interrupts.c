@@ -44,14 +44,9 @@ void TIM7_IRQHandler()
 			LED_BlinkTimeCounter = 0;
 		}
 
+		CONTROL_HandleFrontPanelLamp(false);
+
 		TIM_StatusClear(TIM7);
 	}
-}
-//-----------------------------------------
-
-void EXTI9_5_IRQHandler()
-{
-	LL_SetStateSF_EN(true);
-	EXTI_FlagReset(EXTI_7);
 }
 //-----------------------------------------

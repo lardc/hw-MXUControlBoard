@@ -10,6 +10,7 @@
 //
 void LL_ToggleBoardLED();
 void LL_SetStateFPLed(bool State);
+void LL_ToggleFPLed();
 void LL_SetStateSFRedLed(bool State);
 void LL_SetStateSFGreenLed(bool State);
 void LL_WriteSPI(uint8_t SPI_Data[], uint8_t Data_Length);
@@ -19,5 +20,6 @@ void LL_SetStateSD_EN(bool State);
 float LL_SelfTestMeasure();
 bool LL_ClosedRelayFailed();
 bool LL_OpenRelayFailed();
+bool LL_IsSafetyTrig();
 
 #endif //__LOWLEVEL_H

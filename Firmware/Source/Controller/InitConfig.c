@@ -38,7 +38,7 @@ void INITCFG_ConfigIO()
 	GPIO_SetState(GPIO_FP_LED, false);
 	GPIO_SetState(GPIO_SPI_SS, true);
 	GPIO_SetState(GPIO_SPI_RST, true);
-	GPIO_SetState(GPIO_SPI_OE, true);
+	GPIO_SetState(GPIO_SPI_OE, false);
 	GPIO_SetState(GPIO_SF_RED_LED, true);
 	GPIO_SetState(GPIO_SF_GRN_LED, false);
 	GPIO_SetState(GPIO_SF_EN, false);
@@ -53,14 +53,6 @@ void INITCFG_ConfigIO()
 	GPIO_InitAltFunction(GPIO_ALT_SPI1_DAT, AltFn_5);
 }
 
-//------------------------------------------------
-
-void INITCFG_ConfigExtInterrupt()
-{
-	// Вход сигнала безопасности
-	EXTI_Config(EXTI_PA, EXTI_7, RISE_TRIG, 0);
-	EXTI_EnableInterrupt(EXTI9_5_IRQn, 0, true);
-}
 //------------------------------------------------
 
 void INITCFG_ConfigUART()

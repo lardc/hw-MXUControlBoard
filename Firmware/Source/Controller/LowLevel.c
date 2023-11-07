@@ -20,6 +20,12 @@ void LL_SetStateFPLed(bool State)
 }
 //-----------------------------
 
+void LL_ToggleFPLed()
+{
+	GPIO_Toggle(GPIO_FP_LED);
+}
+//-----------------------------
+
 void LL_SetStateSFRedLed(bool State)
 {
 	GPIO_SetState(GPIO_SF_RED_LED, State);
@@ -64,7 +70,7 @@ void LL_SPIReset()
 
 void LL_SetStateSF_EN(bool State)
 {
-	GPIO_SetState(GPIO_SF_EN, State);
+	GPIO_SetState(GPIO_SF_EN, !State);
 }
 //-----------------------------
 
@@ -99,5 +105,11 @@ bool LL_ClosedRelayFailed()
 bool LL_OpenRelayFailed()
 {
 	return LL_SelfTestMeasure() < DataTable[REG_SFTST_V_ALLOWED_VOLTAGE];
+}
+//-----------------------------
+
+bool LL_IsSafetyTrig()
+{
+	return !GPIO_GetState(GPIO_SF_TRIG);
 }
 //-----------------------------

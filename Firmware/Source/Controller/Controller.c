@@ -15,6 +15,8 @@
 #include "CommutationTable.h"
 #include "Commutator.h"
 #include "ZcRegistersDriver.h"
+#include "PMXU.h"
+#include "BCCIMHighLevel.h"
 
 // Types
 //
@@ -32,7 +34,8 @@ volatile Int64U CONTROL_TimeCounter = 0;
 bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError);
 void CONTROL_UpdateWatchDog();
 void CONTROL_ResetToDefaultState();
-void CONTROL_LogicProcess();
+void CONTROL_SafetyCheck();
+void CONTROL_PMXUCheckFault();
 
 // Functions
 //
@@ -54,25 +57,53 @@ void CONTROL_Init()
 
 void CONTROL_Idle()
 {
-	CONTROL_LogicProcess();
+	SELFTEST_Process();
+	CONTROL_SafetyCheck();
+	CONTROL_PMXUCheckFault();
 
 	DEVPROFILE_ProcessRequests();
 	CONTROL_UpdateWatchDog();
 }
 //------------------------------------------
 
+void CONTROL_PMXUCheckFault()
+{
+	static Int64U LinkPeriodCounter = 0;
+
+	if(CONTROL_TimeCounter >= LinkPeriodCounter)
+	{
+		LinkPeriodCounter = CONTROL_TimeCounter + TIME_PMXU_LINK;
+
+		if(PMXU_InFault())
+			CONTROL_SwitchToFault(DF_PMXU);
+	}
+}
+//------------------------------------------
+
 void CONTROL_SwitchToFault(Int16U Reason)
 {
-	CONTROL_SetDeviceState(DS_Fault, STS_None);
+	if(Reason == DF_PMXU_INTERFACE)
+	{
+		BHLError Error = BHL_GetError();
+		DataTable[REG_EXT_UNIT_ERROR_CODE] = Error.ErrorCode;
+		DataTable[REG_EXT_UNIT_FUNCTION] = Error.Func;
+		DataTable[REG_EXT_UNIT_EXT_DATA] = Error.ExtData;
+	}
+
+	CONTROL_SetDeviceState(DS_Fault);
 	DataTable[REG_FAULT_REASON] = Reason;
 }
 //------------------------------------------
 
-void CONTROL_SetDeviceState(DeviceState NewState, DeviceSelfTestState NewSubState)
+void CONTROL_SetDeviceState(DeviceState NewState)
 {
 	CONTROL_State = NewState;
 	DataTable[REG_DEV_STATE] = NewState;
+}
+//------------------------------------------
 
+void CONTROL_SetDeviceSubState(DeviceSelfTestState NewSubState)
+{
 	CONTROL_SubState = NewSubState;
 	DataTable[REG_SUB_STATE] = NewSubState;
 }
@@ -81,7 +112,8 @@ void CONTROL_SetDeviceState(DeviceState NewState, DeviceSelfTestState NewSubStat
 void CONTROL_ResetToDefaultState()
 {
 	CONTROL_ResetOutputRegisters();
-	CONTROL_SetDeviceState(DS_None, STS_None);
+	CONTROL_SetDeviceState(DS_None);
+	CONTROL_SetDeviceSubState(STS_None);
 }
 //------------------------------------------
 
@@ -94,19 +126,21 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 		case ACT_ENABLE_POWER:
 			if(CONTROL_State == DS_None)
 			{
-				DataTable[REG_SELF_TEST_FAILED_SS] = STS_None;
-				DataTable[REG_SELF_TEST_FAILED_RELAY] = 0;
-				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
-				CONTROL_SetDeviceState(DS_InProcess, STS_InputRelayCheck_1);
+				if(PMXU_Enable())
+				{
+					CONTROL_SetDeviceState(DS_InSelfTest);
+					CONTROL_SetDeviceSubState(STS_InputBoard);
+				}
 			}
-			else if(CONTROL_State != DS_Ready)
+			else if(CONTROL_State != DS_Enabled)
 				*pUserError = ERR_OPERATION_BLOCKED;
 			break;
 
 		case ACT_DISABLE_POWER:
-			if(CONTROL_State == DS_Ready)
+			if(CONTROL_State == DS_Enabled)
 			{
-				CONTROL_SetDeviceState(DS_None, STS_None);
+				if(PMXU_Disable())
+					CONTROL_SetDeviceState(DS_None);
 			}
 			else if(CONTROL_State != DS_None)
 					*pUserError = ERR_OPERATION_BLOCKED;
@@ -115,32 +149,58 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 		case ACT_CLR_FAULT:
 			if (CONTROL_State == DS_Fault)
 			{
-				CONTROL_SetDeviceState(DS_None, STS_None);
-				DataTable[REG_FAULT_REASON] = DF_NONE;
+				if(PMXU_ClearFault())
+				{
+					CONTROL_SetDeviceState(DS_None);
+					CONTROL_SetDeviceSubState(STS_None);
+
+					DataTable[REG_FAULT_REASON] = DF_NONE;
+				}
 			}
 			break;
 
 		case ACT_CLR_WARNING:
+			PMXU_ClearWarning();
 			DataTable[REG_WARNING] = WARNING_NONE;
 			break;
 
-		case ACT_SF_DEACTIVATE:
-			LL_SetStateSF_EN(false);
+		case ACT_SET_ACTIVE:
+			if(CONTROL_State == DS_Enabled || CONTROL_State == DS_SafetyActive)
+				CONTROL_SetDeviceState(DS_SafetyActive);
+			else
+				*pUserError = ERR_DEVICE_NOT_READY;
 			break;
 
-		case ACT_COMM_ILEAK_GATE_EMITTER_POS_PULSE:
-		case ACT_COMM_ILEAK_GATE_EMITTER_NEG_PULSE:
-		case ACT_COMM_UTH_GATE_EMITTER:
-		case ACT_COMM_Q_GATE:
-		case ACT_COMM_USAT_COLLECTOR_EMITTER:
+		case ACT_SET_INACTIVE:
+			if(CONTROL_State == DS_Enabled || CONTROL_State == DS_SafetyActive || CONTROL_State == DS_SafetyTrig)
+				CONTROL_SetDeviceState(DS_Enabled);
+			else
+				*pUserError = ERR_DEVICE_NOT_READY;
+			break;
+
+		case ACT_SELFT_TEST:
+			if(CONTROL_State == DS_Enabled)
+			{
+				CONTROL_SetDeviceState(DS_InSelfTest);
+				CONTROL_SetDeviceSubState(STS_InputBoard);
+			}
+			else if(CONTROL_State != DS_Enabled)
+				*pUserError = ERR_OPERATION_BLOCKED;
+			break;
+
+		case ACT_COMM_IGES_POS_PULSE:
+		case ACT_COMM_IGES_NEG_PULSE:
+		case ACT_COMM_UGE_TH:
+		case ACT_COMM_QG:
+		case ACT_COMM_UCE_SAT:
 		case ACT_COMM_UFW_CHOPPER_DIODE:
-		case ACT_COMM_ILEAK_COLLECTOR_EMITTER:
+		case ACT_COMM_ICES:
 		case ACT_COMM_THERMISTOR:
 		case ACT_COMM_NO_PE:
 		case ACT_COMM_NONE:
 			if (CONTROL_State == DS_Fault)
 				*pUserError = ERR_OPERATION_BLOCKED;
-			else if(CONTROL_State == DS_None)
+			else if(CONTROL_State == DS_None || !PMXU_IsReady())
 				*pUserError = ERR_DEVICE_NOT_READY;
 			else
 				COMM_Commutate(ActionID);
@@ -153,10 +213,16 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 }
 //-----------------------------------------------
 
-void CONTROL_LogicProcess()
+void CONTROL_SafetyCheck()
 {
-	if(CONTROL_State == DS_InProcess)
-		SELFTEST_Process();
+	if(LL_IsSafetyTrig())
+	{
+		DELAY_MS(DataTable[REG_SAFETY_DELAY]);
+		ZcRD_RegisterReset();
+
+		if(CONTROL_State == DS_SafetyActive)
+			CONTROL_SetDeviceState(DS_SafetyTrig);
+	}
 }
 //-----------------------------------------------
 
@@ -179,3 +245,34 @@ void CONTROL_ResetOutputRegisters()
 	DEVPROFILE_ResetEPReadState();
 }
 //------------------------------------------
+
+void CONTROL_HandleFrontPanelLamp(bool Forced)
+{
+	static Int64U FPLampCounter = 0;
+
+	if(CONTROL_State == DS_Fault)
+	{
+		if(++FPLampCounter > TIME_FP_LED_FAULT_BLINK)
+		{
+			LL_ToggleFPLed();
+			FPLampCounter = 0;
+		}
+	}
+	else
+	{
+		if(CONTROL_State != DS_None)
+		{
+			if(Forced)
+			{
+				LL_SetStateFPLed(true);;
+				FPLampCounter = CONTROL_TimeCounter + TIME_FP_LED_ON_STATE;
+			}
+			else
+			{
+				if(CONTROL_TimeCounter >= FPLampCounter)
+					LL_SetStateFPLed(false);
+			}
+		}
+	}
+}
+//-----------------------------------------------

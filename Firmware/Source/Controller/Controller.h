@@ -10,39 +10,23 @@
 //
 typedef enum __DeviceState
 {
-	DS_None = 0,
-	DS_Fault = 1,
-	DS_Disabled = 2,
-	DS_Ready = 3,
-	DS_InProcess = 4
+	DS_None				= 0,
+	DS_Fault			= 1,
+	DS_Disabled			= 2,
+	DS_Enabled			= 3,
+	DS_SafetyActive		= 4,
+	DS_SafetyTrig		= 5,
+	DS_InSelfTest		= 6
 } DeviceState;
 
 typedef enum __DeviceSelfTestState
 {
 	STS_None = 0,
-	STS_CurrentMeasure = 1,
-	STS_OpenRelayCheck = 2,
-	STS_Get_ArrayLenght = 3,
 
-	STS_InputRelayCheck_1 = 10,
-	STS_InputRelayCheck_2,
-	STS_InputRelayCheck_3,
-	STS_InputRelayCheck_4,
-
-	STS_MCRelayCheck_1 = 15,
-	STS_MCRelayCheck_2,
-	STS_MCRelayCheck_3,
-	STS_MCRelayCheck_4,
-
-	STS_InputRelayOpenCheck_1 = 20,
-	STS_InputRelayOpenCheck_2,
-	STS_InputRelayOpenCheck_3,
-	STS_InputRelayOpenCheck_4,
-
-	STS_MCRelayOpenCheck_1 = 25,
-	STS_MCRelayOpenCheck_2,
-	STS_MCRelayOpenCheck_3,
-	STS_MCRelayOpenCheck_4,
+	STS_InputBoard 	= 10,
+	STS_ThermBoard 	= 20,
+	STS_HVBoard1	= 30,
+	STS_HVBoard2	= 40
 
 } DeviceSelfTestState;
 
@@ -59,11 +43,13 @@ void CONTROL_Init();
 void CONTROL_Idle();
 void CONTROL_SaveTestResult();
 void CONTROL_SwitchToFault(Int16U Reason);
-void CONTROL_SetDeviceState(DeviceState NewState, DeviceSelfTestState NewSubState);
+void CONTROL_SetDeviceState(DeviceState NewState);
+void CONTROL_SetDeviceSubState(DeviceSelfTestState NewSubState);
 void CONTROL_ResetToDefaultState();
 bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError);
 void CONTROL_LogicProcess();
 void CONTROL_UpdateWatchDog();
 void CONTROL_ResetOutputRegisters();
+void CONTROL_HandleFrontPanelLamp(bool Forced);
 
 #endif // __CONTROLLER_H
