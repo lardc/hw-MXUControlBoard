@@ -12,5 +12,6 @@
 //
 void COMM_DisconnectPE();
 void COMM_Commutate(Int16U ActionID);
+void COMM_Default();
 
 #endif // __COMMUTATOR_H

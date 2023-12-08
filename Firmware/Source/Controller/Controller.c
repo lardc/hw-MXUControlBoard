@@ -94,6 +94,7 @@ void CONTROL_SetDeviceSubState(DeviceSelfTestState NewSubState)
 void CONTROL_ResetToDefaultState()
 {
 	CONTROL_ResetOutputRegisters();
+	COMM_Default();
 	CONTROL_SetDeviceState(DS_None);
 	CONTROL_SetDeviceSubState(STS_None);
 }
@@ -110,8 +111,8 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			{
 				if(PMXU_Enable())
 				{
-					CONTROL_SetDeviceState(DS_InSelfTest);
-					CONTROL_SetDeviceSubState(STS_InputBoard);
+					CONTROL_SetDeviceState(DS_Enabled);
+					CONTROL_SetDeviceSubState(STS_None);
 				}
 			}
 			else if(CONTROL_State != DS_Enabled)
@@ -122,7 +123,10 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			if(CONTROL_State == DS_Enabled)
 			{
 				if(PMXU_Disable())
+				{
+					COMM_Default();
 					CONTROL_SetDeviceState(DS_None);
+				}
 			}
 			else if(CONTROL_State != DS_None)
 					*pUserError = ERR_OPERATION_BLOCKED;
@@ -202,7 +206,7 @@ void CONTROL_SafetyCheck()
 	if(LL_IsSafetyTrig() && CONTROL_State == DS_SafetyActive)
 	{
 		DELAY_MS(DataTable[REG_SAFETY_DELAY]);
-		ZcRD_RegisterReset();
+		COMM_Default();
 
 		CONTROL_SetDeviceState(DS_SafetyTrig);
 	}

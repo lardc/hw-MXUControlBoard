@@ -14,13 +14,14 @@
 #include "PMXU.h"
 #include "Constraints.h"
 
-// Variables
-//
-static Int16U OldActionID = ACT_COMM_NONE;
-static Int16U OldPostion = 0;
-
 // Functions
 //
+void COMM_Default()
+{
+	ZcRD_RegisterReset();
+}
+// ----------------------------------------
+
 void COMM_DisconnectPE()
 {
 	ZcRD_OutputValuesCompose(C_POT_PE1, TRUE);
@@ -77,17 +78,10 @@ void COMM_DisconnectPE()
 
 void COMM_Commutate(Int16U ActionID)
 {
-	if (ActionID == OldActionID && \
-			(DataTable[REG_DUT_POSITION] == OldPostion || \
-					OldActionID == ACT_COMM_NONE || OldActionID == ACT_COMM_NO_PE || OldActionID == ACT_COMM_THERMISTOR))
-		return;
-
 	switch(ActionID)
 	{
 		case ACT_COMM_NONE:
-			OldPostion = 0;
-			ZcRD_RegisterReset();
-
+			COMM_Default();
 			PMXU_SwitchCommutation(ACT_PMXU_COMM_PE);
 			break;
 
@@ -96,9 +90,7 @@ void COMM_Commutate(Int16U ActionID)
 				if (DataTable[REG_DUT_POSITION] == DUT_POSITION_1)
 				{
 					ZcRD_OutputValuesReset();
-
 					COMM_DisconnectPE();
-					OldPostion = DUT_POSITION_1;
 
 					ZcRD_OutputValuesCompose(OL_C_POT_COMM1, TRUE);
 					ZcRD_OutputValuesCompose(OL_C_POT_COMM2, TRUE);
@@ -134,10 +126,7 @@ void COMM_Commutate(Int16U ActionID)
 				else if (DataTable[REG_DUT_POSITION] == DUT_POSITION_2)
 				{
 					ZcRD_OutputValuesReset();
-
 					COMM_DisconnectPE();
-
-					OldPostion = DUT_POSITION_2;
 
 					ZcRD_OutputValuesCompose(OL_C_POT_2_COMM1, TRUE);
 					ZcRD_OutputValuesCompose(OL_C_POT_2_COMM2, TRUE);
@@ -178,10 +167,7 @@ void COMM_Commutate(Int16U ActionID)
 				if (DataTable[REG_DUT_POSITION] == DUT_POSITION_1)
 				{
 					ZcRD_OutputValuesReset();
-
 					COMM_DisconnectPE();
-
-					OldPostion = DUT_POSITION_1;
 
 					ZcRD_OutputValuesCompose(OL_C_POT_COMM1, TRUE);
 					ZcRD_OutputValuesCompose(OL_C_POT_COMM2, TRUE);
@@ -217,10 +203,7 @@ void COMM_Commutate(Int16U ActionID)
 				else if (DataTable[REG_DUT_POSITION] == DUT_POSITION_2)
 				{
 					ZcRD_OutputValuesReset();
-
 					COMM_DisconnectPE();
-
-					OldPostion = DUT_POSITION_2;
 
 					ZcRD_OutputValuesCompose(OL_C_POT_2_COMM1, TRUE);
 					ZcRD_OutputValuesCompose(OL_C_POT_2_COMM2, TRUE);
@@ -261,10 +244,7 @@ void COMM_Commutate(Int16U ActionID)
 				if (DataTable[REG_DUT_POSITION] == DUT_POSITION_1)
 				{
 					ZcRD_OutputValuesReset();
-
 					COMM_DisconnectPE();
-
-					OldPostion = DUT_POSITION_1;
 
 					ZcRD_OutputValuesCompose(OL_C_POT_COMM1, TRUE);
 					ZcRD_OutputValuesCompose(OL_C_POT_COMM2, TRUE);
@@ -306,10 +286,7 @@ void COMM_Commutate(Int16U ActionID)
 				else if (DataTable[REG_DUT_POSITION] == DUT_POSITION_2)
 				{
 					ZcRD_OutputValuesReset();
-
 					COMM_DisconnectPE();
-
-					OldPostion = DUT_POSITION_2;
 
 					ZcRD_OutputValuesCompose(OL_C_POT_2_COMM1, TRUE);
 					ZcRD_OutputValuesCompose(OL_C_POT_2_COMM2, TRUE);
@@ -377,8 +354,6 @@ void COMM_Commutate(Int16U ActionID)
 						ZcRD_OutputValuesCompose(IL_GT_GE_COMM, TRUE);
 
 						ZcRD_RegisterFlushWrite();
-
-						OldPostion = DUT_POSITION_1;
 					}
 				}
 				else if (DataTable[REG_DUT_POSITION] == DUT_POSITION_2)
@@ -406,8 +381,6 @@ void COMM_Commutate(Int16U ActionID)
 						//
 
 						ZcRD_RegisterFlushWrite();
-
-						OldPostion = DUT_POSITION_2;
 					}
 				}
 			}
@@ -454,8 +427,6 @@ void COMM_Commutate(Int16U ActionID)
 						//
 
 						ZcRD_RegisterFlushWrite();
-
-						OldPostion = DUT_POSITION_1;
 					}
 				}
 				else if (DataTable[REG_DUT_POSITION] == DUT_POSITION_2)
@@ -497,8 +468,6 @@ void COMM_Commutate(Int16U ActionID)
 						//
 
 						ZcRD_RegisterFlushWrite();
-
-						OldPostion = DUT_POSITION_2;
 					}
 				}
 			}
@@ -511,10 +480,7 @@ void COMM_Commutate(Int16U ActionID)
 					if(PMXU_SwitchCommutation(ACT_PMXU_COMM_VF_POS1))
 					{
 						ZcRD_OutputValuesReset();
-
 						COMM_DisconnectPE();
-
-						OldPostion = DUT_POSITION_1;
 
 						ZcRD_OutputValuesCompose(OL_C_POT_COMM1, TRUE);
 						ZcRD_OutputValuesCompose(OL_C_POT_COMM2, TRUE);
@@ -542,10 +508,7 @@ void COMM_Commutate(Int16U ActionID)
 					if(PMXU_SwitchCommutation(ACT_PMXU_COMM_VF_POS2))
 					{
 						ZcRD_OutputValuesReset();
-
 						COMM_DisconnectPE();
-
-						OldPostion = DUT_POSITION_2;
 
 						ZcRD_OutputValuesCompose(OL_C_POT_2_COMM1, TRUE);
 						ZcRD_OutputValuesCompose(OL_C_POT_2_COMM2, TRUE);
@@ -581,8 +544,6 @@ void COMM_Commutate(Int16U ActionID)
 						COMM_DisconnectPE();
 						ZcRD_OutputValuesCompose(MC_G_GE, TRUE);
 						ZcRD_RegisterFlushWrite();
-
-						OldPostion = DUT_POSITION_1;
 					}
 				}
 				else if (DataTable[REG_DUT_POSITION] == DUT_POSITION_2)
@@ -593,8 +554,6 @@ void COMM_Commutate(Int16U ActionID)
 						COMM_DisconnectPE();
 						ZcRD_OutputValuesCompose(MC_G_2_GE, TRUE);
 						ZcRD_RegisterFlushWrite();
-
-						OldPostion = DUT_POSITION_2;
 					}
 				}
 			}
@@ -603,10 +562,7 @@ void COMM_Commutate(Int16U ActionID)
 		case ACT_COMM_THERMISTOR:
 			{
 				ZcRD_OutputValuesReset();
-
 				COMM_DisconnectPE();
-
-				OldPostion = 0;
 
 				ZcRD_OutputValuesCompose(OL_T1_COMM1, TRUE);
 				ZcRD_OutputValuesCompose(OL_T1_COMM2, TRUE);
@@ -635,7 +591,6 @@ void COMM_Commutate(Int16U ActionID)
 
 		case ACT_COMM_NO_PE:
 			{
-				OldPostion = 0;
 				ZcRD_OutputValuesReset();
 				COMM_DisconnectPE();
 				ZcRD_RegisterFlushWrite();
@@ -647,7 +602,5 @@ void COMM_Commutate(Int16U ActionID)
 	}
 
 	DELAY_MS(COMM_DELAY_MS);
-
-	OldActionID = ActionID;
 }
 // ----------------------------------------
