@@ -31,13 +31,13 @@ bool PMXU_Disable()
 
 bool PMXU_IsReady()
 {
-	return PMXU_CheckState(PS_Ready);
+	return (DataTable[REG_PMXU_EMULATED]) ? true : PMXU_CheckState(PS_Ready);
 }
 //--------------------------------------
 
 bool PMXU_InFault()
 {
-	return PMXU_CheckState(PS_Fault);
+	return (DataTable[REG_PMXU_EMULATED]) ? false : PMXU_CheckState(PS_Fault);
 }
 //--------------------------------------
 
