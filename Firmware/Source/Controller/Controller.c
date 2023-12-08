@@ -11,7 +11,6 @@
 #include "DebugActions.h"
 #include "Diagnostic.h"
 #include "BCCIxParams.h"
-#include "SelfTest.h"
 #include "CommutationTable.h"
 #include "Commutator.h"
 #include "ZcRegistersDriver.h"
@@ -56,7 +55,6 @@ void CONTROL_Init()
 
 void CONTROL_Idle()
 {
-	SELFTEST_Process();
 	CONTROL_SafetyCheck();
 
 	DEVPROFILE_ProcessRequests();
