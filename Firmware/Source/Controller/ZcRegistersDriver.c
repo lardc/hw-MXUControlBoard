@@ -21,8 +21,7 @@ void ZcRD_RegisterReset()
 {
 	// Set values to zero
 	ZcRD_OutputValuesReset();
-	// Reset physical register
-	LL_SPIReset();
+	ZcRD_RegisterFlushWrite();
 
 	DELAY_US(COMM_DELAY_MS * 1000L);
 }
