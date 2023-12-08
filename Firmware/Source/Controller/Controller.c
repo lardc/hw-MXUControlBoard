@@ -199,13 +199,12 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 
 void CONTROL_SafetyCheck()
 {
-	if(LL_IsSafetyTrig())
+	if(LL_IsSafetyTrig() && CONTROL_State == DS_SafetyActive)
 	{
 		DELAY_MS(DataTable[REG_SAFETY_DELAY]);
 		ZcRD_RegisterReset();
 
-		if(CONTROL_State == DS_SafetyActive)
-			CONTROL_SetDeviceState(DS_SafetyTrig);
+		CONTROL_SetDeviceState(DS_SafetyTrig);
 	}
 }
 //-----------------------------------------------
