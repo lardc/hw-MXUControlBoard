@@ -34,6 +34,10 @@
 #define SPI1_LSB_FIRST					false		// Передача младшим битов вперед
 // ----------------------------------------------
 
+// Device ID
+//
+#define DEVICE_ID						101
+
 #define COMM_MODE_2
 
 #endif // __SYSCONFIG_H

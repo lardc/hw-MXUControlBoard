@@ -14,21 +14,21 @@
 #define ACT_DBG_SPI_RST							25	// Сброс сдвиговых регистров
 #define ACT_DBG_SELF_TEST_MEASURE				26	// Измерение значения напряжение системы самодиагностики
 
-#define ACT_COMM_NONE							100 // Отключение всех реле
-#define ACT_COMM_IGES_POS_PULSE					101 // Режим измерения тока утечки затвора-эмиттера (положительный импульс)
-#define ACT_COMM_IGES_NEG_PULSE					102 // Режим измерения тока утечки затвора-эмиттера (отрицательный импульс)
-#define ACT_COMM_UGE_TH							103 // Режим измерения порогового напряжения затвор-эмиттер
-#define ACT_COMM_QG								104 // Режим измерения заряда затвора (положительный импульс)
-#define ACT_COMM_UCE_SAT						105 // Режим измерения напряжения насыщения коллектор-эмиттер
-#define ACT_COMM_UFW_CHOPPER_DIODE				106 // Режим измерения прямого напряжения обратно-параллельного диода и диода чоппера
-#define ACT_COMM_ICES							107 // Режим измерения тока утечки коллектор-эмиттер
-#define ACT_COMM_THERMISTOR						108 // Режим измерения сопротивления термистора
-#define ACT_COMM_NO_PE							109 // Отключения защитного заземления
+#define ACT_SET_ACTIVE							100	// Команда активации контура безопасности
+#define ACT_SET_INACTIVE						101	// Команда деактивации контура безопасности
 
-#define ACT_SELFT_TEST							110	// Запуск режима самотестирования
+#define ACT_COMM_NONE							110 // Отключение всех реле
+#define ACT_COMM_IGES_POS_PULSE					111 // Режим измерения тока утечки затвора-эмиттера (положительный импульс)
+#define ACT_COMM_IGES_NEG_PULSE					112 // Режим измерения тока утечки затвора-эмиттера (отрицательный импульс)
+#define ACT_COMM_UGE_TH							113 // Режим измерения порогового напряжения затвор-эмиттер
+#define ACT_COMM_QG								114 // Режим измерения заряда затвора (положительный импульс)
+#define ACT_COMM_UCE_SAT						115 // Режим измерения напряжения насыщения коллектор-эмиттер
+#define ACT_COMM_UFW_CHOPPER_DIODE				116 // Режим измерения прямого напряжения обратно-параллельного диода и диода чоппера
+#define ACT_COMM_ICES							117 // Режим измерения тока утечки коллектор-эмиттер
+#define ACT_COMM_THERMISTOR						118 // Режим измерения сопротивления термистора
+#define ACT_COMM_NO_PE							119 // Отключения защитного заземления
 
-#define ACT_SET_ACTIVE							120	// Команда активации контура безопасности
-#define ACT_SET_INACTIVE						121	// Команда деактивации контура безопасности
+#define ACT_SELFT_TEST							120	// Запуск режима самотестирования
 
 #define ACT_SAVE_TO_ROM							200	// Сохранение пользовательских данных во FLASH процессора
 #define ACT_RESTORE_FROM_ROM					201	// Восстановление данных из FLASH
@@ -69,7 +69,8 @@
 // -----------------------------
 #define REG_FWINFO_SLAVE_NID					256	// Device CAN slave node ID
 #define REG_FWINFO_MASTER_NID					257	// Device CAN master node ID (if presented)
-// 258 - 259
+#define REG_DEVICE_ID							258	// Device ID
+// 259
 #define REG_FWINFO_STR_LEN						260	// Length of the information string record
 #define REG_FWINFO_STR_BEGIN					261	// Begining of the information string record
 
@@ -82,8 +83,8 @@
 //  Fault and disable codes
 #define DF_NONE									0
 #define DF_SELF_TEST							1	// Проблема реле
-#define DF_PMXU_INTERFACE						3	// Проблема связи по интерфейсу с PMXU
-#define DF_PMXU									4	// PMXU в состоянии Fault
+#define DF_PMXU_INTERFACE						2	// Проблема связи по интерфейсу с PMXU
+#define DF_PMXU									3	// PMXU в состоянии Fault
 
 // Problem
 #define PROBLEM_NONE							0
@@ -109,23 +110,21 @@
 #define ACT_PMXU_CLR_FAULT						3	// Очистка всех fault
 #define ACT_PMXU_CLR_WARNING					4	// Очистка всех warning
 //
-#define ACT_PMXU_COMM_PE						100 // Отключение всех реле, замыкание шин на PE
-
-#define ACT_PMXU_COMM_ICES_POS1					101 // Режим измерения тока утечки коллектор-эмиттер, позиция 1
-#define ACT_PMXU_COMM_ICES_POS2					102 // Режим измерения тока утечки коллектор-эмиттер, позиция 2
-
-#define ACT_PMXU_COMM_QG_POS1					103 // Режим измерения заряда затвора, позиция 1
-#define ACT_PMXU_COMM_QG_POS2					104 // Режим измерения заряда затвора, позиция 2
-
-#define ACT_PMXU_COMM_VCESAT_POS1				105 // Режим измерения напряжения насыщения коллектор-эмиттер IGBT транзисторов, позиция 1
-#define ACT_PMXU_COMM_VCESAT_POS2				106 // Режим измерения напряжения насыщения коллектор-эмиттер IGBT транзисторов, позиция 2
-
-#define ACT_PMXU_COMM_VF_POS1					107 // Режим измерения постоянного прямого напряжения диода чоппера и обратно-параллельного диода, позиция 1
-#define ACT_PMXU_COMM_VF_POS2					108 // Режим измерения постоянного прямого напряжения диода чоппера и обратно-параллельного диода, позиция 2
+#define ACT_PMXU_SET_ACTIVE						100	// Команда активации контура безопасности
+#define ACT_PMXU_SET_INACTIVE					101	// Команда деактивации контура безопасности
+//
+#define ACT_PMXU_COMM_PE						110 // Отключение всех реле, замыкание шин на PE
+#define ACT_PMXU_COMM_ICES						111 // Режим измерения тока утечки коллектор-эмиттер
+#define ACT_PMXU_COMM_VCESAT					112 // Режим измерения напряжения насыщения коллектор-эмиттер IGBT транзисторов
+#define ACT_PMXU_COMM_VF						113 // Режим измерения постоянного прямого напряжения диода чоппера и обратно-параллельного диода
+#define ACT_PMXU_COMM_QG						114 // Режим измерения заряда затвора
+#define ACT_PMXU_COMM_NO_PE						115 // Отключение всех реле
 //
 
 // PMXU registers
 //
+#define REG_PMXU_DUT_POSITION					128	// Регистр выбора позции тестируемого прибора (1 или 2)
+
 #define REG_PMXU_DEV_STATE						192	// Регистр состояния
 #define REG_PMXU_FAULT_REASON					193	// Регистр Fault
 #define REG_PMXU_DISABLE_REASON					194	// Регистр Disable
