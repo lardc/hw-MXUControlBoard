@@ -135,11 +135,10 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 		case ACT_CLR_FAULT:
 			if (CONTROL_State == DS_Fault)
 			{
-				if(PMXU_ClearFault())
+				if(PMXU_ClearFault() && PMXU_Disable())
 				{
 					CONTROL_SetDeviceState(DS_None);
 					CONTROL_SetDeviceSubState(STS_None);
-
 					DataTable[REG_FAULT_REASON] = DF_NONE;
 				}
 			}
@@ -152,14 +151,23 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 
 		case ACT_SET_ACTIVE:
 			if(CONTROL_State == DS_Enabled || CONTROL_State == DS_SafetyActive)
-				CONTROL_SetDeviceState(DS_SafetyActive);
+			{
+				if(PMXU_SafetyActivate())
+					CONTROL_SetDeviceState(DS_SafetyActive);
+			}
 			else
 				*pUserError = ERR_DEVICE_NOT_READY;
 			break;
 
 		case ACT_SET_INACTIVE:
 			if(CONTROL_State == DS_Enabled || CONTROL_State == DS_SafetyActive || CONTROL_State == DS_SafetyTrig)
-				CONTROL_SetDeviceState(DS_Enabled);
+			{
+				if(PMXU_SafetyDeactivate())
+				{
+					LL_SetStateFPLed(false);
+					CONTROL_SetDeviceState(DS_Enabled);
+				}
+			}
 			else
 				*pUserError = ERR_DEVICE_NOT_READY;
 			break;
@@ -187,9 +195,12 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			if (CONTROL_State == DS_Fault)
 				*pUserError = ERR_OPERATION_BLOCKED;
 			else if(CONTROL_State == DS_None || !PMXU_IsReady())
+			{
+				if(PMXU_InFault())
+					CONTROL_SwitchToFault(DF_PMXU);
+
 				*pUserError = ERR_DEVICE_NOT_READY;
-			else if(PMXU_InFault())
-				CONTROL_SwitchToFault(DF_PMXU);
+			}
 			else
 				COMM_Commutate(ActionID);
 			break;
@@ -206,8 +217,9 @@ void CONTROL_SafetyCheck()
 	if(LL_IsSafetyTrig() && CONTROL_State == DS_SafetyActive)
 	{
 		DELAY_MS(DataTable[REG_SAFETY_DELAY]);
-		COMM_Default();
 
+		COMM_Default();
+		LL_SetStateFPLed(true);
 		CONTROL_SetDeviceState(DS_SafetyTrig);
 	}
 }
@@ -247,19 +259,30 @@ void CONTROL_HandleFrontPanelLamp(bool Forced)
 	}
 	else
 	{
-		if(CONTROL_State != DS_None)
+		if(CONTROL_State != DS_SafetyTrig)
 		{
-			if(Forced)
+			if(CONTROL_State == DS_None && FPLampCounter)
 			{
-				LL_SetStateFPLed(true);;
-				FPLampCounter = CONTROL_TimeCounter + TIME_FP_LED_ON_STATE;
+				LL_SetStateFPLed(false);
+				FPLampCounter = 0;
 			}
-			else
+
+			if(CONTROL_State != DS_None)
 			{
-				if(CONTROL_TimeCounter >= FPLampCounter)
-					LL_SetStateFPLed(false);
+				if(Forced)
+				{
+					LL_SetStateFPLed(true);
+					FPLampCounter = CONTROL_TimeCounter + TIME_FP_LED_ON_STATE;
+				}
+				else
+				{
+					if(CONTROL_TimeCounter >= FPLampCounter)
+						LL_SetStateFPLed(false);
+				}
 			}
 		}
+		else
+			LL_SetStateFPLed(true);
 	}
 }
 //-----------------------------------------------

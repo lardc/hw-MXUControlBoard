@@ -8,11 +8,12 @@
 #include "DeviceObjectDictionary.h"
 #include "BCCIMHighLevel.h"
 #include "LowLevel.h"
+#include "Delay.h"
 
 // Function prototypes
 //
-bool PMXU_CheckState(PMXUState State);
 bool PMXU_CallAction(Int16U Action);
+bool PMXU_WriteReg(Int16U RegAddress, Int16U RegData);
 
 
 // Functions
@@ -31,7 +32,7 @@ bool PMXU_Disable()
 
 bool PMXU_IsReady()
 {
-	return (DataTable[REG_PMXU_EMULATED]) ? true : PMXU_CheckState(PS_Ready);
+	return (DataTable[REG_PMXU_EMULATED]) ? true : (PMXU_CheckState(PS_Enabled) || PMXU_CheckState(PS_SafetyActive));
 }
 //--------------------------------------
 
@@ -54,9 +55,12 @@ bool PMXU_CheckState(PMXUState State)
 }
 //--------------------------------------
 
-bool PMXU_SwitchCommutation(Int16U CommutationNumber)
+bool PMXU_SwitchCommutation(Int16U Position, Int16U CommutationNumber)
 {
-	return PMXU_CallAction(CommutationNumber);
+	if(PMXU_WriteReg(REG_PMXU_DUT_POSITION, Position))
+		return PMXU_CallAction(CommutationNumber);
+
+	return false;
 }
 //--------------------------------------
 
@@ -72,12 +76,55 @@ bool PMXU_ClearWarning()
 }
 //--------------------------------------
 
+bool PMXU_SafetyActivate()
+{
+	if(PMXU_CallAction(ACT_PMXU_SET_ACTIVE))
+	{
+		DELAY_MS(10);
+
+		if(PMXU_CheckState(DS_SafetyActive))
+			return true;
+	}
+
+	return false;
+}
+//--------------------------------------
+
+bool PMXU_SafetyDeactivate()
+{
+	if(PMXU_CallAction(ACT_PMXU_SET_INACTIVE))
+	{
+		DELAY_MS(10);
+
+		if(PMXU_CheckState(DS_Enabled))
+			return true;
+	}
+
+	return false;
+}
+//--------------------------------------
+
 bool PMXU_CallAction(Int16U Action)
 {
 	if(DataTable[REG_PMXU_EMULATED])
 		return true;
 
 	if(BHL_Call(DataTable[REG_PMXU_CAN_ID], Action))
+		return true;
+	else
+	{
+		CONTROL_SwitchToFault(DF_PMXU_INTERFACE);
+		return false;
+	}
+}
+//--------------------------------------
+
+bool PMXU_WriteReg(Int16U RegAddress, Int16U RegData)
+{
+	if(DataTable[REG_PMXU_EMULATED])
+		return true;
+
+	if(BHL_WriteRegister(DataTable[REG_PMXU_CAN_ID], RegAddress, RegData))
 		return true;
 	else
 	{
