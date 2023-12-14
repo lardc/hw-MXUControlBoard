@@ -41,7 +41,18 @@ void DT_RestoreNVPartFromEPROM()
 	const Int16U TableSize = DATA_TABLE_NV_SIZE;
 #endif
 	if(EPROMServiceCfg.ReadService)
+	{
 		EPROMServiceCfg.ReadService(DT_EPROM_ADDRESS, (pInt16U)&DataTable[DATA_TABLE_NV_START], TableSize);
+
+#ifdef USE_FLOAT_DT
+		pInt32U pDataTable = (pInt32U)DataTable;
+		for(int i = DATA_TABLE_NV_START; i < DATA_TABLE_NV_SIZE; i++)
+		{
+			if(pDataTable[i] == 0xFFFFFFFF)
+				pDataTable[i] = 0;
+		}
+#endif
+	}
 }
 // ----------------------------------------
 
