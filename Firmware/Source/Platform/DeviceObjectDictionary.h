@@ -46,22 +46,34 @@
 #define REG_PMXU_CAN_ID							2	// PMXU CAN ID
 #define REG_PMXU_EMULATED						3	// PMXU emulation
 
+#define REG_MODULE_TYPE							70	// Module type(Заглушка)
+#define REG_DUT_POSITION						71	// Регистр выбора позции тестируемого прибора (1 или 2)
+
+#define REG_EN_SFTY_IN1							80	// Enable safety input #1(Заглушка)
+#define REG_EN_SFTY_IN2							81	// Enable safety input #2(Заглушка)
+#define REG_EN_SFTY_IN3							82	// Enable safety input #3(Заглушка)
+#define REG_EN_SFTY_IN4							83	// Enable safety input #4(Заглушка)
+
+//
+#define REG_DEV_STATE							96	// Регистр состояния
+#define REG_FAULT_REASON						97	// Регистр Fault
+#define REG_DISABLE_REASON						98	// Регистр Disable
+#define REG_WARNING								99	// Регистр Warning
+#define REG_PROBLEM								100	// Регистр Problem
+#define REG_OP_RESULT							101	// Регистр результата операции
+#define REG_SELF_TEST_OP_RESULT					102	// Регистр результата самотестирования
+#define REG_SUB_STATE							103	// Регистр вспомогательного состояния
+
 // Несохраняемые регистры чтения-записи
-#define REG_DUT_POSITION						128	// Регистр выбора позции тестируемого прибора (1 или 2)
 
 #define REG_DBG									150	// Отладочный регистр
 
 // Регистры только чтение
-#define REG_DEV_STATE							192	// Регистр состояния
-#define REG_FAULT_REASON						193	// Регистр Fault
-#define REG_DISABLE_REASON						194	// Регистр Disable
-#define REG_WARNING								195	// Регистр Warning
-#define REG_PROBLEM								196	// Регистр Problem
-#define REG_OP_RESULT							197	// Регистр результата операции
-#define REG_SELF_TEST_OP_RESULT					198	// Регистр результата самотестирования
-#define REG_SUB_STATE							199	// Регистр вспомогательного состояния
 
-#define REG_SELF_TEST_FAILED_RELAY				200	// Номер коммутации на котором обнаружен отказ
+#define REG_SELF_TEST_ACTIVE					200	// Self-test state flag
+#define REG_SELF_TEST_SS						201	// Self-test sub-state register
+
+#define REG_SELF_TEST_FAILED_RELAY				210	// Номер коммутации на котором обнаружен отказ
 
 #define REG_EXT_UNIT_ERROR_CODE					220	// Ошибка интерфейса PAU: код ошибки
 #define REG_EXT_UNIT_FUNCTION					221	// Ошибка интерфейса PAU: код функции
