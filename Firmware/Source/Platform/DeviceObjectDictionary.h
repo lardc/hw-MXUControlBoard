@@ -49,6 +49,7 @@
 #define REG_MODULE_TYPE							70	// Module type(Заглушка)
 #define REG_DUT_POSITION						71	// Регистр выбора позции тестируемого прибора (1 или 2)
 
+
 #define REG_EN_SFTY_IN1							80	// Enable safety input #1(Заглушка)
 #define REG_EN_SFTY_IN2							81	// Enable safety input #2(Заглушка)
 #define REG_EN_SFTY_IN3							82	// Enable safety input #3(Заглушка)
