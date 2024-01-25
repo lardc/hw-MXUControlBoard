@@ -165,6 +165,7 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			{
 				if(PMXU_SafetyDeactivate())
 				{
+					LL_SetStateSF_EN(true);
 					LL_SetStateFPLed(false);
 					CONTROL_SetDeviceState(DS_Enabled);
 				}
@@ -220,6 +221,7 @@ void CONTROL_SafetyCheck()
 		DELAY_MS(DataTable[REG_SAFETY_DELAY]);
 
 		COMM_Default();
+		LL_SetStateSF_EN(false);
 		LL_SetStateFPLed(true);
 		CONTROL_SetDeviceState(DS_SafetyTrig);
 	}
