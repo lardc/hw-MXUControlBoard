@@ -11,11 +11,11 @@
 #include "DebugActions.h"
 #include "Diagnostic.h"
 #include "BCCIxParams.h"
-#include "SelfTest.h"
 #include "CommutationTable.h"
 #include "Commutator.h"
 #include "ZcRegistersDriver.h"
 #include "PMXU.h"
+#include "BCCIMHighLevel.h"
 
 // Types
 //
@@ -34,7 +34,6 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError);
 void CONTROL_UpdateWatchDog();
 void CONTROL_ResetToDefaultState();
 void CONTROL_SafetyCheck();
-void CONTROL_PMXU_CheckState();
 
 // Functions
 //
@@ -56,26 +55,23 @@ void CONTROL_Init()
 
 void CONTROL_Idle()
 {
-	SELFTEST_Process();
 	CONTROL_SafetyCheck();
-	CONTROL_PMXU_CheckState();
 
 	DEVPROFILE_ProcessRequests();
 	CONTROL_UpdateWatchDog();
 }
 //------------------------------------------
 
-void CONTROL_PMXU_CheckState()
-{
-	if(PMXU_InFault())
-		CONTROL_SwitchToFault(DF_PMXU);
-
-	PMXU_CheckWarning((Int16U *)&DataTable[REG_WARNING]);
-}
-//------------------------------------------
-
 void CONTROL_SwitchToFault(Int16U Reason)
 {
+	if(Reason == DF_PMXU_INTERFACE)
+	{
+		BHLError Error = BHL_GetError();
+		DataTable[REG_EXT_UNIT_ERROR_CODE] = Error.ErrorCode;
+		DataTable[REG_EXT_UNIT_FUNCTION] = Error.Func;
+		DataTable[REG_EXT_UNIT_EXT_DATA] = Error.ExtData;
+	}
+
 	CONTROL_SetDeviceState(DS_Fault);
 	DataTable[REG_FAULT_REASON] = Reason;
 }
@@ -98,6 +94,8 @@ void CONTROL_SetDeviceSubState(DeviceSelfTestState NewSubState)
 void CONTROL_ResetToDefaultState()
 {
 	CONTROL_ResetOutputRegisters();
+	COMM_Default();
+	COMM_Default();
 	CONTROL_SetDeviceState(DS_None);
 	CONTROL_SetDeviceSubState(STS_None);
 }
@@ -113,7 +111,10 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			if(CONTROL_State == DS_None)
 			{
 				if(PMXU_Enable())
+				{
 					CONTROL_SetDeviceState(DS_Enabled);
+					CONTROL_SetDeviceSubState(STS_None);
+				}
 			}
 			else if(CONTROL_State != DS_Enabled)
 				*pUserError = ERR_OPERATION_BLOCKED;
@@ -123,7 +124,10 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			if(CONTROL_State == DS_Enabled)
 			{
 				if(PMXU_Disable())
+				{
+					COMM_Default();
 					CONTROL_SetDeviceState(DS_None);
+				}
 			}
 			else if(CONTROL_State != DS_None)
 					*pUserError = ERR_OPERATION_BLOCKED;
@@ -132,26 +136,29 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 		case ACT_CLR_FAULT:
 			if (CONTROL_State == DS_Fault)
 			{
-				if(PMXU_ClearFault())
+				if(PMXU_ClearFault() && PMXU_Disable())
 				{
 					CONTROL_SetDeviceState(DS_None);
 					CONTROL_SetDeviceSubState(STS_None);
-
 					DataTable[REG_FAULT_REASON] = DF_NONE;
 				}
 			}
 			break;
 
 		case ACT_CLR_WARNING:
-			PMXU_ClearFault();
+			PMXU_ClearWarning();
 			DataTable[REG_WARNING] = WARNING_NONE;
 			break;
 
 		case ACT_SET_ACTIVE:
 			if(CONTROL_State == DS_Enabled || CONTROL_State == DS_SafetyActive)
 			{
-				LL_SetStateSF_EN(TRUE);
-				CONTROL_SetDeviceState(DS_SafetyActive);
+				if(PMXU_SafetyActivate())
+				{
+					LL_SetStateSFRedLed(true);
+					LL_SetStateSFGreenLed(false);
+					CONTROL_SetDeviceState(DS_SafetyActive);
+				}
 			}
 			else
 				*pUserError = ERR_DEVICE_NOT_READY;
@@ -160,11 +167,14 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 		case ACT_SET_INACTIVE:
 			if(CONTROL_State == DS_Enabled || CONTROL_State == DS_SafetyActive || CONTROL_State == DS_SafetyTrig)
 			{
-				if (CONTROL_State == DS_SafetyTrig)
-					ZcRD_RegisterReset();
-
-				LL_SetStateSF_EN(FALSE);
-				CONTROL_SetDeviceState(DS_Enabled);
+				if(PMXU_SafetyDeactivate())
+				{
+					LL_SetStateSFRedLed(false);
+					LL_SetStateSFGreenLed(true);
+					LL_SetStateSF_EN(true);
+					LL_SetStateFPLed(false);
+					CONTROL_SetDeviceState(DS_Enabled);
+				}
 			}
 			else
 				*pUserError = ERR_DEVICE_NOT_READY;
@@ -173,11 +183,8 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 		case ACT_SELFT_TEST:
 			if(CONTROL_State == DS_Enabled)
 			{
-				DataTable[REG_SELF_TEST_FAILED_SS] = STS_None;
-				DataTable[REG_SELF_TEST_FAILED_RELAY] = 0;
-				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
 				CONTROL_SetDeviceState(DS_InSelfTest);
-				CONTROL_SetDeviceSubState(STS_InputRelayCheck_1);
+				CONTROL_SetDeviceSubState(STS_InputBoard);
 			}
 			else if(CONTROL_State != DS_Enabled)
 				*pUserError = ERR_OPERATION_BLOCKED;
@@ -193,10 +200,15 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 		case ACT_COMM_THERMISTOR:
 		case ACT_COMM_NO_PE:
 		case ACT_COMM_NONE:
-			if (CONTROL_State == DS_Fault || PMXU_InFault())
+			if (CONTROL_State == DS_Fault)
 				*pUserError = ERR_OPERATION_BLOCKED;
 			else if(CONTROL_State == DS_None || !PMXU_IsReady())
+			{
+				if(PMXU_InFault())
+					CONTROL_SwitchToFault(DF_PMXU);
+
 				*pUserError = ERR_DEVICE_NOT_READY;
+			}
 			else
 				COMM_Commutate(ActionID);
 			break;
@@ -210,11 +222,13 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 
 void CONTROL_SafetyCheck()
 {
-	if(CONTROL_State == DS_SafetyActive && LL_IsSafetyTrig())
+	if(LL_IsSafetyTrig() && CONTROL_State == DS_SafetyActive)
 	{
 		DELAY_MS(DataTable[REG_SAFETY_DELAY]);
-		ZcRD_RegisterReset();
 
+		COMM_Default();
+		LL_SetStateSF_EN(false);
+		LL_SetStateFPLed(true);
 		CONTROL_SetDeviceState(DS_SafetyTrig);
 	}
 }
@@ -254,19 +268,30 @@ void CONTROL_HandleFrontPanelLamp(bool Forced)
 	}
 	else
 	{
-		if(CONTROL_State != DS_None)
+		if(CONTROL_State != DS_SafetyTrig)
 		{
-			if(Forced)
+			if(CONTROL_State == DS_None && FPLampCounter)
 			{
-				LL_SetStateFPLed(true);;
-				FPLampCounter = CONTROL_TimeCounter + TIME_FP_LED_ON_STATE;
+				LL_SetStateFPLed(false);
+				FPLampCounter = 0;
 			}
-			else
+
+			if(CONTROL_State != DS_None)
 			{
-				if(CONTROL_TimeCounter >= FPLampCounter)
-					LL_SetStateFPLed(false);
+				if(Forced)
+				{
+					LL_SetStateFPLed(true);
+					FPLampCounter = CONTROL_TimeCounter + TIME_FP_LED_ON_STATE;
+				}
+				else
+				{
+					if(CONTROL_TimeCounter >= FPLampCounter)
+						LL_SetStateFPLed(false);
+				}
 			}
 		}
+		else
+			LL_SetStateFPLed(true);
 	}
 }
 //-----------------------------------------------

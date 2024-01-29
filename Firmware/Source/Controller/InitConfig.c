@@ -39,7 +39,7 @@ void INITCFG_ConfigIO()
 	GPIO_SetState(GPIO_SPI_SS, true);
 	GPIO_SetState(GPIO_SPI_RST, true);
 	GPIO_SetState(GPIO_SPI_OE, false);
-	GPIO_SetState(GPIO_SF_RED_LED, true);
+	GPIO_SetState(GPIO_SF_RED_LED, false);
 	GPIO_SetState(GPIO_SF_GRN_LED, false);
 	GPIO_SetState(GPIO_SF_EN, false);
 	GPIO_SetState(GPIO_SD_EN, false);
@@ -49,8 +49,8 @@ void INITCFG_ConfigIO()
 	GPIO_InitAltFunction(GPIO_ALT_UART1_TX, AltFn_7);
 	GPIO_InitAltFunction(GPIO_ALT_CAN1_RX, AltFn_9);
 	GPIO_InitAltFunction(GPIO_ALT_CAN1_TX, AltFn_9);
-	GPIO_InitAltFunction(GPIO_ALT_SPI1_CLK, AltFn_5);
-	GPIO_InitAltFunction(GPIO_ALT_SPI1_DAT, AltFn_5);
+	GPIO_InitOpenDrainAltFunction(GPIO_ALT_SPI1_CLK, AltFn_5, NoPull);
+	GPIO_InitOpenDrainAltFunction(GPIO_ALT_SPI1_DAT, AltFn_5, NoPull);
 }
 
 //------------------------------------------------
