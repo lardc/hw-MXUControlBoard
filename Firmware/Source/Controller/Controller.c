@@ -154,7 +154,11 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			if(CONTROL_State == DS_Enabled || CONTROL_State == DS_SafetyActive)
 			{
 				if(PMXU_SafetyActivate())
+				{
+					LL_SetStateSFRedLed(true);
+					LL_SetStateSFGreenLed(false);
 					CONTROL_SetDeviceState(DS_SafetyActive);
+				}
 			}
 			else
 				*pUserError = ERR_DEVICE_NOT_READY;
@@ -165,6 +169,8 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			{
 				if(PMXU_SafetyDeactivate())
 				{
+					LL_SetStateSFRedLed(false);
+					LL_SetStateSFGreenLed(true);
 					LL_SetStateSF_EN(true);
 					LL_SetStateFPLed(false);
 					CONTROL_SetDeviceState(DS_Enabled);
