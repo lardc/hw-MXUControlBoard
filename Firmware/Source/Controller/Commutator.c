@@ -24,55 +24,16 @@ void COMM_Default()
 
 void COMM_DisconnectPE()
 {
-	ZcRD_OutputValuesCompose(C_POT_PE1, TRUE);
-	ZcRD_OutputValuesCompose(C_POT_PE2, TRUE);
-	ZcRD_OutputValuesCompose(C_POT_PE3, TRUE);
-	ZcRD_OutputValuesCompose(C_POT_PE4, TRUE);
-
-	ZcRD_OutputValuesCompose(G_PE1, TRUE);
-	ZcRD_OutputValuesCompose(G_PE2, TRUE);
-	ZcRD_OutputValuesCompose(G_PE3, TRUE);
-	ZcRD_OutputValuesCompose(G_PE4, TRUE);
-
-	ZcRD_OutputValuesCompose(GE_PE1, TRUE);
-	ZcRD_OutputValuesCompose(GE_PE2, TRUE);
-	ZcRD_OutputValuesCompose(GE_PE3, TRUE);
-	ZcRD_OutputValuesCompose(GE_PE4, TRUE);
-
-	ZcRD_OutputValuesCompose(E_POT_PE1, TRUE);
-	ZcRD_OutputValuesCompose(E_POT_PE2, TRUE);
-	ZcRD_OutputValuesCompose(E_POT_PE3, TRUE);
-	ZcRD_OutputValuesCompose(E_POT_PE4, TRUE);
-
-	ZcRD_OutputValuesCompose(C_POT_2_PE1, TRUE);
-	ZcRD_OutputValuesCompose(C_POT_2_PE2, TRUE);
-	ZcRD_OutputValuesCompose(C_POT_2_PE3, TRUE);
-	ZcRD_OutputValuesCompose(C_POT_2_PE4, TRUE);
-
-	ZcRD_OutputValuesCompose(G_2_PE1, TRUE);
-	ZcRD_OutputValuesCompose(G_2_PE2, TRUE);
-	ZcRD_OutputValuesCompose(G_2_PE3, TRUE);
-	ZcRD_OutputValuesCompose(G_2_PE4, TRUE);
-
-	ZcRD_OutputValuesCompose(GE_2_PE1, TRUE);
-	ZcRD_OutputValuesCompose(GE_2_PE2, TRUE);
-	ZcRD_OutputValuesCompose(GE_2_PE3, TRUE);
-	ZcRD_OutputValuesCompose(GE_2_PE4, TRUE);
-
-	ZcRD_OutputValuesCompose(E_POT_2_PE1, TRUE);
-	ZcRD_OutputValuesCompose(E_POT_2_PE2, TRUE);
-	ZcRD_OutputValuesCompose(E_POT_2_PE3, TRUE);
-	ZcRD_OutputValuesCompose(E_POT_2_PE4, TRUE);
-
-	ZcRD_OutputValuesCompose(T1_PE1, TRUE);
-	ZcRD_OutputValuesCompose(T1_PE2, TRUE);
-	ZcRD_OutputValuesCompose(T1_PE3, TRUE);
-	ZcRD_OutputValuesCompose(T1_PE4, TRUE);
-
-	ZcRD_OutputValuesCompose(T2_PE1, TRUE);
-	ZcRD_OutputValuesCompose(T2_PE2, TRUE);
-	ZcRD_OutputValuesCompose(T2_PE3, TRUE);
-	ZcRD_OutputValuesCompose(T2_PE4, TRUE);
+	ZcRD_OutputValuesCompose(C_POT_PE, TRUE);
+	ZcRD_OutputValuesCompose(G_PE, TRUE);
+	ZcRD_OutputValuesCompose(GE_PE, TRUE);
+	ZcRD_OutputValuesCompose(E_POT_PE, TRUE);
+	ZcRD_OutputValuesCompose(C_POT_2_PE, TRUE);
+	ZcRD_OutputValuesCompose(G_2_PE, TRUE);
+	ZcRD_OutputValuesCompose(GE_2_PE, TRUE);
+	ZcRD_OutputValuesCompose(E_POT_2_PE, TRUE);
+	ZcRD_OutputValuesCompose(T1_PE, TRUE);
+	ZcRD_OutputValuesCompose(T2_PE, TRUE);
 }
 // ----------------------------------------
 
@@ -94,25 +55,10 @@ void COMM_Commutate(Int16U ActionID)
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
 
-						ZcRD_OutputValuesCompose(OL_C_POT_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_C_POT_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_C_POT_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_C_POT_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(OL_G_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(OL_GE_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_COMM4, TRUE);
+						ZcRD_OutputValuesCompose(OL_C_POT_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_E_POT_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_G_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_GE_COMM, TRUE);
 						//
 						ZcRD_OutputValuesCompose(MC_E_POT_LSL_POTP, TRUE);
 						ZcRD_OutputValuesCompose(MC_C_POT_LSL_POTP, TRUE);
@@ -130,25 +76,10 @@ void COMM_Commutate(Int16U ActionID)
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
 
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(OL_G_2_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_2_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_2_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_2_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(OL_GE_2_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_2_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_2_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_2_COMM4, TRUE);
+						ZcRD_OutputValuesCompose(OL_E_POT_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_G_2_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_GE_2_COMM, TRUE);
 						//
 						ZcRD_OutputValuesCompose(MC_E_POT_LSL_POTP, TRUE);
 						ZcRD_OutputValuesCompose(MC_E_POT_2_LSL_POTP, TRUE);
@@ -174,25 +105,10 @@ void COMM_Commutate(Int16U ActionID)
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
 
-						ZcRD_OutputValuesCompose(OL_C_POT_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_C_POT_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_C_POT_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_C_POT_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(OL_G_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(OL_GE_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_COMM4, TRUE);
+						ZcRD_OutputValuesCompose(OL_C_POT_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_E_POT_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_G_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_GE_COMM, TRUE);
 						//
 						ZcRD_OutputValuesCompose(MC_E_POT_LSL_POTP, TRUE);
 						ZcRD_OutputValuesCompose(MC_C_POT_LSL_POTP, TRUE);
@@ -210,25 +126,10 @@ void COMM_Commutate(Int16U ActionID)
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
 
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(OL_G_2_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_2_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_2_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_2_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(OL_GE_2_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_2_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_2_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_2_COMM4, TRUE);
+						ZcRD_OutputValuesCompose(OL_E_POT_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_G_2_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_GE_2_COMM, TRUE);
 						//
 						ZcRD_OutputValuesCompose(MC_E_POT_LSL_POTP, TRUE);
 						ZcRD_OutputValuesCompose(MC_E_POT_2_LSL_POTP, TRUE);
@@ -254,30 +155,11 @@ void COMM_Commutate(Int16U ActionID)
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
 
-						ZcRD_OutputValuesCompose(OL_C_POT_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_C_POT_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_C_POT_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_C_POT_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(OL_G_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(OL_GE_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(MC_G_C_POT1, TRUE);
-						ZcRD_OutputValuesCompose(MC_G_C_POT2, TRUE);
-						ZcRD_OutputValuesCompose(MC_G_C_POT3, TRUE);
-						ZcRD_OutputValuesCompose(MC_G_C_POT4, TRUE);
+						ZcRD_OutputValuesCompose(OL_C_POT_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_E_POT_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_G_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_GE_COMM, TRUE);
+						ZcRD_OutputValuesCompose(MC_G_C_POT, TRUE);
 						//
 						ZcRD_OutputValuesCompose(MC_G_GT_G, TRUE);
 						ZcRD_OutputValuesCompose(MC_GE_GT_GE, TRUE);
@@ -296,30 +178,11 @@ void COMM_Commutate(Int16U ActionID)
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
 
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(OL_G_2_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_2_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_2_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_2_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(OL_GE_2_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_2_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_2_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_2_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(MC_G_2_C_POT1, TRUE);
-						ZcRD_OutputValuesCompose(MC_G_2_C_POT2, TRUE);
-						ZcRD_OutputValuesCompose(MC_G_2_C_POT3, TRUE);
-						ZcRD_OutputValuesCompose(MC_G_2_C_POT4, TRUE);
+						ZcRD_OutputValuesCompose(OL_E_POT_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_G_2_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_GE_2_COMM, TRUE);
+						ZcRD_OutputValuesCompose(MC_G_2_C_POT, TRUE);
 						//
 						ZcRD_OutputValuesCompose(MC_G_2_GT_G, TRUE);
 						ZcRD_OutputValuesCompose(MC_GE_2_GT_GE, TRUE);
@@ -348,15 +211,8 @@ void COMM_Commutate(Int16U ActionID)
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
 
-						ZcRD_OutputValuesCompose(OL_G_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(OL_GE_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_COMM4, TRUE);
+						ZcRD_OutputValuesCompose(OL_G_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_GE_COMM, TRUE);
 						//
 						ZcRD_OutputValuesCompose(MC_G_GT_G, TRUE);
 						ZcRD_OutputValuesCompose(MC_GE_GT_GE, TRUE);
@@ -374,15 +230,8 @@ void COMM_Commutate(Int16U ActionID)
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
 
-						ZcRD_OutputValuesCompose(OL_G_2_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_2_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_2_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_2_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(OL_GE_2_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_2_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_2_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_2_COMM4, TRUE);
+						ZcRD_OutputValuesCompose(OL_G_2_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_GE_2_COMM, TRUE);
 						//
 						ZcRD_OutputValuesCompose(MC_G_2_GT_G, TRUE);
 						ZcRD_OutputValuesCompose(MC_GE_2_GT_GE, TRUE);
@@ -406,25 +255,10 @@ void COMM_Commutate(Int16U ActionID)
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
 
-						ZcRD_OutputValuesCompose(OL_G_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(OL_GE_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(OL_C_POT_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_C_POT_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_C_POT_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_C_POT_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM4, TRUE);
+						ZcRD_OutputValuesCompose(OL_G_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_GE_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_C_POT_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_E_POT_COMM, TRUE);
 						//
 						ZcRD_OutputValuesCompose(MC_G_LSL_G, TRUE);
 						ZcRD_OutputValuesCompose(MC_GE_LSL_GE, TRUE);
@@ -447,25 +281,10 @@ void COMM_Commutate(Int16U ActionID)
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
 
-						ZcRD_OutputValuesCompose(OL_G_2_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_2_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_2_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_G_2_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(OL_GE_2_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_2_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_2_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_2_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM4, TRUE);
+						ZcRD_OutputValuesCompose(OL_G_2_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_GE_2_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_E_POT_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM, TRUE);
 						//
 						ZcRD_OutputValuesCompose(MC_G_2_LSL_G, TRUE);
 						ZcRD_OutputValuesCompose(MC_GE_2_LSL_GE, TRUE);
@@ -493,15 +312,8 @@ void COMM_Commutate(Int16U ActionID)
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
 
-						ZcRD_OutputValuesCompose(OL_C_POT_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_C_POT_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_C_POT_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_C_POT_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM4, TRUE);
+						ZcRD_OutputValuesCompose(OL_C_POT_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_E_POT_COMM, TRUE);
 						//
 						ZcRD_OutputValuesCompose(MC_G_GE, TRUE);
 						ZcRD_OutputValuesCompose(MC_C_POT_LSL_POTN, TRUE);
@@ -521,15 +333,8 @@ void COMM_Commutate(Int16U ActionID)
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
 
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM4, TRUE);
-						//
-						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM1, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM2, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM3, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM4, TRUE);
+						ZcRD_OutputValuesCompose(OL_E_POT_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM, TRUE);
 						//
 						ZcRD_OutputValuesCompose(MC_G_2_GE, TRUE);
 						ZcRD_OutputValuesCompose(MC_E_POT_LSL_POTN, TRUE);
@@ -577,15 +382,8 @@ void COMM_Commutate(Int16U ActionID)
 					ZcRD_OutputValuesReset();
 					COMM_DisconnectPE();
 
-					ZcRD_OutputValuesCompose(OL_T1_COMM1, TRUE);
-					ZcRD_OutputValuesCompose(OL_T1_COMM2, TRUE);
-					ZcRD_OutputValuesCompose(OL_T1_COMM3, TRUE);
-					ZcRD_OutputValuesCompose(OL_T1_COMM4, TRUE);
-					//
-					ZcRD_OutputValuesCompose(OL_T2_COMM1, TRUE);
-					ZcRD_OutputValuesCompose(OL_T2_COMM2, TRUE);
-					ZcRD_OutputValuesCompose(OL_T2_COMM3, TRUE);
-					ZcRD_OutputValuesCompose(OL_T2_COMM4, TRUE);
+					ZcRD_OutputValuesCompose(OL_T1_COMM, TRUE);
+					ZcRD_OutputValuesCompose(OL_T2_COMM, TRUE);
 					//
 					ZcRD_OutputValuesCompose(MC_T2_GT_G, TRUE);
 					ZcRD_OutputValuesCompose(MC_T1_GT_GE, TRUE);
