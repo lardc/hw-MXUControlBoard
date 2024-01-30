@@ -80,31 +80,10 @@ void LL_SetStateSD_EN(bool State)
 }
 //-----------------------------
 
-float LL_SelfTestMeasure()
+bool IsTestCurrent()
 {
-	float MeasuredTestVoltage;
-
-	// Enable self-test current
-	LL_SetStateSD_EN(true);
-	DELAY_MS(5);
-	// Measure test-point and convert value to voltage
-	MeasuredTestVoltage = (float)ADC_Measure(ADC1, ADC_V_CHANNEL) * ADC_REF_VOLTAGE / ADC_RESOLUTION;
-	// Disable self-test current
-	LL_SetStateSD_EN(false);
-
-	return MeasuredTestVoltage;
-}
-//-----------------------------
-
-bool LL_ClosedRelayFailed()
-{
-	return LL_SelfTestMeasure() > DataTable[REG_SFTST_V_ALLOWED_VOLTAGE];
-}
-//-----------------------------
-
-bool LL_OpenRelayFailed()
-{
-	return LL_SelfTestMeasure() < DataTable[REG_SFTST_V_ALLOWED_VOLTAGE];
+	float MeasuredTestVoltage = (float)ADC_Measure(ADC1, ADC_V_CHANNEL) * ADC_REF_VOLTAGE / ADC_RESOLUTION;
+	return (MeasuredTestVoltage < DataTable[REG_SFTST_V_ALLOWED_VOLTAGE]) ? true : false;
 }
 //-----------------------------
 

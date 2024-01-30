@@ -52,6 +52,6 @@ void DBACT_WriteSPI()
 // Turn self-test current ON, measure voltage with ADC, compare result with DataTable constant
 void DBACT_SelfTestMeasure()
 {
-	DataTable[REG_SELF_TEST_OP_RESULT] = LL_ClosedRelayFailed() ? OPRESULT_FAIL : OPRESULT_OK;
+	DataTable[REG_SELF_TEST_OP_RESULT] = IsTestCurrent() ? OPRESULT_OK : OPRESULT_FAIL;
 }
 //-----------------------

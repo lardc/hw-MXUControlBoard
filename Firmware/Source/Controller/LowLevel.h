@@ -17,9 +17,7 @@ void LL_WriteSPI(uint8_t SPI_Data[], uint8_t Data_Length);
 void LL_SPIReset();
 void LL_SetStateSF_EN(bool State);
 void LL_SetStateSD_EN(bool State);
-float LL_SelfTestMeasure();
-bool LL_ClosedRelayFailed();
-bool LL_OpenRelayFailed();
+bool IsTestCurrent();
 bool LL_IsSafetyTrig();
 
 #endif //__LOWLEVEL_H
