@@ -70,11 +70,8 @@
 #define REG_DBG									150	// Отладочный регистр
 
 // Регистры только чтение
-
-#define REG_SELF_TEST_ACTIVE					200	// Self-test state flag
-#define REG_SELF_TEST_SS						201	// Self-test sub-state register
-
-#define REG_SELF_TEST_FAILED_RELAY				210	// Номер коммутации на котором обнаружен отказ
+#define REG_SELF_TEST_FAILED_BOARD				200	// Номер ЭМ на котором возникла проблема с реле
+#define REG_SELF_TEST_FAILED_RELAY				201	// Номер реле, на котором обнаружен отказ
 
 #define REG_EXT_UNIT_ERROR_CODE					220	// Ошибка интерфейса PAU: код ошибки
 #define REG_EXT_UNIT_FUNCTION					221	// Ошибка интерфейса PAU: код функции

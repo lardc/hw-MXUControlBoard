@@ -16,6 +16,7 @@
 #include "ZcRegistersDriver.h"
 #include "PMXU.h"
 #include "BCCIMHighLevel.h"
+#include "SelfTest.h"
 
 // Types
 //
@@ -56,6 +57,7 @@ void CONTROL_Init()
 void CONTROL_Idle()
 {
 	CONTROL_SafetyCheck();
+	SELFTEST_Process();
 
 	DEVPROFILE_ProcessRequests();
 	CONTROL_UpdateWatchDog();
@@ -112,8 +114,9 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			{
 				if(PMXU_Enable())
 				{
-					CONTROL_SetDeviceState(DS_Enabled);
-					CONTROL_SetDeviceSubState(STS_None);
+					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
+					CONTROL_SetDeviceState(DS_InSelfTest);
+					CONTROL_SetDeviceSubState(STS_InputBoard);
 				}
 			}
 			else if(CONTROL_State != DS_Enabled)
@@ -183,6 +186,7 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 		case ACT_SELFT_TEST:
 			if(CONTROL_State == DS_Enabled)
 			{
+				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
 				CONTROL_SetDeviceState(DS_InSelfTest);
 				CONTROL_SetDeviceSubState(STS_InputBoard);
 			}

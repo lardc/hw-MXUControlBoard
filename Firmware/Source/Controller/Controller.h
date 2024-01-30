@@ -22,11 +22,10 @@ typedef enum __DeviceState
 typedef enum __DeviceSelfTestState
 {
 	STS_None = 0,
-
-	STS_InputBoard 	= 10,
-	STS_ThermBoard 	= 20,
-	STS_HVBoard1	= 30,
-	STS_HVBoard2	= 40
+	STS_InputBoard,
+	STS_ThermBoard,
+	STS_HVBoard1,
+	STS_HVBoard2
 
 } DeviceSelfTestState;
 
