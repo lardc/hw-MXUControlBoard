@@ -26,9 +26,6 @@ int main()
 	// Настройка АЦП
 	INITCFG_ConfigADC();
 
-	// Настройка SPI
-	INITCFG_ConfigSPI8b();
-
 	// Инициализация логики контроллера
 	CONTROL_Init();
 

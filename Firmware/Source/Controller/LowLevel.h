@@ -19,5 +19,6 @@ void LL_SetStateSF_EN(bool State);
 void LL_SetStateSD_EN(bool State);
 bool IsTestCurrent();
 bool LL_IsSafetyTrig();
+void LL_SPI_WriteByte(Int8U Data);
 
 #endif //__LOWLEVEL_H

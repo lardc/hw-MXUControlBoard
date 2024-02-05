@@ -50,13 +50,27 @@ void LL_WriteSPI(uint8_t SPI_Data[], uint8_t Data_Length)
 
 	for (int i = 0; i <= Data_Length; i++)
 	{
-		SPI_WriteByte8b(SPI1, SPI_Data[i]);
+		LL_SPI_WriteByte(SPI_Data[i]);
 		GPIO_SetState(GPIO_SPI_SS, true);
 		GPIO_SetState(GPIO_SPI_SS, false);
 	}
 
 	// Turn outputs ON
 	GPIO_SetState(GPIO_SPI_OE, false);
+}
+//-----------------------------
+
+void LL_SPI_WriteByte(Int8U Data)
+{
+	for (int i = 7; i >= 0; i--)
+	{
+		GPIO_SetState(GPIO_SPI_DAT, (Data >> i) & 0x01);
+		DELAY_US(10);
+		GPIO_SetState(GPIO_SPI_CLK, true);
+		DELAY_US(10);
+		GPIO_SetState(GPIO_SPI_CLK, false);
+		DELAY_US(10);
+	}
 }
 //-----------------------------
 

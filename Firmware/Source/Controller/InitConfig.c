@@ -21,13 +21,16 @@ void INITCFG_ConfigIO()
 	// Выходы
 	GPIO_InitPushPullOutput(GPIO_LED);
 	GPIO_InitPushPullOutput(GPIO_FP_LED);
-	GPIO_InitPushPullOutput(GPIO_SPI_SS);
-	GPIO_InitPushPullOutput(GPIO_SPI_RST);
-	GPIO_InitPushPullOutput(GPIO_SPI_OE);
 	GPIO_InitPushPullOutput(GPIO_SF_RED_LED);
 	GPIO_InitPushPullOutput(GPIO_SF_GRN_LED);
 	GPIO_InitPushPullOutput(GPIO_SF_EN);
 	GPIO_InitPushPullOutput(GPIO_SD_EN);
+
+	GPIO_InitOpenDrainOutput(GPIO_SPI_CLK, NoPull);
+	GPIO_InitOpenDrainOutput(GPIO_SPI_DAT, NoPull);
+	GPIO_InitOpenDrainOutput(GPIO_SPI_SS, NoPull);
+	GPIO_InitOpenDrainOutput(GPIO_SPI_RST, NoPull);
+	GPIO_InitOpenDrainOutput(GPIO_SPI_OE, NoPull);
 
 
 	// Входы
@@ -38,6 +41,8 @@ void INITCFG_ConfigIO()
 	GPIO_SetState(GPIO_FP_LED, false);
 	GPIO_SetState(GPIO_SPI_SS, true);
 	GPIO_SetState(GPIO_SPI_RST, true);
+	GPIO_SetState(GPIO_SPI_CLK, false);
+	GPIO_SetState(GPIO_SPI_DAT, false);
 	GPIO_SetState(GPIO_SPI_OE, false);
 	GPIO_SetState(GPIO_SF_RED_LED, false);
 	GPIO_SetState(GPIO_SF_GRN_LED, false);
@@ -49,8 +54,6 @@ void INITCFG_ConfigIO()
 	GPIO_InitAltFunction(GPIO_ALT_UART1_TX, AltFn_7);
 	GPIO_InitAltFunction(GPIO_ALT_CAN1_RX, AltFn_9);
 	GPIO_InitAltFunction(GPIO_ALT_CAN1_TX, AltFn_9);
-	GPIO_InitOpenDrainAltFunction(GPIO_ALT_SPI1_CLK, AltFn_5, NoPull);
-	GPIO_InitOpenDrainAltFunction(GPIO_ALT_SPI1_DAT, AltFn_5, NoPull);
 }
 
 //------------------------------------------------
@@ -88,9 +91,3 @@ void INITCFG_ConfigADC()
 	ADC_Enable(ADC1);
 }
 //-----------------------------------------------
-
-void INITCFG_ConfigSPI8b()
-{
-	SPI_Init8b(SPI1, SPI1_BAUDRATE_BITS, SPI1_LSB_FIRST);
-}
-//------------------------------------------------
