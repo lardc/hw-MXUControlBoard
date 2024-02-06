@@ -97,7 +97,6 @@ void CONTROL_ResetToDefaultState()
 {
 	CONTROL_ResetOutputRegisters();
 	COMM_Default();
-	COMM_Default();
 	CONTROL_SetDeviceState(DS_None);
 	CONTROL_SetDeviceSubState(STS_None);
 }

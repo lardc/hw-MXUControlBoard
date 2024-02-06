@@ -16,6 +16,7 @@
 #define TIME_FP_LED_FAULT_BLINK					250		// Мигание светодиодом в состоянии Fault
 #define TIME_FP_LED_ON_STATE					500		// Время зажигания индикатора на передний панели в нормальном режиме, мс
 #define COMM_DELAY_MS							20		// Задержка коммутации реле
+#define TIME_PERIUD_SPI							50		// Время одного периуда SPI
 
 // Параметры измерения
 #define ADC_REF_VOLTAGE							3300.0f	// Опорное напряжение (в мВ)
