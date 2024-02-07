@@ -54,6 +54,12 @@ void DBACT_WriteSPI()
 
 	for(int i = NUM_REGS_TOTAL - 1; i >= 0; i--)
 		LL_SPI_WriteByte(RegData[i]);
+
+	DELAY_US(TIME_SPI_DELAY);
+
+	GPIO_SetState(GPIO_SPI_SS, true);
+	DELAY_US(TIME_SPI_DELAY);
+	GPIO_SetState(GPIO_SPI_SS, false);
 }
 //-----------------------
 

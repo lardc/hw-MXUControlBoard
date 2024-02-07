@@ -68,7 +68,7 @@ void LL_SPI_WriteByte(Int8U Data)
 		DELAY_US(TIME_SPI_DELAY);
 		GPIO_SetState(GPIO_SPI_CLK, true);
 		DELAY_US(TIME_SPI_DELAY);
-		GPIO_SetState(GPIO_SPI_DAT, false);
+		GPIO_SetState(GPIO_SPI_CLK, false);
 	}
 }
 //-----------------------------
