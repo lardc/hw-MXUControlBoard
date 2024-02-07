@@ -64,16 +64,11 @@ void LL_SPI_WriteByte(Int8U Data)
 {
 	for (int i = 7; i >= 0; i--)
 	{
-		DELAY_US(TIME_PERIUD_SPI);
 		GPIO_SetState(GPIO_SPI_DAT, (Data >> i) & 0x1);
-		DELAY_US(TIME_PERIUD_SPI);
+		DELAY_US(TIME_SPI_DELAY);
 		GPIO_SetState(GPIO_SPI_CLK, true);
-		DELAY_US(TIME_PERIUD_SPI);
-		//GPIO_SetState(GPIO_SPI_DAT, false);
-		DELAY_US(TIME_PERIUD_SPI);
-		GPIO_SetState(GPIO_SPI_CLK, false);
-		DELAY_US(TIME_PERIUD_SPI);
-
+		DELAY_US(TIME_SPI_DELAY);
+		GPIO_SetState(GPIO_SPI_DAT, false);
 	}
 }
 //-----------------------------

@@ -43,9 +43,17 @@ void DBACT_ToggleSFGreenLed()
 void DBACT_WriteSPI()
 {
 	// Чтение номера таблицы коммутации из отладочного регистра
-	ZcRD_OutputValuesCompose(DataTable[REG_DBG], TRUE);
+	//ZcRD_OutputValuesCompose(DataTable[REG_DBG], TRUE);
 	// Коммутация выбранной комбинации
-	ZcRD_RegisterFlushWrite();
+	//ZcRD_RegisterFlushWrite();
+
+	Int16U RegData[NUM_REGS_TOTAL] = {0};
+	Int16U RegNum = ((Int16U)DataTable[REG_DBG]) >> 8;
+
+	RegData[RegNum] = (Int16U)DataTable[REG_DBG] & 0xFF;
+
+	for(int i = NUM_REGS_TOTAL - 1; i >= 0; i--)
+		LL_SPI_WriteByte(RegData[i]);
 }
 //-----------------------
 
