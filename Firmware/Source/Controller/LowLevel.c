@@ -89,13 +89,14 @@ void LL_SetStateSF_EN(bool State)
 
 void LL_SetStateSD_EN(bool State)
 {
-	GPIO_SetState(GPIO_SD_EN, !State);
+	GPIO_SetState(GPIO_SD_EN, State);
 }
 //-----------------------------
 
 bool IsTestCurrent()
 {
 	float MeasuredTestVoltage = (float)ADC_Measure(ADC1, ADC_V_CHANNEL) * ADC_REF_VOLTAGE / ADC_RESOLUTION;
+	DataTable[REG_DBG2] = MeasuredTestVoltage;
 	return (MeasuredTestVoltage < DataTable[REG_SFTST_V_ALLOWED_VOLTAGE]) ? true : false;
 }
 //-----------------------------

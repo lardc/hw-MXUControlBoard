@@ -106,11 +106,11 @@ bool SELFTEST_RelayCheck(const SelfTestTableItem (*RelayArray)[], Int16U Stages,
 		{
 			if((*RelayArray)[j].Stage == i)
 			{
-				//if(!IsTestCurrent())
-				//{
-				//	*RelayErrorReg = j;
-				//	return false;
-				//}
+				if(!IsTestCurrent())
+				{
+					*RelayErrorReg = j;
+					return false;
+				}
 
 				SELFTEST_RelayClose((*RelayArray)[j], false);
 				DELAY_MS(COMM_DELAY_MS);
