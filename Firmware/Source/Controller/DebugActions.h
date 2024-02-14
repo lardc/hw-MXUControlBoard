@@ -12,5 +12,6 @@ void DBACT_ToggleSFRedLed();
 void DBACT_ToggleSFGreenLed();
 void DBACT_WriteSPI();
 void DBACT_SelfTestMeasure();
+void DBACT_SDEN();
 
 #endif //__DEBUGACTIONS_H

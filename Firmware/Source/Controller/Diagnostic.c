@@ -37,6 +37,10 @@ bool DIAG_HandleDiagnosticAction(uint16_t ActionID, uint16_t *pUserError)
 			DBACT_SelfTestMeasure();
 			break;
 
+		case ACT_DBG_SD_EN:
+			DBACT_SDEN();
+			break;
+
 		default:
 			return false;
 	}

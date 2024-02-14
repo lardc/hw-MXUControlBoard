@@ -13,6 +13,7 @@
 #define ACT_DBG_WRITE_SPI						24	// Проверка работы коммутации тестовой комбинации
 #define ACT_DBG_SPI_RST							25	// Сброс сдвиговых регистров
 #define ACT_DBG_SELF_TEST_MEASURE				26	// Измерение значения напряжение системы самодиагностики
+#define ACT_DBG_SD_EN							27	// Проверка формирования напряжения самодиагностики
 
 #define ACT_SET_ACTIVE							100	// Команда активации контура безопасности
 #define ACT_SET_INACTIVE						101	// Команда деактивации контура безопасности
@@ -45,6 +46,8 @@
 #define REG_SAFETY_DELAY						1	// Задержка отключения коммутации, мс
 #define REG_PMXU_CAN_ID							2	// PMXU CAN ID
 #define REG_PMXU_EMULATED						3	// PMXU emulation
+
+
 
 #define REG_MODULE_TYPE							70	// Module type(Заглушка)
 #define REG_DUT_POSITION						71	// Регистр выбора позции тестируемого прибора (1 или 2)

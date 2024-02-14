@@ -89,7 +89,7 @@ void LL_SetStateSF_EN(bool State)
 
 void LL_SetStateSD_EN(bool State)
 {
-	GPIO_SetState(GPIO_SD_EN, State);
+	GPIO_SetState(GPIO_SD_EN, !State);
 }
 //-----------------------------
 

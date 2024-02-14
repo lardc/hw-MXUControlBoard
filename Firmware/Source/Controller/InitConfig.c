@@ -52,8 +52,8 @@ void INITCFG_ConfigIO()
 	// Альтернативные функции
 	GPIO_InitAltFunction(GPIO_ALT_UART1_RX, AltFn_7);
 	GPIO_InitAltFunction(GPIO_ALT_UART1_TX, AltFn_7);
-	//GPIO_InitAltFunction(GPIO_ALT_CAN1_RX, AltFn_9);
-	//GPIO_InitAltFunction(GPIO_ALT_CAN1_TX, AltFn_9);
+	GPIO_InitAltFunction(GPIO_ALT_CAN1_RX, AltFn_9);
+	GPIO_InitAltFunction(GPIO_ALT_CAN1_TX, AltFn_9);
 }
 
 //------------------------------------------------
