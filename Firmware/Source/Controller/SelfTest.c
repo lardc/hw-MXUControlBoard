@@ -12,6 +12,7 @@
 #include "CommutationTable.h"
 #include "ZcRegistersDriver.h"
 #include "SelfTestRelaysArrays.h"
+#include "Commutator.h"
 
 // Functions prototypes
 //
@@ -87,16 +88,21 @@ void SELFTEST_Process()
 
 bool SELFTEST_RelayCheck(const SelfTestTableItem (*RelayArray)[], Int16U Stages, Int16U Commutations, pFloat32 RelayErrorReg)
 {
+
+	ZcRD_OutputValuesReset();
+	COMM_DisconnectPE();
+
 	for(int i = 0; i < Stages; i++)
 	{
 		// Close all relays in current stage
 		//
+
 		for(int j = 0; j < Commutations; j++)
 		{
 			if((*RelayArray)[j].Stage == i)
 				SELFTEST_RelayClose((*RelayArray)[j], true);
-			else
-				SELFTEST_RelayClose((*RelayArray)[j], false);
+	//		else
+	//		SELFTEST_RelayClose((*RelayArray)[j], false);
 		}
 		DELAY_MS(COMM_DELAY_MS);
 
@@ -125,8 +131,12 @@ bool SELFTEST_RelayCheck(const SelfTestTableItem (*RelayArray)[], Int16U Stages,
 				DELAY_MS(COMM_DELAY_MS);
 			}
 		}
+		ZcRD_OutputValuesReset();
+		COMM_DisconnectPE();
 	}
-	ZcRD_RegisterReset();
+
+	ZcRD_OutputValuesReset();
+	ZcRD_RegisterFlushWrite();
 
 	*RelayErrorReg = 0;
 
