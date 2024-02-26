@@ -94,15 +94,15 @@ bool SELFTEST_RelayCheck(const SelfTestTableItem (*RelayArray)[], Int16U Stages,
 
 	for(int i = 0; i < Stages; i++)
 	{
-		// Close all relays in current stage
-		//
+		// Open all relays
+		for(int j = 0; j < Commutations; j++)
+			SELFTEST_RelayClose((*RelayArray)[j], false);
 
 		for(int j = 0; j < Commutations; j++)
 		{
+			// Close all relays in current stage
 			if((*RelayArray)[j].Stage == i)
 				SELFTEST_RelayClose((*RelayArray)[j], true);
-	//		else
-	//		SELFTEST_RelayClose((*RelayArray)[j], false);
 		}
 		DELAY_MS(COMM_DELAY_MS);
 
