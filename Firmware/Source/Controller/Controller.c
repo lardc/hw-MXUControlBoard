@@ -174,7 +174,6 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 					LL_SetStateSFRedLed(false);
 					LL_SetStateSFGreenLed(true);
 					LL_SetStateSF_EN(true);
-					LL_SetStateFPLed(false);
 					CONTROL_SetDeviceState(DS_Enabled);
 				}
 			}
@@ -231,7 +230,6 @@ void CONTROL_SafetyCheck()
 
 		COMM_Default();
 		LL_SetStateSF_EN(false);
-		LL_SetStateFPLed(true);
 		CONTROL_SetDeviceState(DS_SafetyTrig);
 	}
 }
@@ -293,8 +291,6 @@ void CONTROL_HandleFrontPanelLamp(bool Forced)
 				}
 			}
 		}
-		else
-			LL_SetStateFPLed(true);
 	}
 }
 //-----------------------------------------------
