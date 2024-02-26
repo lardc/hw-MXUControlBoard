@@ -46,6 +46,9 @@ bool PMXU_CheckState(PMXUState State)
 {
 	Int16U PMXU_State = 0;
 
+	if(DataTable[REG_PMXU_EMULATED])
+		return true;
+
 	if(BHL_ReadRegister(DataTable[REG_PMXU_CAN_ID], REG_PMXU_DEV_STATE, &PMXU_State))
 		return (PMXU_State == State) ? true : false;
 	else
