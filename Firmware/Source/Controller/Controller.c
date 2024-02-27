@@ -173,7 +173,6 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 				{
 					LL_SetStateSFRedLed(false);
 					LL_SetStateSFGreenLed(true);
-					LL_SetStateSF_EN(true);
 					CONTROL_SetDeviceState(DS_Enabled);
 				}
 			}
@@ -224,13 +223,23 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 
 void CONTROL_SafetyCheck()
 {
-	if(LL_IsSafetyTrig() && CONTROL_State == DS_SafetyActive)
-	{
-		DELAY_MS(DataTable[REG_SAFETY_DELAY]);
+	static Int64U SafetyTimer = 0;
 
-		COMM_Default();
-		LL_SetStateSF_EN(false);
-		CONTROL_SetDeviceState(DS_SafetyTrig);
+	if(LL_IsSafetyTrig())
+	{
+		if(CONTROL_State == DS_SafetyActive)
+			CONTROL_SetDeviceState(DS_SafetyTrig);
+
+		if(CONTROL_TimeCounter >= SafetyTimer)
+		{
+			LL_SetStateSF_EN(false);
+			DELAY_MS(DataTable[REG_SAFETY_DELAY]);
+
+			COMM_Default();
+			LL_SetStateSF_EN(true);
+		}
+
+		SafetyTimer = CONTROL_TimeCounter + DataTable[REG_SAFETY_DELAY];
 	}
 }
 //-----------------------------------------------
@@ -269,25 +278,30 @@ void CONTROL_HandleFrontPanelLamp(bool Forced)
 	}
 	else
 	{
-		if(CONTROL_State != DS_SafetyTrig)
+		if(CONTROL_State == DS_InSelfTest)
+			LL_SetStateFPLed(true);
+		else
 		{
-			if(CONTROL_State == DS_None && FPLampCounter)
+			if(CONTROL_State != DS_SafetyTrig)
 			{
-				LL_SetStateFPLed(false);
-				FPLampCounter = 0;
-			}
-
-			if(CONTROL_State != DS_None)
-			{
-				if(Forced)
+				if(CONTROL_State == DS_None && FPLampCounter)
 				{
-					LL_SetStateFPLed(true);
-					FPLampCounter = CONTROL_TimeCounter + TIME_FP_LED_ON_STATE;
+					LL_SetStateFPLed(false);
+					FPLampCounter = 0;
 				}
-				else
+
+				if(CONTROL_State != DS_None)
 				{
-					if(CONTROL_TimeCounter >= FPLampCounter)
-						LL_SetStateFPLed(false);
+					if(Forced)
+					{
+						LL_SetStateFPLed(true);
+						FPLampCounter = CONTROL_TimeCounter + TIME_FP_LED_ON_STATE;
+					}
+					else
+					{
+						if(CONTROL_TimeCounter >= FPLampCounter)
+							LL_SetStateFPLed(false);
+					}
 				}
 			}
 		}
