@@ -38,28 +38,6 @@ void LL_SetStateSFGreenLed(bool State)
 }
 //-----------------------------
 
-void LL_WriteSPI(uint8_t SPI_Data[], uint8_t Data_Length)
-{
-	// Turn outputs OFF
-	GPIO_SetState(GPIO_SPI_OE, true);
-
-	// Shift-registers reset
-	LL_SPIReset();
-
-	GPIO_SetState(GPIO_SPI_SS, false);
-
-	for (int i = 0; i <= Data_Length; i++)
-	{
-		LL_SPI_WriteByte(SPI_Data[i]);
-		GPIO_SetState(GPIO_SPI_SS, true);
-		GPIO_SetState(GPIO_SPI_SS, false);
-	}
-
-	// Turn outputs ON
-	GPIO_SetState(GPIO_SPI_OE, false);
-}
-//-----------------------------
-
 void LL_SPI_WriteByte(Int8U Data)
 {
 	for (int i = 7; i >= 0; i--)
@@ -70,14 +48,6 @@ void LL_SPI_WriteByte(Int8U Data)
 		DELAY_US(TIME_SPI_DELAY);
 		GPIO_SetState(GPIO_SPI_CLK, false);
 	}
-}
-//-----------------------------
-
-void LL_SPIReset()
-{
-	GPIO_SetState(GPIO_SPI_RST, false);
-	DELAY_US(1);
-	GPIO_SetState(GPIO_SPI_RST, true);
 }
 //-----------------------------
 
@@ -103,6 +73,6 @@ bool IsTestCurrent()
 
 bool LL_IsSafetyTrig()
 {
-	return !GPIO_GetState(GPIO_SF_TRIG);
+	return GPIO_GetState(GPIO_SF_TRIG);
 }
 //-----------------------------
