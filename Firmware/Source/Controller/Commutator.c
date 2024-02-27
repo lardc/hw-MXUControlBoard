@@ -14,11 +14,17 @@
 #include "PMXU.h"
 #include "Constraints.h"
 
+// Variables
+//
+CommutationState COMM_State = COMM_Def;
+
 // Functions
 //
 void COMM_Default()
 {
 	ZcRD_RegisterReset();
+
+	COMM_State = COMM_Def;
 }
 // ----------------------------------------
 
@@ -34,6 +40,8 @@ void COMM_DisconnectPE()
 	ZcRD_OutputValuesCompose(E_POT_2_PE, TRUE);
 	ZcRD_OutputValuesCompose(T1_PE, TRUE);
 	ZcRD_OutputValuesCompose(T2_PE, TRUE);
+
+	COMM_State = COMM_NoPE;
 }
 // ----------------------------------------
 
@@ -48,6 +56,8 @@ void COMM_Commutate(Int16U ActionID)
 
 		case ACT_COMM_IGES_POS_PULSE:
 			{
+				COMM_State = COMM_Iges_Pos;
+
 				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], ACT_PMXU_COMM_NO_PE))
 				{
 					if (DataTable[REG_DUT_POSITION] == DUT_POSITION_1)
@@ -98,6 +108,8 @@ void COMM_Commutate(Int16U ActionID)
 
 		case ACT_COMM_IGES_NEG_PULSE:
 			{
+				COMM_State = COMM_Iges_Neg;
+
 				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], ACT_PMXU_COMM_NO_PE))
 				{
 					if (DataTable[REG_DUT_POSITION] == DUT_POSITION_1)
@@ -148,6 +160,8 @@ void COMM_Commutate(Int16U ActionID)
 
 		case ACT_COMM_UGE_TH:
 			{
+				COMM_State = COMM_Ugeth;
+
 				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], ACT_PMXU_COMM_NO_PE))
 				{
 					if (DataTable[REG_DUT_POSITION] == DUT_POSITION_1)
@@ -204,6 +218,8 @@ void COMM_Commutate(Int16U ActionID)
 
 		case ACT_COMM_QG:
 			{
+				COMM_State = COMM_Qg;
+
 				if (DataTable[REG_DUT_POSITION] == DUT_POSITION_1)
 				{
 					if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], ACT_PMXU_COMM_QG))
@@ -248,6 +264,8 @@ void COMM_Commutate(Int16U ActionID)
 
 		case ACT_COMM_UCE_SAT:
 			{
+				COMM_State = COMM_Ucesat;
+
 				if (DataTable[REG_DUT_POSITION] == DUT_POSITION_1)
 				{
 					if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], ACT_PMXU_COMM_VCESAT))
@@ -305,6 +323,8 @@ void COMM_Commutate(Int16U ActionID)
 
 		case ACT_COMM_UFW_CHOPPER_DIODE:
 			{
+				COMM_State = COMM_Uf;
+
 				if (DataTable[REG_DUT_POSITION] == DUT_POSITION_1)
 				{
 					if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], ACT_PMXU_COMM_VF))
@@ -352,6 +372,8 @@ void COMM_Commutate(Int16U ActionID)
 
 		case ACT_COMM_ICES:
 			{
+				COMM_State = COMM_Ices;
+
 				if (DataTable[REG_DUT_POSITION] == DUT_POSITION_1)
 				{
 					if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], ACT_PMXU_COMM_ICES))
@@ -377,6 +399,8 @@ void COMM_Commutate(Int16U ActionID)
 
 		case ACT_COMM_THERMISTOR:
 			{
+				COMM_State = COMM_Thermistor;
+
 				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], ACT_PMXU_COMM_NO_PE))
 				{
 					ZcRD_OutputValuesReset();
