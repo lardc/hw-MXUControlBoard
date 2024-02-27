@@ -44,8 +44,9 @@
 // Сохраняемые регистры
 #define REG_SFTST_V_ALLOWED_VOLTAGE				0	// Допустимое значение напряжения на замкнутом реле
 #define REG_SAFETY_DELAY						1	// Задержка отключения коммутации, мс
-#define REG_PMXU_CAN_ID							2	// PMXU CAN ID
-#define REG_PMXU_EMULATED						3	// PMXU emulation
+#define REG_SAFETY_ACTIVE						2	// Активация системы безопасности
+#define REG_PMXU_CAN_ID							3	// PMXU CAN ID
+#define REG_PMXU_EMULATED						4	// PMXU emulation
 
 
 
@@ -126,6 +127,8 @@
 //
 #define ACT_PMXU_SET_ACTIVE						100	// Команда активации контура безопасности
 #define ACT_PMXU_SET_INACTIVE					101	// Команда деактивации контура безопасности
+//
+#define ACT_PMXU_SELFTEST						120	// Команда завпуска SelfTest
 //
 #define ACT_PMXU_COMM_PE						110 // Отключение всех реле, замыкание шин на PE
 #define ACT_PMXU_COMM_ICES						111 // Режим измерения тока утечки коллектор-эмиттер

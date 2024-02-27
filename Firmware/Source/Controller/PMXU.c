@@ -18,6 +18,12 @@ bool PMXU_WriteReg(Int16U RegAddress, Int16U RegData);
 
 // Functions
 //
+bool PMXU_StartSelfTest()
+{
+	return PMXU_CallAction(ACT_PMXU_SELFTEST);
+}
+//--------------------------------------
+
 bool PMXU_Enable()
 {
 	return PMXU_CallAction(ACT_PMXU_ENABLE_POWER);

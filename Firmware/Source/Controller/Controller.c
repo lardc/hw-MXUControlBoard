@@ -183,9 +183,17 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 		case ACT_SELFT_TEST:
 			if(CONTROL_State == DS_Enabled)
 			{
-				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
-				CONTROL_SetDeviceState(DS_InSelfTest);
-				CONTROL_SetDeviceSubState(STS_InputBoard);
+				if(PMXU_IsReady())
+				{
+					if(PMXU_StartSelfTest())
+					{
+						DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
+						CONTROL_SetDeviceState(DS_InSelfTest);
+						CONTROL_SetDeviceSubState(STS_InputBoard);
+					}
+				}
+				else
+					*pUserError = ERR_DEVICE_NOT_READY;
 			}
 			else if(CONTROL_State != DS_Enabled)
 				*pUserError = ERR_OPERATION_BLOCKED;
@@ -225,20 +233,23 @@ void CONTROL_SafetyCheck()
 {
 	static Int64U SafetyTimer = 0;
 
-	if(LL_IsSafetyTrig())
+	if(DataTable[REG_SAFETY_ACTIVE])
 	{
-		LL_SetStateSF_EN(false);
-		SafetyTimer = CONTROL_TimeCounter + DataTable[REG_SAFETY_DELAY];
+		if(LL_IsSafetyTrig())
+		{
+			LL_SetStateSF_EN(false);
+			SafetyTimer = CONTROL_TimeCounter + DataTable[REG_SAFETY_DELAY];
 
-		if(CONTROL_State == DS_SafetyActive)
-			CONTROL_SetDeviceState(DS_SafetyTrig);
+			if(CONTROL_State == DS_SafetyActive)
+				CONTROL_SetDeviceState(DS_SafetyTrig);
 
-		if(COMM_State != COMM_Def)
-			COMM_Default();
+			if(COMM_State != COMM_Def)
+				COMM_Default();
+		}
+		else
+			if(CONTROL_TimeCounter >= SafetyTimer)
+				LL_SetStateSF_EN(true);
 	}
-	else
-		if(CONTROL_TimeCounter >= SafetyTimer)
-			LL_SetStateSF_EN(true);
 }
 //-----------------------------------------------
 
