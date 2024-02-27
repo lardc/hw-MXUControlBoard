@@ -227,20 +227,18 @@ void CONTROL_SafetyCheck()
 
 	if(LL_IsSafetyTrig())
 	{
+		LL_SetStateSF_EN(false);
+		SafetyTimer = CONTROL_TimeCounter + DataTable[REG_SAFETY_DELAY];
+
 		if(CONTROL_State == DS_SafetyActive)
 			CONTROL_SetDeviceState(DS_SafetyTrig);
 
-		if(CONTROL_TimeCounter >= SafetyTimer)
-		{
-			LL_SetStateSF_EN(false);
-			DELAY_MS(DataTable[REG_SAFETY_DELAY]);
-
+		if(COMM_State != COMM_Def)
 			COMM_Default();
-			LL_SetStateSF_EN(true);
-		}
-
-		SafetyTimer = CONTROL_TimeCounter + DataTable[REG_SAFETY_DELAY];
 	}
+	else
+		if(CONTROL_TimeCounter >= SafetyTimer)
+			LL_SetStateSF_EN(true);
 }
 //-----------------------------------------------
 

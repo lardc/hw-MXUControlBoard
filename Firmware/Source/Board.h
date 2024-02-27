@@ -20,7 +20,6 @@
 GPIO_PortPinSettingMacro GPIO_LED				= {GPIOB, Pin_1};
 GPIO_PortPinSettingMacro GPIO_FP_LED			= {GPIOB, Pin_4};
 GPIO_PortPinSettingMacro GPIO_SPI_SS			= {GPIOA, Pin_15};
-GPIO_PortPinSettingMacro GPIO_SPI_RST			= {GPIOB, Pin_6};
 GPIO_PortPinSettingMacro GPIO_SPI_OE			= {GPIOB, Pin_7};
 GPIO_PortPinSettingMacro GPIO_SPI_CLK			= {GPIOB, Pin_3};
 GPIO_PortPinSettingMacro GPIO_SPI_DAT			= {GPIOB, Pin_5};
@@ -30,7 +29,7 @@ GPIO_PortPinSettingMacro GPIO_SF_EN				= {GPIOA, Pin_6};
 GPIO_PortPinSettingMacro GPIO_SD_EN				= {GPIOB, Pin_9};
 
 // Определения для входных портов
-GPIO_PortPinSettingMacro GPIO_SF_TRIG			= {GPIOA, Pin_7};
+GPIO_PortPinSettingMacro GPIO_SF_TRIG			= {GPIOB, Pin_6};
 
 // Определения для портов альтернативных функций
 GPIO_PortPinSettingMacro GPIO_ALT_UART1_TX		= {GPIOA, Pin_9};

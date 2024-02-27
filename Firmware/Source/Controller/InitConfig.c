@@ -29,7 +29,6 @@ void INITCFG_ConfigIO()
 	GPIO_InitOpenDrainOutput(GPIO_SPI_CLK, NoPull);
 	GPIO_InitOpenDrainOutput(GPIO_SPI_DAT, NoPull);
 	GPIO_InitOpenDrainOutput(GPIO_SPI_SS, NoPull);
-	GPIO_InitOpenDrainOutput(GPIO_SPI_RST, NoPull);
 	GPIO_InitOpenDrainOutput(GPIO_SPI_OE, NoPull);
 
 
@@ -40,7 +39,6 @@ void INITCFG_ConfigIO()
 	GPIO_SetState(GPIO_LED, false);
 	GPIO_SetState(GPIO_FP_LED, false);
 	GPIO_SetState(GPIO_SPI_SS, true);
-	GPIO_SetState(GPIO_SPI_RST, true);
 	GPIO_SetState(GPIO_SPI_CLK, false);
 	GPIO_SetState(GPIO_SPI_DAT, false);
 	GPIO_SetState(GPIO_SPI_OE, false);
