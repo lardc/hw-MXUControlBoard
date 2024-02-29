@@ -12,7 +12,6 @@
 #include "Diagnostic.h"
 #include "BCCIxParams.h"
 #include "CommutationTable.h"
-#include "Commutator.h"
 #include "ZcRegistersDriver.h"
 #include "PMXU.h"
 #include "BCCIMHighLevel.h"
@@ -275,9 +274,17 @@ void CONTROL_ResetOutputRegisters()
 }
 //------------------------------------------
 
-void CONTROL_HandleFrontPanelLamp(bool Forced)
+void CONTROL_HandleFrontPanelLamp(CommutationState Commutation)
 {
 	static Int64U FPLampCounter = 0;
+	bool Forced = false;
+	static CommutationState LastCommutation = 0;
+
+	if(LastCommutation != Commutation)
+	{
+		LastCommutation = Commutation;
+		Forced = true;
+	}
 
 	if(CONTROL_State == DS_Fault)
 	{

@@ -8,6 +8,7 @@
 #include "Global.h"
 #include "DataTable.h"
 #include "DeviceObjectDictionary.h"
+#include "Commutator.h"
 
 // Functions
 //
@@ -44,7 +45,7 @@ void TIM7_IRQHandler()
 			LED_BlinkTimeCounter = 0;
 		}
 
-		CONTROL_HandleFrontPanelLamp(false);
+		CONTROL_HandleFrontPanelLamp(COMM_State);
 
 		TIM_StatusClear(TIM7);
 	}
