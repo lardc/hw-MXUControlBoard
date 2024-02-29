@@ -97,6 +97,8 @@ void CONTROL_ResetToDefaultState()
 {
 	CONTROL_ResetOutputRegisters();
 	COMM_Default();
+	LL_SetStateSFGreenLed(true);
+
 	CONTROL_SetDeviceState(DS_None);
 	CONTROL_SetDeviceSubState(STS_None);
 }
