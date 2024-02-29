@@ -38,27 +38,21 @@
 #define ACT_BOOT_LOADER_REQUEST					320	// Перезапуск процессора с целью перепрограммирования
 // -----------------------------
 
-
-
-// Регистры
 // Сохраняемые регистры
+//
 #define REG_SFTST_V_ALLOWED_VOLTAGE				0	// Допустимое значение напряжения на замкнутом реле
 #define REG_SAFETY_DELAY						1	// Задержка отключения коммутации, мс
 #define REG_SAFETY_ACTIVE						2	// Активация системы безопасности
 #define REG_PMXU_CAN_ID							3	// PMXU CAN ID
 #define REG_PMXU_EMULATED						4	// PMXU emulation
-
-
-
+//
 #define REG_MODULE_TYPE							70	// Module type(Заглушка)
 #define REG_DUT_POSITION						71	// Регистр выбора позции тестируемого прибора (1 или 2)
-
-
+//
 #define REG_EN_SFTY_IN1							80	// Enable safety input #1(Заглушка)
 #define REG_EN_SFTY_IN2							81	// Enable safety input #2(Заглушка)
 #define REG_EN_SFTY_IN3							82	// Enable safety input #3(Заглушка)
 #define REG_EN_SFTY_IN4							83	// Enable safety input #4(Заглушка)
-
 //
 #define REG_DEV_STATE							96	// Регистр состояния
 #define REG_FAULT_REASON						97	// Регистр Fault
@@ -70,7 +64,7 @@
 #define REG_SUB_STATE							103	// Регистр вспомогательного состояния
 
 // Несохраняемые регистры чтения-записи
-
+//
 #define REG_DBG									150	// Отладочный регистр
 #define REG_DBG2								151	// Отладочный регистр
 
