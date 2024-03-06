@@ -13,9 +13,6 @@ int main()
 	
 	// Настройка портов
 	INITCFG_ConfigIO();
-	
-	// Настройка внешних прерываний
-	INITCFG_ConfigExtInterrupt();
 
 	// Настройка UART
 	INITCFG_ConfigUART();
@@ -28,9 +25,6 @@ int main()
 	
 	// Настройка АЦП
 	INITCFG_ConfigADC();
-
-	// Настройка SPI
-	INITCFG_ConfigSPI8b();
 
 	// Инициализация логики контроллера
 	CONTROL_Init();

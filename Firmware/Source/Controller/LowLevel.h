@@ -10,12 +10,13 @@
 //
 void LL_ToggleBoardLED();
 void LL_SetStateFPLed(bool State);
+void LL_ToggleFPLed();
 void LL_SetStateSFRedLed(bool State);
 void LL_SetStateSFGreenLed(bool State);
-void LL_WriteSPI(uint8_t SPI_Data[], uint8_t DataLength);
-void LL_StopSPI();
 void LL_SetStateSF_EN(bool State);
 void LL_SetStateSD_EN(bool State);
-bool LL_SelfTestMeasure();
+bool IsTestCurrent();
+bool LL_IsSafetyTrig();
+void LL_SPI_WriteByte(Int8U Data);
 
 #endif //__LOWLEVEL_H
