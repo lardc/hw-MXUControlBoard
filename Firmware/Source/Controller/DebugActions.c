@@ -8,13 +8,11 @@
 #include "Delay.h"
 #include "Controller.h"
 #include "DataTable.h"
-
-// Variables
-uint8_t SPI_Data[] = {0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0x0A};
-uint8_t Data_Length = 0x74;
+#include "ZcRegistersDriver.h"
+#include "CommutationTable.h"
 
 // Functions
-
+//
 // Send pulse to Front Panel LED
 void DBACT_ToggleFPLed()
 {
@@ -42,32 +40,29 @@ void DBACT_ToggleSFGreenLed()
 }
 //-----------------------
 
-// Write variable SPI_Data via SPI
 void DBACT_WriteSPI()
 {
-	LL_WriteSPI(SPI_Data, Data_Length);
-}
-//-----------------------
-
-// Stop commutation, reset shift-registers, turn outputs Hi-Z
-void DBACT_StopSPI()
-{
-	LL_StopSPI();
-}
-//-----------------------
-
-// Safety EN check
-void DBACT_ToggleSF_EN()
-{
-	LL_SetStateSF_EN(true);
-	DELAY_MS(1000);
-	LL_SetStateSF_EN(false);
+	// Чтение номера таблицы коммутации из отладочного регистра
+	ZcRD_OutputValuesCompose(DataTable[REG_DBG], TRUE);
+	// Коммутация выбранной комбинации
+	ZcRD_RegisterFlushWrite();
 }
 //-----------------------
 
 // Turn self-test current ON, measure voltage with ADC, compare result with DataTable constant
 void DBACT_SelfTestMeasure()
 {
-	LL_SelfTestMeasure();
+	LL_SetStateSD_EN(true);
+	DELAY_MS(100);
+	DataTable[REG_SELF_TEST_OP_RESULT] = IsTestCurrent() ? OPRESULT_OK : OPRESULT_FAIL;
+	DELAY_MS(100);
+	LL_SetStateSD_EN(false);
 }
 //-----------------------
+void DBACT_SDEN()
+
+{
+	LL_SetStateSD_EN(true);
+	DELAY_MS(100);
+	LL_SetStateSD_EN(false);
+}
