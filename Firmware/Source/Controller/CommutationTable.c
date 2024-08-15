@@ -59,6 +59,8 @@
 
 // Constants
 //
+Int32U CycleCounters[COMMUTATION_TABLE_SIZE] = {0};
+
 const CommutationTableItem CommutationTable[COMMUTATION_TABLE_SIZE] =
 				{
 						{BOARD1, PIN_RC0, REG1},			// 0	// Collector (C_POT) to PE

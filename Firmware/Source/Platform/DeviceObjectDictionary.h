@@ -36,6 +36,9 @@
 #define ACT_RESET_TO_DEFAULT					202	// Сброс DataTable в состояние по умолчанию
 
 #define ACT_BOOT_LOADER_REQUEST					320	// Перезапуск процессора с целью перепрограммирования
+
+#define ACT_FLASH_CNT_INIT_READ					334	// Перемещение указателя в область счетчиков
+#define ACT_FLASH_CNT_READ_SYMBOL				335	// Считывания символа в области счетчиков
 // -----------------------------
 
 // Сохраняемые регистры
@@ -82,6 +85,8 @@
 // 259
 #define REG_FWINFO_STR_LEN						260	// Length of the information string record
 #define REG_FWINFO_STR_BEGIN					261	// Begining of the information string record
+
+#define REG_MEM_SYMBOL							299	// Считанный по адресу памяти символ
 
 
 // Operation results

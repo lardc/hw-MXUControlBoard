@@ -122,6 +122,7 @@ typedef struct __CommutationTableItem
 
 // Variables
 //
+extern Int32U CycleCounters[COMMUTATION_TABLE_SIZE];
 extern const CommutationTableItem CommutationTable[COMMUTATION_TABLE_SIZE];
 
 

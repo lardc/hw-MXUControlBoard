@@ -16,6 +16,7 @@
 #include "PMXU.h"
 #include "BCCIMHighLevel.h"
 #include "SelfTest.h"
+#include "SaveToFlash.h"
 
 // Types
 //
@@ -34,6 +35,7 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError);
 void CONTROL_UpdateWatchDog();
 void CONTROL_ResetToDefaultState();
 void CONTROL_SafetyCheck();
+void CONTROL_InitStoragePointers();
 
 // Functions
 //
@@ -46,6 +48,8 @@ void CONTROL_Init()
 	DT_SaveFirmwareInfo(CAN_NID, 0);
 	// Инициализация device profile
 	DEVPROFILE_Init(&CONTROL_DispatchAction, &CycleActive);
+
+	CONTROL_InitStoragePointers();
 
 	// Сброс значений
 	DEVPROFILE_ResetControlSection();
@@ -102,6 +106,11 @@ void CONTROL_ResetToDefaultState()
 	CONTROL_SetDeviceSubState(STS_None);
 }
 //------------------------------------------
+void CONTROL_InitStoragePointers()
+{
+	for (Int16U i = 0; i < COMMUTATION_TABLE_SIZE; ++i)
+		STF_AssignPointer(i, (Int32U)&CycleCounters[i]);
+}
 
 bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 {
