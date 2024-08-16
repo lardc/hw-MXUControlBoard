@@ -63,16 +63,16 @@ Int32U CycleCounters[COMMUTATION_TABLE_SIZE] = {0};
 
 const CommutationTableItem CommutationTable[COMMUTATION_TABLE_SIZE] =
 				{
-						{BOARD1, PIN_RC0, REG1},			// 0	// Collector (C_POT) to PE
-						{BOARD1, PIN_RC1, REG1},			// 1	// Gate (G) to PE
-						{BOARD1, PIN_RC2, REG1},			// 2	// Gate-Emitter (GE) to PE
-						{BOARD1, PIN_RC3, REG1},			// 3	// Emitter (E_POT) to PE
-						{BOARD1, PIN_RC4, REG1},			// 4	// Collector: Commutation of C_POT (Open/Close)
-						{BOARD1, PIN_RC5, REG1},			// 5	// Gate: Commutation of G (Open/Close)
-						{BOARD1, PIN_RC6, REG1},			// 6	// Gate-Emitter: Commutation of GE (Open/Close)
-						{BOARD1, PIN_RC7, REG1},			// 7	// Emitter: Commutation of E_POT (Open/Close)
-						{BOARD1, PIN_RC8, REG2},			// 8	// Gate (G) to Collector (C_POT)
-						{BOARD1, PIN_RC9, REG2},			// 9	// Gate (G) to Gate-Emitter (GE)
+						{BOARD1, PIN_RC0, REG1},				// 0	// Collector (C_POT) to PE
+						{BOARD1, PIN_RC1, REG1},				// 1	// Gate (G) to PE
+						{BOARD1, PIN_RC2, REG1},				// 2	// Gate-Emitter (GE) to PE
+						{BOARD1, PIN_RC3, REG1},				// 3	// Emitter (E_POT) to PE
+						{BOARD1, PIN_RC4, REG1},				// 4	// Collector: Commutation of C_POT (Open/Close)
+						{BOARD1, PIN_RC5, REG1},				// 5	// Gate: Commutation of G (Open/Close)
+						{BOARD1, PIN_RC6, REG1},				// 6	// Gate-Emitter: Commutation of GE (Open/Close)
+						{BOARD1, PIN_RC7, REG1},				// 7	// Emitter: Commutation of E_POT (Open/Close)
+						{BOARD1, PIN_RC8, REG2},				// 8	// Gate (G) to Collector (C_POT)
+						{BOARD1, PIN_RC9, REG2},				// 9	// Gate (G) to Gate-Emitter (GE)
 						{BOARD1, PIN_RC10, REG2},			// 10	// Gate-Emitter (GE) to GT_G
 						{BOARD1, PIN_RC11, REG2},			// 11	// Gate-Emitter (GE) to GT_GE
 						{BOARD1, PIN_RC12, REG2},			// 12	// Gate-Emitter (GE) to LSL_GE
