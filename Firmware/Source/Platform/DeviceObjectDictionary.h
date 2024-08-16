@@ -69,6 +69,9 @@
 #define REG_SELF_TEST_OP_RESULT					102	// Регистр результата самотестирования
 #define REG_SUB_STATE							103	// Регистр вспомогательного состояния
 
+#define REG_CNT_NUMBER							104	// Номер счетчика, в который будет записано значение из регистра 301
+#define REG_CNT_VALUE							105	// Значение, которое будет записано в счетчик
+
 // Несохраняемые регистры чтения-записи
 //
 #define REG_DBG									150	// Отладочный регистр
@@ -90,8 +93,6 @@
 #define REG_FWINFO_STR_BEGIN					261	// Begining of the information string record
 
 #define REG_MEM_SYMBOL							299	// Считанный по адресу памяти символ
-#define REG_CNT_NUMBER							300	// Номер счетчика, в который будет записано значение из регистра 301
-#define REG_CNT_VALUE							301	// Значение, которое будет записано в счетчик
 
 
 // Operation results
