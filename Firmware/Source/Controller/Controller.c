@@ -50,6 +50,7 @@ void CONTROL_Init()
 	DEVPROFILE_Init(&CONTROL_DispatchAction, &CycleActive);
 
 	CONTROL_InitStoragePointers();
+	STF_LoadCounters();
 
 	// Сброс значений
 	DEVPROFILE_ResetControlSection();
@@ -59,6 +60,12 @@ void CONTROL_Init()
 
 void CONTROL_Idle()
 {
+	if (CONTROL_TimeCounter - CT_SaveTimer >= CT_SaveTimeout)
+	{
+		STF_SaveCounterData();
+		CT_SaveTimer = CONTROL_TimeCounter;
+	}
+
 	CONTROL_SafetyCheck();
 	SELFTEST_Process();
 

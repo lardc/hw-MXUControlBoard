@@ -57,6 +57,11 @@
 #define REG9	8
 #define REG10	9
 
+// Variables
+//
+Int64U CT_SaveTimer = 0;
+Int32U CT_SaveTimeout = 1800000;
+
 // Constants
 //
 Int32U CycleCounters[COMMUTATION_TABLE_SIZE] = {0};
