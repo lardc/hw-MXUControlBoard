@@ -15,7 +15,7 @@ void LL_SetStateSFRedLed(bool State);
 void LL_SetStateSFGreenLed(bool State);
 void LL_SetStateSF_EN(bool State);
 void LL_SetStateSD_EN(bool State);
-bool IsTestCurrent();
+float GetTestCurrent();
 bool LL_IsSafetyTrig();
 void LL_SPI_WriteByte(Int8U Data);
 
