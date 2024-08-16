@@ -60,7 +60,6 @@
 // Variables
 //
 Int64U CT_SaveTimer = 0;
-Int32U CT_SaveTimeout = 1800000;
 
 // Constants
 //

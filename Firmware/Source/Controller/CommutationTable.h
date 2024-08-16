@@ -110,6 +110,7 @@
 #define MC_T1_GT_GE_POT			55
 #define MC_T1_GT_GE				54
 
+#define CT_SAVE_TIMEOUT			1800000
 // Types
 //
 typedef struct __CommutationTableItem
@@ -126,6 +127,5 @@ extern Int32U CycleCounters[COMMUTATION_TABLE_SIZE];
 extern const CommutationTableItem CommutationTable[COMMUTATION_TABLE_SIZE];
 
 extern Int64U CT_SaveTimer;
-extern Int32U CT_SaveTimeout;
 
 #endif // __COMMTABLE_H

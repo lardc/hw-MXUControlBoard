@@ -60,7 +60,7 @@ void CONTROL_Init()
 
 void CONTROL_Idle()
 {
-	if (CONTROL_TimeCounter - CT_SaveTimer >= CT_SaveTimeout)
+	if (CONTROL_TimeCounter - CT_SaveTimer >= CT_SAVE_TIMEOUT)
 	{
 		STF_SaveCounterData();
 		CT_SaveTimer = CONTROL_TimeCounter;
@@ -116,7 +116,7 @@ void CONTROL_ResetToDefaultState()
 void CONTROL_InitStoragePointers()
 {
 	for (Int16U i = 0; i < COMMUTATION_TABLE_SIZE; ++i)
-		STF_AssignPointer(i, (Int32U)&CycleCounters[i]);
+		STF_AssignCounterPointer(i, (Int32U)&CycleCounters[i]);
 }
 
 bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
@@ -240,8 +240,7 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			break;
 		
 		case ACT_SET_COUNTER:
-			Int16U CounterIndex = DataTable[REG_CNT_NUMBER];
-			CycleCounters[CounterIndex] = DataTable[REG_CNT_VALUE];
+			CycleCounters[(Int16U)DataTable[REG_CNT_NUMBER]] = DataTable[REG_CNT_VALUE];
 			break;
 
 		case ACT_SAVE_COUNTERS:
