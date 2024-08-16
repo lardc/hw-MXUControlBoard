@@ -238,6 +238,19 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			else
 				COMM_Commutate(ActionID);
 			break;
+		
+		case ACT_SET_COUNTER:
+			Int16U CounterIndex = DataTable[REG_CNT_NUMBER];
+			CycleCounters[CounterIndex] = DataTable[REG_CNT_VALUE];
+			break;
+
+		case ACT_SAVE_COUNTERS:
+			STF_SaveCounterData();
+			break;
+
+		case ACT_ERASE_COUNTERS:
+			STF_EraseCounterDataSector();
+			break;
 
 		default:
 			return DIAG_HandleDiagnosticAction(ActionID, pUserError);
