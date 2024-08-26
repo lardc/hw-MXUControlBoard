@@ -50,7 +50,7 @@ void COMM_Commutate(Int16U ActionID)
 	switch(ActionID)
 	{
 		case ACT_COMM_NONE:
-			if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], ACT_PMXU_COMM_PE))
+			if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], DataTable[REG_DEV_CASE], ACT_PMXU_COMM_PE))
 				COMM_Default();
 			break;
 
@@ -58,9 +58,13 @@ void COMM_Commutate(Int16U ActionID)
 			{
 				COMM_State = COMM_Iges_Pos;
 
-				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], ACT_PMXU_COMM_NO_PE))
+				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], DataTable[REG_DEV_CASE], ACT_PMXU_COMM_NO_PE))
 				{
-					if (DataTable[REG_DUT_POSITION] == DUT_POSITION_1)
+					if (DataTable[REG_DUT_POSITION] == DUT_POSITION_1	||
+						DataTable[REG_DEV_CASE] == SC_Type_MIHV			||
+						DataTable[REG_DEV_CASE] == SC_Type_MIHM			||
+						DataTable[REG_DEV_CASE] == SC_Type_MISM2_CH 	||
+						DataTable[REG_DEV_CASE] == SC_Type_MISM2_SS_SD)
 					{
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
@@ -110,9 +114,13 @@ void COMM_Commutate(Int16U ActionID)
 			{
 				COMM_State = COMM_Iges_Neg;
 
-				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], ACT_PMXU_COMM_NO_PE))
+				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], DataTable[REG_DEV_CASE], ACT_PMXU_COMM_NO_PE))
 				{
-					if (DataTable[REG_DUT_POSITION] == DUT_POSITION_1)
+					if (DataTable[REG_DUT_POSITION] == DUT_POSITION_1	||
+						DataTable[REG_DEV_CASE] == SC_Type_MIHV			||
+						DataTable[REG_DEV_CASE] == SC_Type_MIHM			||
+						DataTable[REG_DEV_CASE] == SC_Type_MISM2_CH 	||
+						DataTable[REG_DEV_CASE] == SC_Type_MISM2_SS_SD)
 					{
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
@@ -162,9 +170,13 @@ void COMM_Commutate(Int16U ActionID)
 			{
 				COMM_State = COMM_Ugeth;
 
-				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], ACT_PMXU_COMM_NO_PE))
+				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], DataTable[REG_DEV_CASE], ACT_PMXU_COMM_NO_PE))
 				{
-					if (DataTable[REG_DUT_POSITION] == DUT_POSITION_1)
+					if (DataTable[REG_DUT_POSITION] == DUT_POSITION_1	||
+						DataTable[REG_DEV_CASE] == SC_Type_MIHV			||
+						DataTable[REG_DEV_CASE] == SC_Type_MIHM			||
+						DataTable[REG_DEV_CASE] == SC_Type_MISM2_CH 	||
+						DataTable[REG_DEV_CASE] == SC_Type_MISM2_SS_SD)
 					{
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
@@ -220,9 +232,13 @@ void COMM_Commutate(Int16U ActionID)
 			{
 				COMM_State = COMM_Qg;
 
-				if (DataTable[REG_DUT_POSITION] == DUT_POSITION_1)
+				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], DataTable[REG_DEV_CASE], ACT_PMXU_COMM_QG))
 				{
-					if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], ACT_PMXU_COMM_QG))
+					if (DataTable[REG_DUT_POSITION] == DUT_POSITION_1	||
+						DataTable[REG_DEV_CASE] == SC_Type_MIHV			||
+						DataTable[REG_DEV_CASE] == SC_Type_MIHM			||
+						DataTable[REG_DEV_CASE] == SC_Type_MISM2_CH 	||
+						DataTable[REG_DEV_CASE] == SC_Type_MISM2_SS_SD)
 					{
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
@@ -238,10 +254,7 @@ void COMM_Commutate(Int16U ActionID)
 
 						ZcRD_RegisterFlushWrite();
 					}
-				}
-				else if (DataTable[REG_DUT_POSITION] == DUT_POSITION_2)
-				{
-					if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], ACT_PMXU_COMM_QG))
+					else if (DataTable[REG_DUT_POSITION] == DUT_POSITION_2)
 					{
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
@@ -266,9 +279,13 @@ void COMM_Commutate(Int16U ActionID)
 			{
 				COMM_State = COMM_Ucesat;
 
-				if (DataTable[REG_DUT_POSITION] == DUT_POSITION_1)
+				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], DataTable[REG_DEV_CASE], ACT_PMXU_COMM_VCESAT))
 				{
-					if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], ACT_PMXU_COMM_VCESAT))
+					if (DataTable[REG_DUT_POSITION] == DUT_POSITION_1	||
+						DataTable[REG_DEV_CASE] == SC_Type_MIHV			||
+						DataTable[REG_DEV_CASE] == SC_Type_MIHM			||
+						DataTable[REG_DEV_CASE] == SC_Type_MISM2_CH 	||
+						DataTable[REG_DEV_CASE] == SC_Type_MISM2_SS_SD)
 					{
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
@@ -291,10 +308,7 @@ void COMM_Commutate(Int16U ActionID)
 
 						ZcRD_RegisterFlushWrite();
 					}
-				}
-				else if (DataTable[REG_DUT_POSITION] == DUT_POSITION_2)
-				{
-					if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], ACT_PMXU_COMM_VCESAT))
+					else if (DataTable[REG_DUT_POSITION] == DUT_POSITION_2)
 					{
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
@@ -325,9 +339,13 @@ void COMM_Commutate(Int16U ActionID)
 			{
 				COMM_State = COMM_Uf;
 
-				if (DataTable[REG_DUT_POSITION] == DUT_POSITION_1)
+				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], DataTable[REG_DEV_CASE], ACT_PMXU_COMM_VF))
 				{
-					if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], ACT_PMXU_COMM_VF))
+					if (DataTable[REG_DUT_POSITION] == DUT_POSITION_1	||
+						DataTable[REG_DEV_CASE] == SC_Type_MIHV			||
+						DataTable[REG_DEV_CASE] == SC_Type_MIHM			||
+						DataTable[REG_DEV_CASE] == SC_Type_MISM2_CH 	||
+						DataTable[REG_DEV_CASE] == SC_Type_MISM2_SS_SD)
 					{
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
@@ -345,10 +363,7 @@ void COMM_Commutate(Int16U ActionID)
 
 						ZcRD_RegisterFlushWrite();
 					}
-				}
-				else if (DataTable[REG_DUT_POSITION] == DUT_POSITION_2)
-				{
-					if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], ACT_PMXU_COMM_VF))
+					else if (DataTable[REG_DUT_POSITION] == DUT_POSITION_2)
 					{
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
@@ -374,19 +389,20 @@ void COMM_Commutate(Int16U ActionID)
 			{
 				COMM_State = COMM_Ices;
 
-				if (DataTable[REG_DUT_POSITION] == DUT_POSITION_1)
+				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], DataTable[REG_DEV_CASE], ACT_PMXU_COMM_ICES))
 				{
-					if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], ACT_PMXU_COMM_ICES))
+					if (DataTable[REG_DUT_POSITION] == DUT_POSITION_1	||
+						DataTable[REG_DEV_CASE] == SC_Type_MIHV			||
+						DataTable[REG_DEV_CASE] == SC_Type_MIHM			||
+						DataTable[REG_DEV_CASE] == SC_Type_MISM2_CH 	||
+						DataTable[REG_DEV_CASE] == SC_Type_MISM2_SS_SD)
 					{
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
 						ZcRD_OutputValuesCompose(MC_G_GE, TRUE);
 						ZcRD_RegisterFlushWrite();
 					}
-				}
-				else if (DataTable[REG_DUT_POSITION] == DUT_POSITION_2)
-				{
-					if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], ACT_PMXU_COMM_ICES))
+					else if (DataTable[REG_DUT_POSITION] == DUT_POSITION_2)
 					{
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
@@ -401,7 +417,7 @@ void COMM_Commutate(Int16U ActionID)
 			{
 				COMM_State = COMM_Thermistor;
 
-				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], ACT_PMXU_COMM_NO_PE))
+				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], DataTable[REG_DEV_CASE], ACT_PMXU_COMM_NO_PE))
 				{
 					ZcRD_OutputValuesReset();
 					COMM_DisconnectPE();
@@ -427,7 +443,7 @@ void COMM_Commutate(Int16U ActionID)
 
 		case ACT_COMM_NO_PE:
 			{
-				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], ACT_PMXU_COMM_NO_PE))
+				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], DataTable[REG_DEV_CASE], ACT_PMXU_COMM_NO_PE))
 				{
 					ZcRD_OutputValuesReset();
 					COMM_DisconnectPE();

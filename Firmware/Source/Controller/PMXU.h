@@ -25,7 +25,7 @@ bool PMXU_IsReady();
 bool PMXU_InFault();
 bool PMXU_ClearFault();
 bool PMXU_ClearWarning();
-bool PMXU_SwitchCommutation(Int16U Position, Int16U CommutationNumber);
+bool PMXU_SwitchCommutation(Int16U Position, Int16U DevCase, Int16U CommutationNumber);
 bool PMXU_Enable();
 bool PMXU_Disable();
 bool PMXU_CheckState(PMXUState State);
