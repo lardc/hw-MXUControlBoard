@@ -64,10 +64,11 @@ bool PMXU_CheckState(PMXUState State)
 }
 //--------------------------------------
 
-bool PMXU_SwitchCommutation(Int16U Position, Int16U CommutationNumber)
+bool PMXU_SwitchCommutation(Int16U Position, Int16U DevCase, Int16U CommutationNumber)
 {
 	if(PMXU_WriteReg(REG_PMXU_DUT_POSITION, Position))
-		return PMXU_CallAction(CommutationNumber);
+		if(PMXU_WriteReg(REG_PMXU_DEV_CASE, DevCase))
+			return PMXU_CallAction(CommutationNumber);
 
 	return false;
 }

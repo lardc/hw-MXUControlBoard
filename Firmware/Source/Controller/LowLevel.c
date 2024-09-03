@@ -63,11 +63,9 @@ void LL_SetStateSD_EN(bool State)
 }
 //-----------------------------
 
-bool IsTestCurrent()
+float GetTestCurrent()
 {
-	float MeasuredTestVoltage = (float)ADC_Measure(ADC1, ADC_V_CHANNEL) * ADC_REF_VOLTAGE / ADC_RESOLUTION;
-	DataTable[REG_DBG2] = MeasuredTestVoltage;
-	return (MeasuredTestVoltage < DataTable[REG_SFTST_V_ALLOWED_VOLTAGE]) ? true : false;
+	return (float)ADC_Measure(ADC1, ADC_V_CHANNEL) * ADC_REF_VOLTAGE / ADC_RESOLUTION;
 }
 //-----------------------------
 

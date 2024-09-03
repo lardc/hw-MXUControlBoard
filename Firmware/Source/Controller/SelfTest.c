@@ -88,6 +88,7 @@ void SELFTEST_Process()
 
 bool SELFTEST_RelayCheck(const SelfTestTableItem (*RelayArray)[], Int16U Stages, Int16U Commutations, pFloat32 RelayErrorReg)
 {
+	float RelayClosedTestCurrent = 0, RelayOpenedTestCurrent = 0;
 
 	ZcRD_OutputValuesReset();
 	COMM_DisconnectPE();
@@ -112,23 +113,23 @@ bool SELFTEST_RelayCheck(const SelfTestTableItem (*RelayArray)[], Int16U Stages,
 		{
 			if((*RelayArray)[j].Stage == i)
 			{
-				if(!IsTestCurrent())
-				{
-					*RelayErrorReg = j;
-					return false;
-				}
+				RelayClosedTestCurrent = GetTestCurrent();
 
 				SELFTEST_RelayClose((*RelayArray)[j], false);
 				DELAY_MS(COMM_DELAY_MS);
 
-				if(IsTestCurrent())
+				RelayOpenedTestCurrent = GetTestCurrent();
+
+				SELFTEST_RelayClose((*RelayArray)[j], true);
+				DELAY_MS(COMM_DELAY_MS);
+
+				if(fabs(RelayClosedTestCurrent - RelayOpenedTestCurrent) < DataTable[REG_SFTST_V_ALLOWED_VOLTAGE])
 				{
 					*RelayErrorReg = j;
 					return false;
 				}
 
-				SELFTEST_RelayClose((*RelayArray)[j], true);
-				DELAY_MS(COMM_DELAY_MS);
+
 			}
 		}
 		ZcRD_OutputValuesReset();

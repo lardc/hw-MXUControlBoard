@@ -54,7 +54,7 @@ void DBACT_SelfTestMeasure()
 {
 	LL_SetStateSD_EN(true);
 	DELAY_MS(100);
-	DataTable[REG_SELF_TEST_OP_RESULT] = IsTestCurrent() ? OPRESULT_OK : OPRESULT_FAIL;
+	DataTable[REG_DBG] = GetTestCurrent();
 	DELAY_MS(100);
 	LL_SetStateSD_EN(false);
 }

@@ -48,6 +48,7 @@
 //
 #define REG_MODULE_TYPE							70	// Module type(Заглушка)
 #define REG_DUT_POSITION						71	// Регистр выбора позции тестируемого прибора (1 или 2)
+#define REG_DEV_CASE							72	// Тип корпуса прибора
 //
 #define REG_EN_SFTY_IN1							80	// Enable safety input #1(Заглушка)
 #define REG_EN_SFTY_IN2							81	// Enable safety input #2(Заглушка)
@@ -135,6 +136,7 @@
 // PMXU registers
 //
 #define REG_PMXU_DUT_POSITION					128	// Регистр выбора позции тестируемого прибора (1 или 2)
+#define REG_PMXU_DEV_CASE						129	// Тип корпуса прибора
 
 #define REG_PMXU_DEV_STATE						192	// Регистр состояния
 #define REG_PMXU_FAULT_REASON					193	// Регистр Fault
