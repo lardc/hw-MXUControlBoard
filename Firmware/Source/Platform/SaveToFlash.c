@@ -164,8 +164,9 @@ void STF_SaveCounterData()
 	Int16U i;
 	for (i = 0; i < CounterStorageSize; ++i)
 	{
-		if (CounterTablePointers[i].Value != *(pInt32U)CounterTablePointers[i].Address)
+		if (CounterTablePointers[i].Value != *(pInt32U)CounterTablePointers[i].Address) {
 			break;
+		}
 	}
 	if (i == CounterStorageSize)
 		return;
@@ -255,7 +256,7 @@ void STF_LoadCounters()
 	Int32U StoragePointer = STF_ShiftCounterStorageEnd() - CounterStorageSize * 4;
 	for (Int16U i = 0; i < CounterStorageSize; ++i)
 	{
-		CounterTablePointers[i].Value = STF_ReadCounter32(StoragePointer);
+		CounterTablePointers[i].Value = *(pInt32U)CounterTablePointers[i].Address = STF_ReadCounter32(StoragePointer);
 		StoragePointer += 4;
 	}
 }
