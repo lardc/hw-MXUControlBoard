@@ -46,8 +46,6 @@ void ZcRD_OutputValuesReset()
 void ZcRD_RegisterFlushWrite()
 {
 	static uint8_t PrevCurrentOutputValues[NUM_REGS_TOTAL] = {0};
-	for (Int16U i = 0; i < NUM_REGS_TOTAL; ++i)
-		PrevCurrentOutputValues[i] = CurrentOutputValues[i];
 
 	GPIO_SetState(GPIO_SPI_OE, false);
 	for(int8_t i = NUM_REGS_TOTAL - 1; i >= 0; i--)
@@ -64,5 +62,8 @@ void ZcRD_RegisterFlushWrite()
 		if ((PrevCurrentOutputValues[CommutationTable[i].RegNum] & CommutationTable[i].Bit) != 
 			(CurrentOutputValues[CommutationTable[i].RegNum] & CommutationTable[i].Bit))
 			CycleCounters[i]++;
+
+	for (Int16U i = 0; i < NUM_REGS_TOTAL; ++i)
+		PrevCurrentOutputValues[i] = CurrentOutputValues[i];
 }
 // ----------------------------------------

@@ -67,12 +67,12 @@ Int16U STF_ReadCounter()
 			break;
 
 		case RCSM_DataType:
-			RetVal = CounterStorageDescription[LineNumber].Type;
+			RetVal = DT_Int32U;
 			CurrentState = RCSM_DataLength;
 			break;
 
 		case RCSM_DataLength:
-			RetVal = CounterStorageDescription[LineNumber].Length;
+			RetVal = 1;
 			CurrentState = RCSM_Data;
 			DataPosition = 0;
 			break;
@@ -160,13 +160,13 @@ void STF_SaveDiagData()
 
 void STF_SaveCounterData()
 {
+	NFLASH_Unlock();
 	// Проверка на то, изменились ли данные с момента последней записи
 	Int16U i;
 	for (i = 0; i < CounterStorageSize; ++i)
 	{
-		if (CounterTablePointers[i].Value != *(pInt32U)CounterTablePointers[i].Address) {
+		if (CounterTablePointers[i].Value != *(pInt32U)CounterTablePointers[i].Address)
 			break;
-		}
 	}
 	if (i == CounterStorageSize)
 		return;
@@ -179,8 +179,6 @@ void STF_SaveCounterData()
 		STF_EraseCounterDataSector();
 		ShiftedAddress = FLASH_COUNTER_START_ADDR;
 	}
-
-	NFLASH_Unlock();
 
 	for (i = 0; i < CounterStorageSize; ++i)
 	{
@@ -220,22 +218,21 @@ Int32U STF_ShiftCounterStorageEnd()
 {
 	Int32U StoragePointer = FLASH_COUNTER_START_ADDR;
 
-	for (Int32U i = 0 ; i < FLASH_COUNTER_END_ADDR; ++i)
+	Int32U MaxValuesCounter = 0;
+	for (Int32U i = FLASH_COUNTER_START_ADDR; i <= FLASH_COUNTER_END_ADDR; ++i)
 	{
-		Int16U MaxValuesCounter = 0;
-		for (Int16U j = 0; j < CounterStorageSize; ++j)
-		{
-			Int32U Value = STF_ReadCounter32(StoragePointer);
-			StoragePointer += 4;
+		Int32U Value = STF_ReadCounter32(StoragePointer);
+		StoragePointer += 4;
 
-			if (Value == 0xFFFFFFFF)
-				MaxValuesCounter++;
+		if (Value == 0xFFFFFFFF)
+			MaxValuesCounter++;
+		else
+			MaxValuesCounter = 0;
 
-			if (MaxValuesCounter == CounterStorageSize)
-				return StoragePointer - CounterStorageSize * 4;
-		}
+		if (MaxValuesCounter == CounterStorageSize)
+			return i - CounterStorageSize * 4;
 	}
-	return FLASH_COUNTER_START_ADDR;
+	return FLASH_COUNTER_END_ADDR;
 }
 // ----------------------------------------
 
@@ -253,7 +250,12 @@ void STF_EraseCounterDataSector()
 
 void STF_LoadCounters()
 {
-	Int32U StoragePointer = STF_ShiftCounterStorageEnd() - CounterStorageSize * 4;
+	Int32U StoragePointer = STF_ShiftCounterStorageEnd();
+	if (StoragePointer != FLASH_COUNTER_START_ADDR)
+		StoragePointer -= (CounterStorageSize * 4);
+	else
+		return;
+
 	for (Int16U i = 0; i < CounterStorageSize; ++i)
 	{
 		CounterTablePointers[i].Value = *(pInt32U)CounterTablePointers[i].Address = STF_ReadCounter32(StoragePointer);

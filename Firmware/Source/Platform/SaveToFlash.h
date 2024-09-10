@@ -34,6 +34,10 @@ typedef struct __CounterData
 	Int32U Address;
 } CounterData;
 
+typedef struct __CounterDescription
+{
+	char Description[MAX_DESCRIPTION_LEN];
+} CounterDescription;
 // Functions
 Int16U STF_ReadCounter();
 void STF_ResetStateMachine();
