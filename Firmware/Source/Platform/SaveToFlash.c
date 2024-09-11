@@ -38,7 +38,9 @@ void STF_ResetStateMachine()
 	CurrentState = RCSM_DescriptionType;
 	LineNumber = 0;
 	DataPosition = 0;
-	FlashPosition = STF_ShiftCounterStorageEnd() - CounterStorageSize * 4;
+	FlashPosition = STF_ShiftCounterStorageEnd();
+	if(FlashPosition != FLASH_COUNTER_START_ADDR)
+		FlashPosition -= CounterStorageSize * 4;
 }
 // ----------------------------------------
 
