@@ -251,17 +251,18 @@ void STF_EraseCounterDataSector()
 void STF_LoadCounters()
 {
 	Int32U StoragePointer = STF_ShiftCounterStorageEnd();
-	if (StoragePointer != FLASH_COUNTER_START_ADDR)
-		StoragePointer -= (CounterStorageSize * 4);
-	else
-		return;
+	bool SavedData = StoragePointer != FLASH_COUNTER_START_ADDR;
+
+	if(SavedData)
+		StoragePointer -= CounterStorageSize * 4;
 
 	for (Int16U i = 0; i < CounterStorageSize; ++i)
 	{
-		CounterTablePointers[i].Value = *(pInt32U)CounterTablePointers[i].Address = STF_ReadCounter32(StoragePointer);
+		CounterTablePointers[i].Value = *(pInt32U)CounterTablePointers[i].Address = SavedData ? STF_ReadCounter32(StoragePointer) : 0;
 		StoragePointer += 4;
 	}
 }
+// ----------------------------------------
 
 Int16U StrLen(const char* string)
 {
