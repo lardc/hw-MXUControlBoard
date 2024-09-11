@@ -31,6 +31,8 @@ Int16U LineNumber;
 Int16U DataPosition;
 Int32U FlashPosition;
 
+// Functions
+//
 void STF_ResetStateMachine()
 {
 	CurrentState = RCSM_DescriptionType;
@@ -38,6 +40,7 @@ void STF_ResetStateMachine()
 	DataPosition = 0;
 	FlashPosition = STF_ShiftCounterStorageEnd() - CounterStorageSize * 4;
 }
+// ----------------------------------------
 
 Int16U STF_ReadCounter()
 {
@@ -93,9 +96,8 @@ Int16U STF_ReadCounter()
 
 	return RetVal;
 }
+// ----------------------------------------
 
-// Functions
-//
 void STF_AssignPointer(Int16U Index, Int32U Pointer)
 {
 	if(Index < StorageSize)
@@ -160,7 +162,6 @@ void STF_SaveDiagData()
 
 void STF_SaveCounterData()
 {
-	NFLASH_Unlock();
 	// Проверка на то, изменились ли данные с момента последней записи
 	Int16U i;
 	for (i = 0; i < CounterStorageSize; ++i)
@@ -171,6 +172,7 @@ void STF_SaveCounterData()
 	if (i == CounterStorageSize)
 		return;
 
+	NFLASH_Unlock();
 	Int32U ShiftedAddress = STF_ShiftCounterStorageEnd();
 
 	// Проверка на свободное место в памяти
@@ -216,21 +218,10 @@ Int32U STF_ShiftStorageEnd()
 
 Int32U STF_ShiftCounterStorageEnd()
 {
-	Int32U StoragePointer = FLASH_COUNTER_START_ADDR;
-
-	Int32U MaxValuesCounter = 0;
-	for (Int32U i = FLASH_COUNTER_START_ADDR; i <= FLASH_COUNTER_END_ADDR; ++i)
+	for (Int32U i = FLASH_COUNTER_START_ADDR; i < FLASH_COUNTER_END_ADDR; i += 4)
 	{
-		Int32U Value = STF_ReadCounter32(StoragePointer);
-		StoragePointer += 4;
-
-		if (Value == 0xFFFFFFFF)
-			MaxValuesCounter++;
-		else
-			MaxValuesCounter = 0;
-
-		if (MaxValuesCounter == CounterStorageSize)
-			return i - CounterStorageSize * 4;
+		if(STF_ReadCounter32(i) == 0xFFFFFFFF)
+			return i;
 	}
 	return FLASH_COUNTER_END_ADDR;
 }
