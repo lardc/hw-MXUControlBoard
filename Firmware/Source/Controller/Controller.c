@@ -27,6 +27,9 @@ volatile DeviceState CONTROL_State = DS_None;
 volatile DeviceSelfTestState CONTROL_SubState = STS_None;
 static Boolean CycleActive = false;
 volatile Int64U CONTROL_TimeCounter = 0;
+//
+DevType AllowedCases[] = {SC_Type_MIAA, SC_Type_MIDA, SC_Type_MIFA, SC_Type_MIHA, SC_Type_MIHM, SC_Type_MIHV, SC_Type_MISM, SC_Type_MISV,
+							SC_Type_MIXM, SC_Type_MIXV, SC_Type_MISM2_CH, SC_Type_MISM2_SS_SD, SC_Type_MIADAP};
 
 // Forward functions
 //
@@ -34,6 +37,7 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError);
 void CONTROL_UpdateWatchDog();
 void CONTROL_ResetToDefaultState();
 void CONTROL_SafetyCheck();
+bool CONTROL_DevCaseCheck(DevType DevCase);
 
 // Functions
 //
@@ -220,13 +224,28 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 				*pUserError = ERR_DEVICE_NOT_READY;
 			}
 			else
-				COMM_Commutate(ActionID);
+				if(CONTROL_DevCaseCheck(DataTable[REG_DEV_CASE]))
+					COMM_Commutate(ActionID);
+				else
+					*pUserError = ERR_OPERATION_BLOCKED;
 			break;
 
 		default:
 			return DIAG_HandleDiagnosticAction(ActionID, pUserError);
 	}
 	return true;
+}
+//-----------------------------------------------
+
+bool CONTROL_DevCaseCheck(DevType DevCase)
+{
+	for(int i = 0; i < sizeof(AllowedCases) / 2; i++)
+	{
+		if(DevCase == AllowedCases[i])
+			return true;
+	}
+
+	return false;
 }
 //-----------------------------------------------
 
