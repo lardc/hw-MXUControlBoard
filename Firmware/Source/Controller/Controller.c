@@ -224,7 +224,7 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 				*pUserError = ERR_DEVICE_NOT_READY;
 			}
 			else
-				if(CONTROL_DevCaseCheck(DataTable[REG_DEV_CASE]))
+				if(CONTROL_DevCaseCheck(DataTable[REG_DEV_CASE]) || ActionID == ACT_COMM_NONE || ActionID == ACT_COMM_NO_PE)
 					COMM_Commutate(ActionID);
 				else
 					*pUserError = ERR_OPERATION_BLOCKED;
