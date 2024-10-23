@@ -120,8 +120,12 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 				{
 					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
 					RelayStages = CRS_Init;
-					CONTROL_SetDeviceState(DS_InSelfTest);
-					CONTROL_SetDeviceSubState(STS_InputBoard);
+
+					// Selftest временно отключен, до устранения все проблем
+					//CONTROL_SetDeviceState(DS_InSelfTest);
+					//CONTROL_SetDeviceSubState(STS_InputBoard);
+
+					CONTROL_SetDeviceState(DS_Enabled);
 				}
 			}
 			else if(CONTROL_State != DS_Enabled)
