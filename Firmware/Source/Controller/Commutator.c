@@ -69,6 +69,12 @@ void COMM_Commutate(Int16U ActionID)
 
 				if(PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_NO_PE))
 				{
+					if(DUTCase == SC_Type_MDAA)
+					{
+						ZcRD_OutputValuesReset();
+						COMM_DisconnectPE();
+						break;
+					}
 					if (DUTPosition == DUT_POSITION_2	||
 						DUTCase == SC_Type_MIHV			||
 						DUTCase == SC_Type_MIHM			||
@@ -125,6 +131,12 @@ void COMM_Commutate(Int16U ActionID)
 
 				if(PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_NO_PE))
 				{
+					if(DUTCase == SC_Type_MDAA)
+					{
+						ZcRD_OutputValuesReset();
+						COMM_DisconnectPE();
+						break;
+					}
 					if (DUTPosition == DUT_POSITION_2	||
 						DUTCase == SC_Type_MIHV			||
 						DUTCase == SC_Type_MIHM			||
@@ -181,6 +193,12 @@ void COMM_Commutate(Int16U ActionID)
 
 				if(PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_NO_PE))
 				{
+					if(DUTCase == SC_Type_MDAA)
+					{
+						ZcRD_OutputValuesReset();
+						COMM_DisconnectPE();
+						break;
+					}
 					if (DUTPosition == DUT_POSITION_2	||
 						DUTCase == SC_Type_MIHV			||
 						DUTCase == SC_Type_MIHM			||
@@ -243,6 +261,12 @@ void COMM_Commutate(Int16U ActionID)
 
 				if(PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_QG))
 				{
+					if(DUTCase == SC_Type_MDAA)
+					{
+						ZcRD_OutputValuesReset();
+						COMM_DisconnectPE();
+						break;
+					}
 					if (DUTPosition == DUT_POSITION_2	||
 						DUTCase == SC_Type_MIHV			||
 						DUTCase == SC_Type_MIHM			||
@@ -290,6 +314,12 @@ void COMM_Commutate(Int16U ActionID)
 
 				if(PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_VCESAT))
 				{
+					if(DUTCase == SC_Type_MDAA)
+					{
+						ZcRD_OutputValuesReset();
+						COMM_DisconnectPE();
+						break;
+					}
 					if (DUTPosition == DUT_POSITION_2	||
 						DUTCase == SC_Type_MIHV			||
 						DUTCase == SC_Type_MIHM			||
