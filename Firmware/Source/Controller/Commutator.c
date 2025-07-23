@@ -69,7 +69,7 @@ void COMM_Commutate(Int16U ActionID)
 
 				if(PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_NO_PE))
 				{
-					if(DUTCase == SC_Type_MDAA || DUTCase == SC_Type_MDFA || DUTCase == SC_Type_MDSM)
+					if(DUTCase == SC_Type_MDAA || DUTCase == SC_Type_MDFA || DUTCase == SC_Type_MDSM || DUTCase ==  SC_Type_MDSV)
 					{
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
@@ -131,7 +131,7 @@ void COMM_Commutate(Int16U ActionID)
 
 				if(PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_NO_PE))
 				{
-					if(DUTCase == SC_Type_MDAA||DUTCase == SC_Type_MDFA || DUTCase == SC_Type_MDSM)
+					if(DUTCase == SC_Type_MDAA||DUTCase == SC_Type_MDFA || DUTCase == SC_Type_MDSM || DUTCase ==  SC_Type_MDSV)
 					{
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
@@ -193,7 +193,7 @@ void COMM_Commutate(Int16U ActionID)
 
 				if(PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_NO_PE))
 				{
-					if(DUTCase == SC_Type_MDAA||DUTCase == SC_Type_MDFA || DUTCase == SC_Type_MDSM)
+					if(DUTCase == SC_Type_MDAA||DUTCase == SC_Type_MDFA || DUTCase == SC_Type_MDSM || DUTCase ==  SC_Type_MDSV)
 					{
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
@@ -261,7 +261,7 @@ void COMM_Commutate(Int16U ActionID)
 
 				if(PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_QG))
 				{
-					if(DUTCase == SC_Type_MDAA || DUTCase == SC_Type_MDFA || DUTCase == SC_Type_MDSM)
+					if(DUTCase == SC_Type_MDAA || DUTCase == SC_Type_MDFA || DUTCase == SC_Type_MDSM || DUTCase ==  SC_Type_MDSV)
 					{
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
@@ -314,7 +314,7 @@ void COMM_Commutate(Int16U ActionID)
 
 				if(PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_VCESAT))
 				{
-					if(DUTCase == SC_Type_MDAA || DUTCase == SC_Type_MDFA || DUTCase == SC_Type_MDSM)
+					if(DUTCase == SC_Type_MDAA || DUTCase == SC_Type_MDFA || DUTCase == SC_Type_MDSM || DUTCase ==  SC_Type_MDSV)
 					{
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
