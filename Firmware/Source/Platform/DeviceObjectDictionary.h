@@ -37,11 +37,14 @@
 
 #define ACT_BOOT_LOADER_REQUEST					320	// Перезапуск процессора с целью перепрограммирования
 
+#define ACT_FLASH_DIAG_INIT_READ				331 // Инициализировать начало считывания отладочной информации
 #define ACT_FLASH_CNT_INIT_READ					334	// Перемещение указателя в область счетчиков
 #define ACT_FLASH_CNT_READ_SYMBOL				335	// Считывания символа в области счетчиков
 #define ACT_SET_COUNTER							336	// Установка значения счетчика
 #define ACT_SAVE_COUNTERS						337	//
 #define ACT_ERASE_COUNTERS						338	//
+#define ACT_FLASH_COUNTER_TO_EP					339 // Выполнить чтение массива из памяти счетчиков отработки в EP
+#define ACT_FLASH_DIAG_TO_EP					340 // Выполнить чтение массива из памяти отладочной информации в EP
 // -----------------------------
 
 // Сохраняемые регистры
@@ -121,7 +124,7 @@
 
 // Endpoints
 
-
+#define EP_DiagData								20	// External information from flash
 
 // PMXU actions
 //

@@ -28,6 +28,9 @@ volatile DeviceState CONTROL_State = DS_None;
 volatile DeviceSelfTestState CONTROL_SubState = STS_None;
 static Boolean CycleActive = false;
 volatile Int64U CONTROL_TimeCounter = 0;
+volatile Int16U CONTROL_DiagCounter = 0;
+//
+volatile float CONTROL_DiagData[VALUES_DIAG_SIZE];
 
 // Forward functions
 //
@@ -41,6 +44,11 @@ void CONTROL_InitStoragePointers();
 //
 void CONTROL_Init()
 {
+	Int16U FEPIndexes[FEP_COUNT] = {EP_DiagData};
+	Int16U FEPSized[FEP_COUNT] = {VALUES_DIAG_SIZE};
+	pInt16U FEPCounters[FEP_COUNT] = {(pInt16U)&CONTROL_DiagCounter};
+	pFloat32 FEPDatas[FEP_COUNT] = {(pFloat32)&CONTROL_DiagData};
+
 	// Конфигурация сервиса работы Data-table и EPROM
 	EPROMServiceConfig EPROMService = {(FUNC_EPROM_WriteValues)&NFLASH_WriteDT, (FUNC_EPROM_ReadValues)&NFLASH_ReadDT};
 	// Инициализация data table
@@ -48,6 +56,7 @@ void CONTROL_Init()
 	DT_SaveFirmwareInfo(CAN_NID, 0);
 	// Инициализация device profile
 	DEVPROFILE_Init(&CONTROL_DispatchAction, &CycleActive);
+	DEVPROFILE_InitFEPService(FEPIndexes, FEPSized, FEPCounters, FEPDatas);
 
 	CONTROL_InitStoragePointers();
 	STF_LoadCounters();
@@ -113,11 +122,13 @@ void CONTROL_ResetToDefaultState()
 	CONTROL_SetDeviceSubState(STS_None);
 }
 //------------------------------------------
+
 void CONTROL_InitStoragePointers()
 {
 	for (Int16U i = 0; i < COMMUTATION_TABLE_SIZE; ++i)
 		STF_AssignCounterPointer(i, (Int32U)&CycleCounters[i]);
 }
+//------------------------------------------
 
 bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 {
@@ -248,6 +259,7 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			break;
 
 		case ACT_ERASE_COUNTERS:
+			NFLASH_Unlock();
 			STF_EraseCounterDataSector();
 			break;
 
