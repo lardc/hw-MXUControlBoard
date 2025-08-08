@@ -206,7 +206,6 @@ static Boolean DEVPROFILE_DispatchAction(Int16U ActionID, pInt16U UserError)
 			break;
 
 		case ACT_FLASH_COUNTER_TO_EP:
-		case ACT_FLASH_DIAG_TO_EP:
 			{
 				DEVPROFILE_ResetEPReadState();
 				DEVPROFILE_ResetScopes(0);
@@ -217,6 +216,19 @@ static Boolean DEVPROFILE_DispatchAction(Int16U ActionID, pInt16U UserError)
 					CONTROL_DiagData[CONTROL_DiagCounter++] = (float)value;
 					MemoryPointer += 4;
 				}
+			}
+			break;
+
+		case ACT_FLASH_DIAG_TO_EP:
+			{
+				DEVPROFILE_ResetEPReadState();
+				DEVPROFILE_ResetScopes(0);
+
+				for(CONTROL_DiagCounter = 0; CONTROL_DiagCounter < VALUES_DIAG_SIZE && MemoryPointer <= MemoryEndPointer;)
+					{
+						CONTROL_DiagData[CONTROL_DiagCounter++] = NFLASH_ReadWord16(MemoryPointer);
+						MemoryPointer += 2;
+					}
 			}
 			break;
 
