@@ -393,12 +393,10 @@ void COMM_Commutate(Int16U ActionID)
 				{
 					if(DUTPosition == DUT_POSITION_2 && DUTCase == SC_Type_MDSM)
 					{
-						//Выполнение коммутации для COMM_Ucesat
+						// Выполнение коммутации по аналогии COMM_Ucesat
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
 
-						ZcRD_OutputValuesCompose(OL_G_2_COMM, TRUE);
-						ZcRD_OutputValuesCompose(OL_GE_2_COMM, TRUE);
 						ZcRD_OutputValuesCompose(OL_C_POT_2_COMM, TRUE);
 						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM, TRUE);
 						//
@@ -407,12 +405,11 @@ void COMM_Commutate(Int16U ActionID)
 						ZcRD_OutputValuesCompose(MC_C_POT_2_LSL_POTP, TRUE);
 						ZcRD_OutputValuesCompose(MC_E_POT_2_LSL_POTN, TRUE);
 						//
-						ZcRD_OutputValuesCompose(IL_LSL_G_COMM, TRUE);
-						ZcRD_OutputValuesCompose(IL_LSL_GE_COMM, TRUE);
 						ZcRD_OutputValuesCompose(IL_LSL_POTP_COMM, TRUE);
 						ZcRD_OutputValuesCompose(IL_LSL_POTN_COMM, TRUE);
 
 						ZcRD_RegisterFlushWrite();
+						break;
 					}
 					if (DUTPosition == DUT_POSITION_2	||
 						DUTCase == SC_Type_MIHV			||
