@@ -48,10 +48,10 @@ void COMM_DisconnectPE()
 static bool COMM_IsDiodeModule(Int16U CaseUnderTest)
 {
 	return (CaseUnderTest == SC_Type_MDAA ||
-			CaseUnderTest == SC_Type_MDFA ||
+			CaseUnderTest == SC_Type_MDFA_MDF2_DD ||
 			CaseUnderTest == SC_Type_MDSM ||
 			CaseUnderTest == SC_Type_MDSV ||
-			CaseUnderTest == SC_Type_MDF2 ||
+			CaseUnderTest == SC_Type_MDFA_MDF2_SD ||
 			CaseUnderTest == SC_Type_MDA2);
 }
 // ----------------------------------------
@@ -419,7 +419,7 @@ void COMM_Commutate(Int16U ActionID)
 						DUTCase == SC_Type_MIHM			||
 						DUTCase == SC_Type_MISV			||
 						DUTCase == SC_Type_MISM2_SS_SD	||
-						DUTCase ==  SC_Type_MDF2		||
+						DUTCase ==  SC_Type_MDFA_MDF2_SD		||
 						DUTCase ==  SC_Type_MDA2)
 					{
 						ZcRD_OutputValuesReset();
@@ -429,7 +429,7 @@ void COMM_Commutate(Int16U ActionID)
 						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM, TRUE);
 						//
 						ZcRD_OutputValuesCompose(MC_G_2_GE, TRUE);
-						if(DUTCase ==  SC_Type_MDF2 || DUTCase ==  SC_Type_MDA2)
+						if(DUTCase ==  SC_Type_MDFA_MDF2_SD || DUTCase ==  SC_Type_MDA2)
 						{
 							ZcRD_OutputValuesCompose(MC_C_POT_2_LSL_POTP, TRUE);
 							ZcRD_OutputValuesCompose(MC_E_POT_2_LSL_POTN, TRUE);
@@ -479,7 +479,7 @@ void COMM_Commutate(Int16U ActionID)
 						DUTCase == SC_Type_MIHM			||
 						DUTCase == SC_Type_MISV			||
 						DUTCase == SC_Type_MISM2_SS_SD	||
-						DUTCase ==  SC_Type_MDF2		||
+						DUTCase ==  SC_Type_MDFA_MDF2_SD		||
 						DUTCase ==  SC_Type_MDA2)
 					{
 						ZcRD_OutputValuesReset();
