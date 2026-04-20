@@ -80,7 +80,8 @@ void CONTROL_Idle()
 		CT_SaveTimer = CONTROL_TimeCounter;
 	}
 
-	CONTROL_SafetyCheck();
+	// CONTROL_SafetyCheck() теперь вызывается из TIM7_IRQHandler, чтобы
+	// реакция на SFT_IN не зависела от зависаний обмена с PMXU в main loop.
 	SELFTEST_Process();
 
 	DEVPROFILE_ProcessRequests();
@@ -121,7 +122,6 @@ void CONTROL_ResetToDefaultState()
 {
 	CONTROL_ResetOutputRegisters();
 	COMM_Default();
-	LL_SetStateSFGreenLed(true);
 
 	CONTROL_SetDeviceState(DS_None);
 	CONTROL_SetDeviceSubState(STS_None);
@@ -191,14 +191,13 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			break;
 
 		case ACT_SET_ACTIVE:
+			// Аппаратный контур безопасности MXU303 всегда активен, команда лишь
+			// включает выдачу Fault по срабатыванию SFT_IN (реле уже сбрасываются
+			// аппаратно через SFT_ENABLE).
 			if(CONTROL_State == DS_Enabled || CONTROL_State == DS_SafetyActive)
 			{
 				if(PMXU_SafetyActivate())
-				{
-					LL_SetStateSFRedLed(true);
-					LL_SetStateSFGreenLed(false);
 					CONTROL_SetDeviceState(DS_SafetyActive);
-				}
 			}
 			else
 				*pUserError = ERR_DEVICE_NOT_READY;
@@ -208,11 +207,7 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			if(CONTROL_State == DS_Enabled || CONTROL_State == DS_SafetyActive || CONTROL_State == DS_SafetyTrig)
 			{
 				if(PMXU_SafetyDeactivate())
-				{
-					LL_SetStateSFRedLed(false);
-					LL_SetStateSFGreenLed(true);
 					CONTROL_SetDeviceState(DS_Enabled);
-				}
 			}
 			else
 				*pUserError = ERR_DEVICE_NOT_READY;
@@ -297,25 +292,36 @@ bool CONTROL_DevCaseCheck(DevType DevCase)
 
 void CONTROL_SafetyCheck()
 {
-	static Int64U SafetyTimer = 0;
+	static bool PrevSafetyTrig = false;
+	bool SafetyTrig = LL_IsSafetyTrig();
 
-	if(DataTable[REG_SAFETY_ACTIVE])
+	// Опрашиваем SFT_IN всегда. Аппаратный сброс сдвиговых регистров
+	// производим один раз на фронт (true при первом прохождении), чтобы не
+	// пульсировать SFT_ENABLE на каждом тике TIM7 при длительном удержании.
+	if(SafetyTrig && !PrevSafetyTrig)
 	{
-		if(LL_IsSafetyTrig())
-		{
-			LL_SetStateSF_EN(false);
-			SafetyTimer = CONTROL_TimeCounter + DataTable[REG_SAFETY_DELAY];
+		// Запретить OE выходов, затем «кадр нулей», затем вернуть OE активным.
+		LL_SetStateSFT_ENABLE(true);
+		ZcRD_OutputValuesReset();
+		ZcRD_RegisterFlushWrite();
+		LL_SetStateSFT_ENABLE(false);
 
+		// Подтверждение обнуления коммутации (по «Вопросы для обсуждения» в ТТ).
+		DataTable[REG_DBG] = 0;
+
+		// COMM_Default() в ISR не вызываем — тяжёлый 20 мс delay. Достаточно
+		// синхронизировать COMM_State, flush уже выполнен выше.
+		COMM_State = COMM_Def;
+
+		// Переход в DS_SafetyTrig выполняется только если контур активирован командой ACT_SET_ACTIVE.
+		if(DataTable[REG_SAFETY_ACTIVE])
+		{
 			if(CONTROL_State == DS_SafetyActive)
 				CONTROL_SetDeviceState(DS_SafetyTrig);
-
-			if(COMM_State != COMM_Def)
-				COMM_Default();
 		}
-		else
-			if(CONTROL_TimeCounter >= SafetyTimer)
-				LL_SetStateSF_EN(true);
 	}
+
+	PrevSafetyTrig = SafetyTrig;
 }
 //-----------------------------------------------
 

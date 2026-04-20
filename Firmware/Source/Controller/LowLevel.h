@@ -25,10 +25,4 @@ void LL_SPI_LatchBoard(Int8U BoardIdx);
 // Enable=true  → пин в high-Z (OE запрещён, все выходы сдвиговых регистров отключены)
 void LL_SetStateSFT_ENABLE(bool Enable);
 
-// Устаревшие заглушки (сохранены, чтобы не ломать сборку до правки Controller.c/DebugActions.c).
-// TODO(safety/debug commits): удалить вызовы и функции после переноса логики.
-void LL_SetStateSFRedLed(bool State);
-void LL_SetStateSFGreenLed(bool State);
-void LL_SetStateSF_EN(bool State);
-
 #endif //__LOWLEVEL_H

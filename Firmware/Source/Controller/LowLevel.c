@@ -74,23 +74,3 @@ bool LL_IsSafetyTrig()
 	return GPIO_GetState(GPIO_SFT_IN);
 }
 //-----------------------------
-
-// ===== Устаревшие заглушки =====
-// TODO(safety/debug commits): удалить вместе с вызовами из Controller.c / DebugActions.c.
-void LL_SetStateSFRedLed(bool State)
-{
-	(void)State;
-}
-//-----------------------------
-
-void LL_SetStateSFGreenLed(bool State)
-{
-	(void)State;
-}
-//-----------------------------
-
-void LL_SetStateSF_EN(bool State)
-{
-	(void)State;
-}
-//-----------------------------

@@ -45,6 +45,10 @@ void TIM7_IRQHandler()
 			LED_BlinkTimeCounter = 0;
 		}
 
+		// Опрос SFT_IN выведен в TIM7, чтобы гарантировать реакцию контура
+		// безопасности даже при зависании обмена с PMXU в main loop.
+		CONTROL_SafetyCheck();
+
 		CONTROL_HandleFrontPanelLamp(COMM_State);
 
 		TIM_StatusClear(TIM7);

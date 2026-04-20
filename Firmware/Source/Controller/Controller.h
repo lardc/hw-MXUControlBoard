@@ -78,5 +78,6 @@ void CONTROL_LogicProcess();
 void CONTROL_UpdateWatchDog();
 void CONTROL_ResetOutputRegisters();
 void CONTROL_HandleFrontPanelLamp(CommutationState Commutation);
+void CONTROL_SafetyCheck();
 
 #endif // __CONTROLLER_H
