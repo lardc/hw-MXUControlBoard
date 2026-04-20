@@ -33,7 +33,8 @@ volatile Int16U CONTROL_DiagCounter = 0;
 volatile float CONTROL_DiagData[VALUES_DIAG_SIZE];
 //
 DevType AllowedCases[] = {SC_Type_MIAA, SC_Type_MIDA, SC_Type_MIFA, SC_Type_MIHA, SC_Type_MIHM, SC_Type_MIHV, SC_Type_MISM, SC_Type_MISV,
-							SC_Type_MIXM, SC_Type_MIXV, SC_Type_MISM2_CH, SC_Type_MISM2_SS_SD, SC_Type_MIADAP};
+							SC_Type_MIXM, SC_Type_MIXV, SC_Type_MISM2_CH, SC_Type_MISM2_SS_SD, SC_Type_MIADAP,
+							SC_Type_MDAA, SC_Type_MDFA_MDF2_DD, SC_Type_MDSM, SC_Type_MDSV, SC_Type_MDFA_MDF2_SD, SC_Type_MDA2};
 
 // Forward functions
 //
@@ -285,7 +286,7 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 
 bool CONTROL_DevCaseCheck(DevType DevCase)
 {
-	for(int i = 0; i < sizeof(AllowedCases) / 2; i++)
+	for(int i = 0; i < sizeof(AllowedCases) / sizeof(AllowedCases[0]); i++)
 	{
 		if(DevCase == AllowedCases[i])
 			return true;
