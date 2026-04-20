@@ -45,6 +45,17 @@ void COMM_DisconnectPE()
 }
 // ----------------------------------------
 
+static bool COMM_IsDiodeModule(Int16U CaseUnderTest)
+{
+	return (CaseUnderTest == SC_Type_MDAA ||
+			CaseUnderTest == SC_Type_MDFA_MDF2_DD ||
+			CaseUnderTest == SC_Type_MDSM ||
+			CaseUnderTest == SC_Type_MDSV ||
+			CaseUnderTest == SC_Type_MDFA_MDF2_SD ||
+			CaseUnderTest == SC_Type_MDA2);
+}
+// ----------------------------------------
+
 void COMM_Commutate(Int16U ActionID)
 {
 	Int16U DUTPosition = DataTable[REG_DUT_POSITION];
@@ -69,6 +80,12 @@ void COMM_Commutate(Int16U ActionID)
 
 				if(PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_NO_PE))
 				{
+					if(COMM_IsDiodeModule(DUTCase))
+					{
+						ZcRD_OutputValuesReset();
+						COMM_DisconnectPE();
+						break;
+					}
 					if (DUTPosition == DUT_POSITION_2	||
 						DUTCase == SC_Type_MIHV			||
 						DUTCase == SC_Type_MIHM			||
@@ -125,6 +142,12 @@ void COMM_Commutate(Int16U ActionID)
 
 				if(PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_NO_PE))
 				{
+					if(COMM_IsDiodeModule(DUTCase))
+					{
+						ZcRD_OutputValuesReset();
+						COMM_DisconnectPE();
+						break;
+					}
 					if (DUTPosition == DUT_POSITION_2	||
 						DUTCase == SC_Type_MIHV			||
 						DUTCase == SC_Type_MIHM			||
@@ -181,6 +204,12 @@ void COMM_Commutate(Int16U ActionID)
 
 				if(PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_NO_PE))
 				{
+					if(COMM_IsDiodeModule(DUTCase))
+					{
+						ZcRD_OutputValuesReset();
+						COMM_DisconnectPE();
+						break;
+					}
 					if (DUTPosition == DUT_POSITION_2	||
 						DUTCase == SC_Type_MIHV			||
 						DUTCase == SC_Type_MIHM			||
@@ -243,6 +272,12 @@ void COMM_Commutate(Int16U ActionID)
 
 				if(PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_QG))
 				{
+					if(COMM_IsDiodeModule(DUTCase))
+					{
+						ZcRD_OutputValuesReset();
+						COMM_DisconnectPE();
+						break;
+					}
 					if (DUTPosition == DUT_POSITION_2	||
 						DUTCase == SC_Type_MIHV			||
 						DUTCase == SC_Type_MIHM			||
@@ -290,6 +325,12 @@ void COMM_Commutate(Int16U ActionID)
 
 				if(PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_VCESAT))
 				{
+					if(COMM_IsDiodeModule(DUTCase))
+					{
+						ZcRD_OutputValuesReset();
+						COMM_DisconnectPE();
+						break;
+					}
 					if (DUTPosition == DUT_POSITION_2	||
 						DUTCase == SC_Type_MIHV			||
 						DUTCase == SC_Type_MIHM			||
@@ -350,11 +391,33 @@ void COMM_Commutate(Int16U ActionID)
 
 				if(PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_VF))
 				{
+					if(DUTPosition == DUT_POSITION_2 && DUTCase == SC_Type_MDSM)
+					{
+						// Выполнение коммутации по аналогии COMM_Ucesat
+						ZcRD_OutputValuesReset();
+						COMM_DisconnectPE();
+
+						ZcRD_OutputValuesCompose(OL_C_POT_2_COMM, TRUE);
+						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM, TRUE);
+						//
+						ZcRD_OutputValuesCompose(MC_G_2_LSL_G, TRUE);
+						ZcRD_OutputValuesCompose(MC_GE_2_LSL_GE, TRUE);
+						ZcRD_OutputValuesCompose(MC_C_POT_2_LSL_POTP, TRUE);
+						ZcRD_OutputValuesCompose(MC_E_POT_2_LSL_POTN, TRUE);
+						//
+						ZcRD_OutputValuesCompose(IL_LSL_POTP_COMM, TRUE);
+						ZcRD_OutputValuesCompose(IL_LSL_POTN_COMM, TRUE);
+
+						ZcRD_RegisterFlushWrite();
+						break;
+					}
 					if (DUTPosition == DUT_POSITION_2	||
 						DUTCase == SC_Type_MIHV			||
 						DUTCase == SC_Type_MIHM			||
 						DUTCase == SC_Type_MISV			||
-						DUTCase == SC_Type_MISM2_SS_SD)
+						DUTCase == SC_Type_MISM2_SS_SD	||
+						DUTCase ==  SC_Type_MDFA_MDF2_SD		||
+						DUTCase ==  SC_Type_MDA2)
 					{
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
@@ -363,8 +426,16 @@ void COMM_Commutate(Int16U ActionID)
 						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM, TRUE);
 						//
 						ZcRD_OutputValuesCompose(MC_G_2_GE, TRUE);
-						ZcRD_OutputValuesCompose(MC_C_POT_2_LSL_POTN, TRUE);
-						ZcRD_OutputValuesCompose(MC_E_POT_2_LSL_POTP, TRUE);
+						if(DUTCase ==  SC_Type_MDFA_MDF2_SD || DUTCase ==  SC_Type_MDA2)
+						{
+							ZcRD_OutputValuesCompose(MC_C_POT_2_LSL_POTP, TRUE);
+							ZcRD_OutputValuesCompose(MC_E_POT_2_LSL_POTN, TRUE);
+						}
+						else
+						{
+							ZcRD_OutputValuesCompose(MC_C_POT_2_LSL_POTN, TRUE);
+							ZcRD_OutputValuesCompose(MC_E_POT_2_LSL_POTP, TRUE);
+						}
 						//
 						ZcRD_OutputValuesCompose(IL_LSL_POTN_COMM, TRUE);
 						ZcRD_OutputValuesCompose(IL_LSL_POTP_COMM, TRUE);
@@ -404,7 +475,9 @@ void COMM_Commutate(Int16U ActionID)
 						DUTCase == SC_Type_MIHV			||
 						DUTCase == SC_Type_MIHM			||
 						DUTCase == SC_Type_MISV			||
-						DUTCase == SC_Type_MISM2_SS_SD)
+						DUTCase == SC_Type_MISM2_SS_SD	||
+						DUTCase ==  SC_Type_MDFA_MDF2_SD		||
+						DUTCase ==  SC_Type_MDA2)
 					{
 						ZcRD_OutputValuesReset();
 						COMM_DisconnectPE();
