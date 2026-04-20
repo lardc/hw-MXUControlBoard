@@ -3,13 +3,11 @@
 #include "Global.h"
 
 // Variables
-RecordDescription StorageDescription[] =
-{
-	{"REG 1 Shunt Resistance (mOhm)",	DT_Int16U, 1},
-	{"EP 1 Array of current values",	DT_Int16U, 300},
-};
-Int32U TablePointers[sizeof(StorageDescription) / sizeof(StorageDescription[0])] = {0};
-const Int16U StorageSize = sizeof(StorageDescription) / sizeof(StorageDescription[0]);
+RecordDescription StorageDescription[] = {};
+
+#define SIZE_OF_POINTERS (sizeof(StorageDescription) / sizeof(StorageDescription[0]))
+Int32U TablePointers[SIZE_OF_POINTERS ? SIZE_OF_POINTERS : 1] = {0};
+const Int16U StorageSize = SIZE_OF_POINTERS;
 
 CounterDescription CounterStorageDescription[] =
 {

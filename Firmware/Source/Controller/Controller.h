@@ -32,21 +32,27 @@ typedef enum __DeviceSelfTestState
 
 typedef enum __DevType
 {
-	SC_Type_MIAA = 2001,
-	SC_Type_MIDA = 2002,
-	SC_Type_MIFA = 2003,
-	SC_Type_MIHA = 2004,
-	SC_Type_MIHM = 2005,
-	SC_Type_MIHV = 2006,
-	SC_Type_MISM = 2007,
-	SC_Type_MISV = 2008,
-	SC_Type_MIXM = 2009,
-	SC_Type_MIXV = 2010,
+	SC_Type_MIAA = 3001,
+	SC_Type_MIDA = 3002,
+	SC_Type_MIFA = 3003,
+	SC_Type_MIHA = 3004,
+	SC_Type_MIHM = 3005,
+	SC_Type_MIHV = 3006,
+	SC_Type_MISM = 3007,
+	SC_Type_MISV = 3008,
+	SC_Type_MIXM = 3009,
+	SC_Type_MIXV = 3010,
 	// 2011
-	SC_Type_MISM2_CH = 2012,
+	SC_Type_MISM2_CH = 3012,
 	// 2013
-	SC_Type_MISM2_SS_SD = 2014,
-	SC_Type_MIADAP = 2015
+	SC_Type_MISM2_SS_SD = 3014,
+	SC_Type_MIADAP = 3015,
+	SC_Type_MDAA = 3016,
+	SC_Type_MDFA_MDF2_DD = 3017,
+	SC_Type_MDSM = 3018,
+	SC_Type_MDSV = 3019,
+	SC_Type_MDFA_MDF2_SD = 3020,
+	SC_Type_MDA2 = 3021
 } DevType;
 
 // Variables
@@ -55,6 +61,9 @@ extern volatile Int64U CONTROL_TimeCounter;
 extern volatile DeviceState CONTROL_State;
 extern volatile DeviceSelfTestState CONTROL_SubState;
 extern Int64U CONTROL_LEDTimeout;
+extern volatile Int16U CONTROL_DiagCounter;
+//
+extern volatile float CONTROL_DiagData[VALUES_DIAG_SIZE];
 
 // Functions
 //
