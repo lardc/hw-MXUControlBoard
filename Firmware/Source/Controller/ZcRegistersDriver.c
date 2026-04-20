@@ -12,12 +12,9 @@
 #include "DataTable.h"
 
 // Диапазоны регистров по платам в общем массиве CurrentOutputValues[NUM_REGS_TOTAL].
-// Commit 3: прежние две HV-платы каскадированы в одной физической IORelayBoard на SS3,
-//           поэтому BOARD1 (REG1..REG3) и BOARD2 (REG4..REG6) выгружаются одной транзакцией.
-//           Commit 4 схлопнет таблицу в единый BOARD_IO.
-// Порядок индексов соответствует REG1..REGn (младший первый) в CommutationTable.c.
+// Порядок согласован с REG_* в CommutationTable.c: сначала IO, затем Therm, затем Input.
 #define ZCRD_IO_REG_FIRST		0
-#define ZCRD_IO_REG_COUNT		(2 * NUM_REGS_HV_BOARD)
+#define ZCRD_IO_REG_COUNT		NUM_REGS_IO_BOARD
 //
 #define ZCRD_THERM_REG_FIRST	(ZCRD_IO_REG_FIRST + ZCRD_IO_REG_COUNT)
 #define ZCRD_THERM_REG_COUNT	NUM_REGS_THERM_BOARD

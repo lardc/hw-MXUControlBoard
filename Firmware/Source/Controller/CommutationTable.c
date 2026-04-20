@@ -15,47 +15,24 @@
 #define	PIN_RC5		BIT5
 #define	PIN_RC6		BIT6
 #define	PIN_RC7		BIT7
-//
-#define PIN_RC8		BIT0
-#define PIN_RC9		BIT1
-#define PIN_RC10	BIT2
-#define PIN_RC11	BIT3
-#define	PIN_RC12	BIT4
-#define	PIN_RC13	BIT5
-#define	PIN_RC14	BIT6
-#define	PIN_RC15	BIT7
-//
-#define PIN_RC16	BIT0
-#define PIN_RC17	BIT1
-#define PIN_RC18	BIT2
-#define PIN_RC19	BIT3
-#define	PIN_RC20	BIT4
-#define	PIN_RC21	BIT5
-#define	PIN_RC22	BIT6
-#define	PIN_RC23	BIT7
-//
 
-// Extension board indexes
+// Extension board indexes — совпадают с индексами CS у LL_SPI_LatchBoard
+// и с порядком выгрузки в ZcRD_RegisterFlushWrite.
 //---------------------------------
-// Board 4 is the most distant extension board
-// to the control board (in terms of cable length)
-//---------------------------------
-//
-#define BOARD1	0		// OutHVRelayBoard 1
-#define BOARD2	1		// OutHVRelayBoard 2
-#define BOARD3	2		// OutThermRelayBoard
-#define BOARD4	3		// InputRelayBoard
+#define BOARD_INPUT		0		// InputRelayBoard (SS1)
+#define BOARD_THERM		1		// OutThermRelayBoard (SS2)
+#define BOARD_IO		2		// IORelayBoard (SS3, объединение прежних OutHVRelayBoard-1/2)
 
-#define REG1	0
-#define REG2	1
-#define REG3	2
-#define REG4	3
-#define REG5	4
-#define REG6	5
-#define REG7	6
-#define REG8	7
-#define REG9	8
-#define REG10	9
+// Номера регистров в физическом буфере CurrentOutputValues[NUM_REGS_TOTAL].
+// Порядок — IO → Therm → Input, согласуется с ZCRD_*_REG_FIRST в ZcRegistersDriver.
+#define REG_IO_1		0
+#define REG_IO_2		1
+#define REG_IO_3		2
+#define REG_IO_4		3
+#define REG_THERM_1		4
+#define REG_INPUT_1		5
+#define REG_INPUT_2		6
+#define REG_INPUT_3		7
 
 // Variables
 //
@@ -65,87 +42,86 @@ Int64U CT_SaveTimer = 0;
 //
 Int32U CycleCounters[COMMUTATION_TABLE_SIZE] = {0};
 
+// Текущая таблица — заглушка под матрицу Trello 7A6GZMVv.
+// Сигналы Position 2 на IORelayBoard пока aliased на одноимённые Position 1
+// (см. CommutationTable.h), поэтому в таблице явно присутствуют только
+// Position 1, Therm и Input. Resные слоты IO (22..31) и Input (60..63) помечены как резерв.
 const CommutationTableItem CommutationTable[COMMUTATION_TABLE_SIZE] =
-				{
-						{BOARD1, PIN_RC0, REG1},				// 0	// Collector (C_POT) to PE
-						{BOARD1, PIN_RC1, REG1},				// 1	// Gate (G) to PE
-						{BOARD1, PIN_RC2, REG1},				// 2	// Gate-Emitter (GE) to PE
-						{BOARD1, PIN_RC3, REG1},				// 3	// Emitter (E_POT) to PE
-						{BOARD1, PIN_RC4, REG1},				// 4	// Collector: Commutation of C_POT (Open/Close)
-						{BOARD1, PIN_RC5, REG1},				// 5	// Gate: Commutation of G (Open/Close)
-						{BOARD1, PIN_RC6, REG1},				// 6	// Gate-Emitter: Commutation of GE (Open/Close)
-						{BOARD1, PIN_RC7, REG1},				// 7	// Emitter: Commutation of E_POT (Open/Close)
-						{BOARD1, PIN_RC8, REG2},				// 8	// Gate (G) to Collector (C_POT)
-						{BOARD1, PIN_RC9, REG2},				// 9	// Gate (G) to Gate-Emitter (GE)
-						{BOARD1, PIN_RC10, REG2},			// 10	// Gate-Emitter (GE) to GT_G
-						{BOARD1, PIN_RC11, REG2},			// 11	// Gate-Emitter (GE) to GT_GE
-						{BOARD1, PIN_RC12, REG2},			// 12	// Gate-Emitter (GE) to LSL_GE
-						{BOARD1, PIN_RC13, REG2},			// 13	// Gate (G) to GT_G
-						{BOARD1, PIN_RC14, REG2},			// 14	// Gate (G) to GT_GE
-						{BOARD1, PIN_RC15, REG2},			// 15	// Gate (G) to GT_G_POT
-						{BOARD1, PIN_RC16, REG3},			// 16	// Emitter (E_POT) to GT_GE_POT
-						{BOARD1, PIN_RC17, REG3},			// 17	// Emitter (E_POT) to LSL_POT+
-						{BOARD1, PIN_RC18, REG3},			// 18	// Emitter (E_POT) to LSL_POT-
-						{BOARD1, PIN_RC19, REG3},			// 19	// Gate (G) to LSL_G
-						{BOARD1, PIN_RC20, REG3},			// 20	// Collector (C_POT) to LSL_POT+
-						{BOARD1, PIN_RC21, REG3},			// 21	// Collector (C_POT) to LSL_POT-
-						{BOARD1, PIN_RC22, REG3},			// 22	//
-						{BOARD1, PIN_RC23, REG3},			// 23	//
-						{BOARD2, PIN_RC0, REG4},			// 24	// Collector (C_POT) to PE
-						{BOARD2, PIN_RC1, REG4},			// 25	// Gate (G) to PE
-						{BOARD2, PIN_RC2, REG4},			// 26	// Gate-Emitter (GE) to PE
-						{BOARD2, PIN_RC3, REG4},			// 27	// Emitter (E_POT) to PE
-						{BOARD2, PIN_RC4, REG4},			// 28	// Collector: Commutation of C_POT (Open/Close)
-						{BOARD2, PIN_RC5, REG4},			// 29	// Gate: Commutation of G (Open/Close)
-						{BOARD2, PIN_RC6, REG4},			// 30	// Gate-Emitter: Commutation of GE (Open/Close)
-						{BOARD2, PIN_RC7, REG4},			// 31	// Emitter: Commutation of E_POT (Open/Close)
-						{BOARD2, PIN_RC8, REG5},			// 32	// Gate (G) to Collector (C_POT)
-						{BOARD2, PIN_RC9, REG5},			// 33	// Gate (G) to Gate-Emitter (GE)
-						{BOARD2, PIN_RC10, REG5},			// 34	// Gate-Emitter (GE) to GT_G
-						{BOARD2, PIN_RC11, REG5},			// 35	// Gate-Emitter (GE) to GT_GE
-						{BOARD2, PIN_RC12, REG5},			// 36	// Gate-Emitter (GE) to LSL_GE
-						{BOARD2, PIN_RC13, REG5},			// 37	// Gate (G) to GT_G
-						{BOARD2, PIN_RC14, REG5},			// 38	// Gate (G) to GT_GE
-						{BOARD2, PIN_RC15, REG5},			// 39	// Gate (G) to GT_G_POT
-						{BOARD2, PIN_RC16, REG6},			// 40	// Emitter (E_POT) to GT_GE_POT
-						{BOARD2, PIN_RC17, REG6},			// 41	// Emitter (E_POT) to LSL_POT+
-						{BOARD2, PIN_RC18, REG6},			// 42	// Emitter (E_POT) to LSL_POT-
-						{BOARD2, PIN_RC19, REG6},			// 43	// Gate (G) to LSL_G
-						{BOARD2, PIN_RC20, REG6},			// 44	// Collector (C_POT) to LSL_POT+
-						{BOARD2, PIN_RC21, REG6},			// 45	// Collector (C_POT) to LSL_POT-
-						{BOARD2, PIN_RC22, REG6},			// 46	//
-						{BOARD2, PIN_RC23, REG6},			// 47	//
-						{BOARD3, PIN_RC0, REG7},			// 48	// Thermistor_1 (T1) to PE
-						{BOARD3, PIN_RC1, REG7},			// 49	// Thermistor_2 (T2) to PE
-						{BOARD3, PIN_RC2, REG7},			// 50	// Thermistor_1: Commutation of T1 (Open/Close)
-						{BOARD3, PIN_RC3, REG7},			// 51	// Thermistor_2: Commutation of T2 (Open/Close)
-						{BOARD3, PIN_RC4, REG7},			// 52	// T2 to GT_G
-						{BOARD3, PIN_RC5, REG7},			// 53	// T2 to GT_G_POT
-						{BOARD3, PIN_RC6, REG7},			// 54	// T1 to GT_GE
-						{BOARD3, PIN_RC7, REG7},			// 55	// T1 to GT_GE_POT
-						{BOARD4, PIN_RC0, REG8},			// 56	// GT_G to TEST-IN
-						{BOARD4, PIN_RC1, REG8},			// 57	// GT_GE to TEST-OUT
-						{BOARD4, PIN_RC2, REG8},			// 58	// GT_G: Commutation of GT_G (Open/Close)
-						{BOARD4, PIN_RC3, REG8},			// 59	// GT_GE: Commutation of GT_GE (Open/Close)
-						{BOARD4, PIN_RC4, REG8},			// 60	// GT_G to GT_GE
-						{BOARD4, PIN_RC5, REG8},			// 61	// GT_G_POT to TEST-IN
-						{BOARD4, PIN_RC6, REG8},			// 62	// GT_GE_POT to TEST-OUT
-						{BOARD4, PIN_RC7, REG8},			// 63	// GT_G_POT: Commutation of GT_G_POT (Open/Close)
-						{BOARD4, PIN_RC8, REG9},			// 64	// GT_GE_POT: Commutation of GT_GE_POT (Open/Close)
-						{BOARD4, PIN_RC9, REG9},			// 65	// GT_G_POT to GT_GE_POT
-						{BOARD4, PIN_RC10, REG9},			// 66	// LSL_G to TEST-IN
-						{BOARD4, PIN_RC11, REG9},			// 67	// LSL_GE to TEST-OUT
-						{BOARD4, PIN_RC12, REG9},			// 68	// LSL_G: Commutation of LSL_G (Open/Close)
-						{BOARD4, PIN_RC13, REG9},			// 69	// LSL_GE: Commutation of LSL_GE (Open/Close)
-						{BOARD4, PIN_RC14, REG9},			// 70	// LSL_G to LSL_GE
-						{BOARD4, PIN_RC15, REG9},			// 71	// LSL_POT+ to TEST-IN
-						{BOARD4, PIN_RC16, REG10},			// 72	// LSL_POT- to TEST-OUT
-						{BOARD4, PIN_RC17, REG10},			// 73	// LSL_POT+: Commutation of LSL_POT+ (Open/Close)
-						{BOARD4, PIN_RC18, REG10},			// 74	// LSL_POT-: Commutation of LSL_POT- (Open/Close)
-						{BOARD4, PIN_RC19, REG10},			// 75	// LSL_POT+ to LSL_POT-
-						{BOARD4, PIN_RC20, REG10},			// 76	//
-						{BOARD4, PIN_RC21, REG10},			// 77	//
-						{BOARD4, PIN_RC22, REG10},			// 78	//
-						{BOARD4, PIN_RC23, REG10}			// 79	//
-				};
+{
+		// ===== IORelayBoard (BOARD_IO, SS3) — Position 1 =====
+		{BOARD_IO, PIN_RC0, REG_IO_1},		// 0  C_POT_PE
+		{BOARD_IO, PIN_RC1, REG_IO_1},		// 1  G_PE
+		{BOARD_IO, PIN_RC2, REG_IO_1},		// 2  GE_PE
+		{BOARD_IO, PIN_RC3, REG_IO_1},		// 3  E_POT_PE
+		{BOARD_IO, PIN_RC4, REG_IO_1},		// 4  OL_C_POT_COMM
+		{BOARD_IO, PIN_RC5, REG_IO_1},		// 5  OL_G_COMM
+		{BOARD_IO, PIN_RC6, REG_IO_1},		// 6  OL_GE_COMM
+		{BOARD_IO, PIN_RC7, REG_IO_1},		// 7  OL_E_POT_COMM
+		//
+		{BOARD_IO, PIN_RC0, REG_IO_2},		// 8  MC_G_C_POT
+		{BOARD_IO, PIN_RC1, REG_IO_2},		// 9  MC_G_GE
+		{BOARD_IO, PIN_RC2, REG_IO_2},		// 10 MC_GE_GT_G
+		{BOARD_IO, PIN_RC3, REG_IO_2},		// 11 MC_GE_GT_GE
+		{BOARD_IO, PIN_RC4, REG_IO_2},		// 12 MC_GE_LSL_GE
+		{BOARD_IO, PIN_RC5, REG_IO_2},		// 13 MC_G_GT_G
+		{BOARD_IO, PIN_RC6, REG_IO_2},		// 14 MC_G_GT_GE
+		{BOARD_IO, PIN_RC7, REG_IO_2},		// 15 MC_G_GT_G_POT
+		//
+		{BOARD_IO, PIN_RC0, REG_IO_3},		// 16 MC_E_POT_GT_GE_POT
+		{BOARD_IO, PIN_RC1, REG_IO_3},		// 17 MC_E_POT_LSL_POTP
+		{BOARD_IO, PIN_RC2, REG_IO_3},		// 18 MC_E_POT_LSL_POTN
+		{BOARD_IO, PIN_RC3, REG_IO_3},		// 19 MC_G_LSL_G
+		{BOARD_IO, PIN_RC4, REG_IO_3},		// 20 MC_C_POT_LSL_POTP
+		{BOARD_IO, PIN_RC5, REG_IO_3},		// 21 MC_C_POT_LSL_POTN
+		//
+		// IO слоты 22..31 — резерв под финализацию матрицы Trello 7A6GZMVv.
+		{BOARD_IO, PIN_RC6, REG_IO_3},		// 22 reserved
+		{BOARD_IO, PIN_RC7, REG_IO_3},		// 23 reserved
+		{BOARD_IO, PIN_RC0, REG_IO_4},		// 24 reserved
+		{BOARD_IO, PIN_RC1, REG_IO_4},		// 25 reserved
+		{BOARD_IO, PIN_RC2, REG_IO_4},		// 26 reserved
+		{BOARD_IO, PIN_RC3, REG_IO_4},		// 27 reserved
+		{BOARD_IO, PIN_RC4, REG_IO_4},		// 28 reserved
+		{BOARD_IO, PIN_RC5, REG_IO_4},		// 29 reserved
+		{BOARD_IO, PIN_RC6, REG_IO_4},		// 30 reserved
+		{BOARD_IO, PIN_RC7, REG_IO_4},		// 31 reserved
+
+		// ===== OutThermRelayBoard (BOARD_THERM, SS2) =====
+		{BOARD_THERM, PIN_RC0, REG_THERM_1},	// 32 T1_PE
+		{BOARD_THERM, PIN_RC1, REG_THERM_1},	// 33 T2_PE
+		{BOARD_THERM, PIN_RC2, REG_THERM_1},	// 34 OL_T1_COMM
+		{BOARD_THERM, PIN_RC3, REG_THERM_1},	// 35 OL_T2_COMM
+		{BOARD_THERM, PIN_RC4, REG_THERM_1},	// 36 MC_T2_GT_G
+		{BOARD_THERM, PIN_RC5, REG_THERM_1},	// 37 MC_T2_GT_G_POT
+		{BOARD_THERM, PIN_RC6, REG_THERM_1},	// 38 MC_T1_GT_GE
+		{BOARD_THERM, PIN_RC7, REG_THERM_1},	// 39 MC_T1_GT_GE_POT
+
+		// ===== InputRelayBoard (BOARD_INPUT, SS1) =====
+		{BOARD_INPUT, PIN_RC0, REG_INPUT_1},	// 40 ST_TI_GT_G
+		{BOARD_INPUT, PIN_RC1, REG_INPUT_1},	// 41 ST_TO_GT_GE
+		{BOARD_INPUT, PIN_RC2, REG_INPUT_1},	// 42 IL_GT_G_COMM
+		{BOARD_INPUT, PIN_RC3, REG_INPUT_1},	// 43 IL_GT_GE_COMM
+		{BOARD_INPUT, PIN_RC4, REG_INPUT_1},	// 44 IL_GT_G_GE
+		{BOARD_INPUT, PIN_RC5, REG_INPUT_1},	// 45 ST_TI_GT_G_POT
+		{BOARD_INPUT, PIN_RC6, REG_INPUT_1},	// 46 ST_TO_GT_GE_POT
+		{BOARD_INPUT, PIN_RC7, REG_INPUT_1},	// 47 IL_GT_G_POT_COMM
+		//
+		{BOARD_INPUT, PIN_RC0, REG_INPUT_2},	// 48 IL_GT_GE_POT_COMM
+		{BOARD_INPUT, PIN_RC1, REG_INPUT_2},	// 49 IL_GT_G_GE_POT
+		{BOARD_INPUT, PIN_RC2, REG_INPUT_2},	// 50 ST_TI_LSL_G
+		{BOARD_INPUT, PIN_RC3, REG_INPUT_2},	// 51 ST_TO_LSL_GE
+		{BOARD_INPUT, PIN_RC4, REG_INPUT_2},	// 52 IL_LSL_G_COMM
+		{BOARD_INPUT, PIN_RC5, REG_INPUT_2},	// 53 IL_LSL_GE_COMM
+		{BOARD_INPUT, PIN_RC6, REG_INPUT_2},	// 54 IL_LSL_G_GE
+		{BOARD_INPUT, PIN_RC7, REG_INPUT_2},	// 55 ST_TI_LSL_POTP
+		//
+		{BOARD_INPUT, PIN_RC0, REG_INPUT_3},	// 56 ST_TO_LSL_POTN
+		{BOARD_INPUT, PIN_RC1, REG_INPUT_3},	// 57 IL_LSL_POTP_COMM
+		{BOARD_INPUT, PIN_RC2, REG_INPUT_3},	// 58 IL_LSL_POTN_COMM
+		{BOARD_INPUT, PIN_RC3, REG_INPUT_3},	// 59 IL_LSL_POTS
+		{BOARD_INPUT, PIN_RC4, REG_INPUT_3},	// 60 reserved
+		{BOARD_INPUT, PIN_RC5, REG_INPUT_3},	// 61 reserved
+		{BOARD_INPUT, PIN_RC6, REG_INPUT_3},	// 62 reserved
+		{BOARD_INPUT, PIN_RC7, REG_INPUT_3}		// 63 reserved
+};
 // No more
