@@ -27,6 +27,9 @@ volatile DeviceState CONTROL_State = DS_None;
 volatile DeviceSelfTestState CONTROL_SubState = STS_None;
 static Boolean CycleActive = false;
 volatile Int64U CONTROL_TimeCounter = 0;
+//
+DevType AllowedCases[] = {SC_Type_MIAA, SC_Type_MIDA, SC_Type_MIFA, SC_Type_MIHA, SC_Type_MIHM, SC_Type_MIHV, SC_Type_MISM, SC_Type_MISV,
+							SC_Type_MIXM, SC_Type_MIXV, SC_Type_MISM2_CH, SC_Type_MISM2_SS_SD, SC_Type_MIADAP};
 
 // Forward functions
 //
@@ -34,6 +37,7 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError);
 void CONTROL_UpdateWatchDog();
 void CONTROL_ResetToDefaultState();
 void CONTROL_SafetyCheck();
+bool CONTROL_DevCaseCheck(DevType DevCase);
 
 // Functions
 //
@@ -115,8 +119,13 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 				if(PMXU_Enable())
 				{
 					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
-					CONTROL_SetDeviceState(DS_InSelfTest);
-					CONTROL_SetDeviceSubState(STS_InputBoard);
+					RelayStages = CRS_Init;
+
+					// Selftest временно отключен, до устранения все проблем
+					//CONTROL_SetDeviceState(DS_InSelfTest);
+					//CONTROL_SetDeviceSubState(STS_InputBoard);
+
+					CONTROL_SetDeviceState(DS_Enabled);
 				}
 			}
 			else if(CONTROL_State != DS_Enabled)
@@ -189,6 +198,7 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 					if(PMXU_StartSelfTest())
 					{
 						DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
+						RelayStages = CRS_Init;
 						CONTROL_SetDeviceState(DS_InSelfTest);
 						CONTROL_SetDeviceSubState(STS_InputBoard);
 					}
@@ -220,13 +230,28 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 				*pUserError = ERR_DEVICE_NOT_READY;
 			}
 			else
-				COMM_Commutate(ActionID);
+				if(CONTROL_DevCaseCheck(DataTable[REG_DEV_CASE]) || ActionID == ACT_COMM_NONE || ActionID == ACT_COMM_NO_PE)
+					COMM_Commutate(ActionID);
+				else
+					*pUserError = ERR_OPERATION_BLOCKED;
 			break;
 
 		default:
 			return DIAG_HandleDiagnosticAction(ActionID, pUserError);
 	}
 	return true;
+}
+//-----------------------------------------------
+
+bool CONTROL_DevCaseCheck(DevType DevCase)
+{
+	for(int i = 0; i < sizeof(AllowedCases) / 2; i++)
+	{
+		if(DevCase == AllowedCases[i])
+			return true;
+	}
+
+	return false;
 }
 //-----------------------------------------------
 
