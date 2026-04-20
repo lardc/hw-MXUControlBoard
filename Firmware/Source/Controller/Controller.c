@@ -144,16 +144,16 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 		case ACT_ENABLE_POWER:
 			if(CONTROL_State == DS_None)
 			{
+				// По ТТ MXU303: PMXU_Enable + локальный самодиагностический цикл,
+				// после STP_Finish SelfTest_Process переводит устройство в DS_Enabled.
+				// PMXU_StartSelfTest не вызываем — режим SELFTEST у PMXU исключён.
 				if(PMXU_Enable())
 				{
 					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
 					RelayStages = CRS_Init;
 
-					// Selftest временно отключен, до устранения все проблем
-					//CONTROL_SetDeviceState(DS_InSelfTest);
-					//CONTROL_SetDeviceSubState(STS_InputBoard);
-
-					CONTROL_SetDeviceState(DS_Enabled);
+					CONTROL_SetDeviceState(DS_InSelfTest);
+					CONTROL_SetDeviceSubState(STS_InputBoard);
 				}
 			}
 			else if(CONTROL_State != DS_Enabled)
@@ -223,13 +223,12 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			{
 				if(PMXU_IsReady())
 				{
-					if(PMXU_StartSelfTest())
-					{
-						DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
-						RelayStages = CRS_Init;
-						CONTROL_SetDeviceState(DS_InSelfTest);
-						CONTROL_SetDeviceSubState(STS_InputBoard);
-					}
+					// Только локальный самодиагностический цикл: PMXU_StartSelfTest()
+					// исключён по ТТ MXU303 (у PMXU режим SELFTEST больше не запускается).
+					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
+					RelayStages = CRS_Init;
+					CONTROL_SetDeviceState(DS_InSelfTest);
+					CONTROL_SetDeviceSubState(STS_InputBoard);
 				}
 				else
 					*pUserError = ERR_DEVICE_NOT_READY;
