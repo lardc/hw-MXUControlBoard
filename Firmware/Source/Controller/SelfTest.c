@@ -107,7 +107,7 @@ void SELFTEST_Process()
 
 SelfTestProcess SELFTEST_RelayCheck(const SelfTestTableItem (*RelayArray)[], Int16U Stages, Int16U Commutations, pFloat32 RelayErrorReg)
 {
-	float RelayClosedTestCurrent = 0, RelayOpenedTestCurrent = 0;
+	float RelayClosedTestVoltage = 0, RelayOpenedTestVoltage = 0;
 	static Int16U StageCounter = 0, CommutationCounter = 0;
 
 	switch(RelayStages)
@@ -140,17 +140,17 @@ SelfTestProcess SELFTEST_RelayCheck(const SelfTestTableItem (*RelayArray)[], Int
 			//
 			if((*RelayArray)[CommutationCounter].Stage == StageCounter)
 			{
-				RelayClosedTestCurrent = GetTestCurrent();
+				RelayClosedTestVoltage = GetTestVoltage();
 
 				SELFTEST_RelayClose((*RelayArray)[CommutationCounter], false);
 				DELAY_MS(COMM_DELAY_MS);
 
-				RelayOpenedTestCurrent = GetTestCurrent();
+				RelayOpenedTestVoltage = GetTestVoltage();
 
 				SELFTEST_RelayClose((*RelayArray)[CommutationCounter], true);
 				DELAY_MS(COMM_DELAY_MS);
 
-				if(fabs(RelayClosedTestCurrent - RelayOpenedTestCurrent) < DataTable[REG_SFTST_V_ALLOWED_VOLTAGE])
+				if(fabs(RelayClosedTestVoltage - RelayOpenedTestVoltage) < DataTable[REG_SFTST_V_ALLOWED_VOLTAGE])
 				{
 					*RelayErrorReg = CommutationCounter;
 					return STP_Fault;

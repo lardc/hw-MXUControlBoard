@@ -17,24 +17,28 @@
 #include "ZwSPI.h"
 
 // Определения для выходных портов
-GPIO_PortPinSettingMacro GPIO_LED				= {GPIOB, Pin_1};
-GPIO_PortPinSettingMacro GPIO_FP_LED			= {GPIOB, Pin_4};
-GPIO_PortPinSettingMacro GPIO_SPI_SS			= {GPIOA, Pin_15};
-GPIO_PortPinSettingMacro GPIO_SPI_OE			= {GPIOB, Pin_7};
-GPIO_PortPinSettingMacro GPIO_SPI_CLK			= {GPIOB, Pin_3};
-GPIO_PortPinSettingMacro GPIO_SPI_DAT			= {GPIOB, Pin_5};
-GPIO_PortPinSettingMacro GPIO_SF_RED_LED		= {GPIOA, Pin_3};
-GPIO_PortPinSettingMacro GPIO_SF_GRN_LED		= {GPIOB, Pin_8};
-GPIO_PortPinSettingMacro GPIO_SF_EN				= {GPIOA, Pin_6};
-GPIO_PortPinSettingMacro GPIO_SD_EN				= {GPIOB, Pin_9};
+GPIO_PortPinSettingMacro GPIO_LED				= {GPIOB, Pin_1};	// Мигающий зелёный индикатор на плате
+GPIO_PortPinSettingMacro GPIO_FP_LED			= {GPIOA, Pin_3};	// Индикатор на передней панели
+GPIO_PortPinSettingMacro GPIO_SD_EN				= {GPIOB, Pin_9};	// Формирование напряжения самодиагностики
+//
+// CS сдвиговых регистров на трёх ЭМ (аппаратный SPI1, MOSI/SCLK на PB4/PB3)
+GPIO_PortPinSettingMacro GPIO_SPI_SS1			= {GPIOA, Pin_15};	// InputRelayBoard
+GPIO_PortPinSettingMacro GPIO_SPI_SS2			= {GPIOB, Pin_6};	// OutThermRelayBoard
+GPIO_PortPinSettingMacro GPIO_SPI_SS3			= {GPIOB, Pin_7};	// IORelayBoard (бывшие OutHVRelayBoard-1/2)
+//
+// Управление аппаратным контуром безопасности
+GPIO_PortPinSettingMacro GPIO_SFT_ENABLE		= {GPIOB, Pin_5};	// OpenDrain, связан напрямую с OE сдвиговых регистров
 
 // Определения для входных портов
-GPIO_PortPinSettingMacro GPIO_SF_TRIG			= {GPIOB, Pin_6};
+GPIO_PortPinSettingMacro GPIO_SFT_IN			= {GPIOB, Pin_12};	// Вход с контура безопасности: 0 — норма, 1 — срабатывание
 
 // Определения для портов альтернативных функций
 GPIO_PortPinSettingMacro GPIO_ALT_UART1_TX		= {GPIOA, Pin_9};
 GPIO_PortPinSettingMacro GPIO_ALT_UART1_RX		= {GPIOA, Pin_10};
 GPIO_PortPinSettingMacro GPIO_ALT_CAN1_TX		= {GPIOA, Pin_12};
 GPIO_PortPinSettingMacro GPIO_ALT_CAN1_RX		= {GPIOA, Pin_11};
+//
+GPIO_PortPinSettingMacro GPIO_ALT_SPI1_SCLK		= {GPIOB, Pin_3};	// SPI1 SCLK (AF5)
+GPIO_PortPinSettingMacro GPIO_ALT_SPI1_MOSI		= {GPIOB, Pin_4};	// SPI1 MOSI (AF5)
 
 #endif // __BOARD_H

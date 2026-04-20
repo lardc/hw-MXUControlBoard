@@ -11,12 +11,24 @@
 void LL_ToggleBoardLED();
 void LL_SetStateFPLed(bool State);
 void LL_ToggleFPLed();
+void LL_SetStateSD_EN(bool State);
+float GetTestVoltage();
+bool LL_IsSafetyTrig();
+//
+// Аппаратный SPI1 для сдвиговых регистров реле
+void LL_SPI_WriteByte(Int8U Data);
+// Импульс защёлки на CS выбранной платы (BoardIdx: 0=SS1 Input, 1=SS2 OutTherm, 2=SS3 IORelay)
+void LL_SPI_LatchBoard(Int8U BoardIdx);
+//
+// OE сдвиговых регистров через GPIO_SFT_ENABLE.
+// Enable=false → пин притянут к GND (OE разрешён, коммутация активна)
+// Enable=true  → пин в high-Z (OE запрещён, все выходы сдвиговых регистров отключены)
+void LL_SetStateSFT_ENABLE(bool Enable);
+
+// Устаревшие заглушки (сохранены, чтобы не ломать сборку до правки Controller.c/DebugActions.c).
+// TODO(safety/debug commits): удалить вызовы и функции после переноса логики.
 void LL_SetStateSFRedLed(bool State);
 void LL_SetStateSFGreenLed(bool State);
 void LL_SetStateSF_EN(bool State);
-void LL_SetStateSD_EN(bool State);
-float GetTestCurrent();
-bool LL_IsSafetyTrig();
-void LL_SPI_WriteByte(Int8U Data);
 
 #endif //__LOWLEVEL_H

@@ -54,7 +54,7 @@ void DBACT_SelfTestMeasure()
 {
 	LL_SetStateSD_EN(true);
 	DELAY_MS(100);
-	DataTable[REG_DBG] = GetTestCurrent();
+	DataTable[REG_DBG] = GetTestVoltage();
 	DELAY_MS(100);
 	LL_SetStateSD_EN(false);
 }

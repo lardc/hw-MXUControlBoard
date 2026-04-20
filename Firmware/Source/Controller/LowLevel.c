@@ -26,34 +26,34 @@ void LL_ToggleFPLed()
 }
 //-----------------------------
 
-void LL_SetStateSFRedLed(bool State)
-{
-	GPIO_SetState(GPIO_SF_RED_LED, State);
-}
-//-----------------------------
-
-void LL_SetStateSFGreenLed(bool State)
-{
-	GPIO_SetState(GPIO_SF_GRN_LED, State);
-}
-//-----------------------------
-
 void LL_SPI_WriteByte(Int8U Data)
 {
-	for (int i = 7; i >= 0; i--)
-	{
-		GPIO_SetState(GPIO_SPI_DAT, (Data >> i) & 0x1);
-		DELAY_US(TIME_SPI_DELAY);
-		GPIO_SetState(GPIO_SPI_CLK, true);
-		DELAY_US(TIME_SPI_DELAY);
-		GPIO_SetState(GPIO_SPI_CLK, false);
-	}
+	SPI_WriteByte8b(SPI1, Data);
 }
 //-----------------------------
 
-void LL_SetStateSF_EN(bool State)
+void LL_SPI_LatchBoard(Int8U BoardIdx)
 {
-	GPIO_SetState(GPIO_SF_EN, !State);
+	GPIO_PortPinSetting SS;
+	switch(BoardIdx)
+	{
+		case 0:  SS = GPIO_SPI_SS1; break;
+		case 1:  SS = GPIO_SPI_SS2; break;
+		default: SS = GPIO_SPI_SS3; break;
+	}
+
+	DELAY_US(TIME_SPI_DELAY);
+	GPIO_SetState(SS, false);
+	DELAY_US(TIME_SPI_DELAY);
+	GPIO_SetState(SS, true);
+	DELAY_US(TIME_SPI_DELAY);
+}
+//-----------------------------
+
+void LL_SetStateSFT_ENABLE(bool Enable)
+{
+	// OpenDrain: false = активное притягивание к GND, true = high-Z
+	GPIO_SetState(GPIO_SFT_ENABLE, Enable);
 }
 //-----------------------------
 
@@ -63,7 +63,7 @@ void LL_SetStateSD_EN(bool State)
 }
 //-----------------------------
 
-float GetTestCurrent()
+float GetTestVoltage()
 {
 	return (float)ADC_Measure(ADC1, ADC_V_CHANNEL) * ADC_REF_VOLTAGE / ADC_RESOLUTION;
 }
@@ -71,6 +71,26 @@ float GetTestCurrent()
 
 bool LL_IsSafetyTrig()
 {
-	return GPIO_GetState(GPIO_SF_TRIG);
+	return GPIO_GetState(GPIO_SFT_IN);
+}
+//-----------------------------
+
+// ===== Устаревшие заглушки =====
+// TODO(safety/debug commits): удалить вместе с вызовами из Controller.c / DebugActions.c.
+void LL_SetStateSFRedLed(bool State)
+{
+	(void)State;
+}
+//-----------------------------
+
+void LL_SetStateSFGreenLed(bool State)
+{
+	(void)State;
+}
+//-----------------------------
+
+void LL_SetStateSF_EN(bool State)
+{
+	(void)State;
 }
 //-----------------------------
