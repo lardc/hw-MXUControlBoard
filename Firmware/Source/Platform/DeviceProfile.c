@@ -14,6 +14,7 @@
 #include "ZwNCAN.h"
 #include "ZwSCI.h"
 #include "BCCIMHighLevel.h"
+#include "SaveToFlash.h"
 
 // Types
 //
@@ -182,6 +183,14 @@ static Boolean DEVPROFILE_DispatchAction(Int16U ActionID, pInt16U UserError)
 
 		case ACT_BOOT_LOADER_REQUEST:
 			BOOT_LOADER_VARIABLE = BOOT_LOADER_REQUEST;
+			break;
+
+		case ACT_FLASH_CNT_READ_SYMBOL:
+			DataTable[REG_MEM_SYMBOL] = STF_ReadCounter();
+			break;
+
+		case ACT_FLASH_CNT_INIT_READ:
+			STF_ResetStateMachine();
 			break;
 
 		default:
