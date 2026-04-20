@@ -8,12 +8,13 @@
 #define ACT_CLR_WARNING							4	// Очистка всех warning
 //
 #define ACT_DBG_FP_LED							21	// Проверка работы индикатора на передней панели
-#define ACT_DBG_SF_RED_LED						22	// Проверка работы красного индикатора системы безопасности
-#define ACT_DBG_SF_GRN_LED						23	// Проверка работы зеленого индикатора системы безопасности
+// 22 и 23 — зарезервированы: бывшие ACT_DBG_SF_RED_LED/ACT_DBG_SF_GRN_LED удаляются (светодиоды безопасности убраны из схемы MXU303)
 #define ACT_DBG_WRITE_SPI						24	// Проверка работы коммутации тестовой комбинации
 #define ACT_DBG_SPI_RST							25	// Сброс сдвиговых регистров
 #define ACT_DBG_SELF_TEST_MEASURE				26	// Измерение значения напряжение системы самодиагностики
 #define ACT_DBG_SD_EN							27	// Проверка формирования напряжения самодиагностики
+#define ACT_DBG_SFT_ENABLE						28	// Импульс SFT_ENABLE (перевод OE сдвиговых регистров в high-Z)
+#define ACT_DBG_SFT_IN							29	// Прочитать состояние входа SFT_IN в REG_DBG
 
 #define ACT_SET_ACTIVE							100	// Команда активации контура безопасности
 #define ACT_SET_INACTIVE						101	// Команда деактивации контура безопасности
@@ -22,10 +23,11 @@
 #define ACT_COMM_IGES_POS_PULSE					111 // Режим измерения тока утечки затвора-эмиттера (положительный импульс)
 #define ACT_COMM_IGES_NEG_PULSE					112 // Режим измерения тока утечки затвора-эмиттера (отрицательный импульс)
 #define ACT_COMM_UGE_TH							113 // Режим измерения порогового напряжения затвор-эмиттер
-#define ACT_COMM_QG								114 // Режим измерения заряда затвора (положительный импульс)
+#define ACT_COMM_QG								114 // Режим измерения заряда затвора (TODO commit10: удалить — измерение QG выводится из MXU303)
 #define ACT_COMM_UCE_SAT						115 // Режим измерения напряжения насыщения коллектор-эмиттер
 #define ACT_COMM_UFW_CHOPPER_DIODE				116 // Режим измерения прямого напряжения обратно-параллельного диода и диода чоппера
-#define ACT_COMM_ICES							117 // Режим измерения тока утечки коллектор-эмиттер
+#define ACT_COMM_ICES_OR_IRRM					117 // Режим измерения ICES (IGBT) / IRRM (диод)
+#define ACT_COMM_ICES							ACT_COMM_ICES_OR_IRRM	// legacy-алиас, убрать в commit10 вместе с переименованием в Commutator
 #define ACT_COMM_THERMISTOR						118 // Режим измерения сопротивления термистора
 #define ACT_COMM_NO_PE							119 // Отключения защитного заземления
 
@@ -57,7 +59,9 @@
 //
 #define REG_MODULE_TYPE							70	// Module type(Заглушка)
 #define REG_DUT_POSITION						71	// Регистр выбора позции тестируемого прибора (1 или 2)
-#define REG_DEV_CASE							72	// Тип корпуса прибора
+#define REG_DUT_CASE							72	// Тип корпуса тестируемого прибора
+#define REG_DUT_SCHEME							73	// Схема подключения внутри корпуса (уточняется при поставке корпусов с разными схемами)
+#define REG_DEV_CASE							REG_DUT_CASE	// legacy-алиас; использовать REG_DUT_CASE
 //
 #define REG_EN_SFTY_IN1							80	// Enable safety input #1(Заглушка)
 #define REG_EN_SFTY_IN2							81	// Enable safety input #2(Заглушка)
@@ -73,13 +77,19 @@
 #define REG_SELF_TEST_OP_RESULT					102	// Регистр результата самотестирования
 #define REG_SUB_STATE							103	// Регистр вспомогательного состояния
 
-#define REG_CNT_NUMBER							104	// Номер счетчика, в который будет записано значение из регистра 301
+#define REG_CNT_NUMBER							104	// Номер счетчика, в который будет записано значение из регистра 105
 #define REG_CNT_VALUE							105	// Значение, которое будет записано в счетчик
 
 // Несохраняемые регистры чтения-записи
 //
 #define REG_DBG									150	// Отладочный регистр
 #define REG_DBG2								151	// Отладочный регистр
+//
+// Информация о последней коммутации (для диагностики повторных/некорректных вызовов)
+#define REG_LAST_CMD							152	// Код последней команды коммутации (ACT_COMM_*)
+#define REG_LAST_POS							153	// Позиция DUT на момент последней коммутации
+#define REG_LAST_CASE							154	// Тип корпуса DUT на момент последней коммутации
+#define REG_LAST_TYPE							155	// Схема DUT на момент последней коммутации (REG_DUT_SCHEME)
 
 // Регистры только чтение
 #define REG_SELF_TEST_FAILED_BOARD				200	// Номер ЭМ на котором возникла проблема с реле
