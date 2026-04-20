@@ -59,30 +59,16 @@ void SELFTEST_Process()
 			}
 			else
 				if(SelfTestState == STP_Finish)
-					CONTROL_SetDeviceSubState(STS_HVBoard1);
+					CONTROL_SetDeviceSubState(STS_IOBoard);
 			break;
 
-		case STS_HVBoard1:
-			SelfTestState = SELFTEST_RelayCheck(&SelfTestHV1Board, ST_HV_BOARD_STAGES, ST_HV_BOARD_COMM, (pFloat32)&DataTable[REG_SELF_TEST_FAILED_RELAY]);
+		case STS_IOBoard:
+			SelfTestState = SELFTEST_RelayCheck(&SelfTestIOBoard, ST_IO_BOARD_STAGES, ST_IO_BOARD_COMM, (pFloat32)&DataTable[REG_SELF_TEST_FAILED_RELAY]);
 
 			if(SelfTestState == STP_Fault)
 			{
 				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
-				DataTable[REG_SELF_TEST_FAILED_BOARD] = STS_HVBoard1;
-				CONTROL_SwitchToFault(DF_SELF_TEST);
-			}
-			else
-				if(SelfTestState == STP_Finish)
-					CONTROL_SetDeviceSubState(STS_HVBoard2);
-			break;
-
-		case STS_HVBoard2:
-			SelfTestState = SELFTEST_RelayCheck(&SelfTestHV2Board, ST_HV_BOARD_STAGES, ST_HV_BOARD_COMM, (pFloat32)&DataTable[REG_SELF_TEST_FAILED_RELAY]);
-
-			if(SelfTestState == STP_Fault)
-			{
-				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
-				DataTable[REG_SELF_TEST_FAILED_BOARD] = STS_HVBoard2;
+				DataTable[REG_SELF_TEST_FAILED_BOARD] = STS_IOBoard;
 				CONTROL_SwitchToFault(DF_SELF_TEST);
 			}
 			else

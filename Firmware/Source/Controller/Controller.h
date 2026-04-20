@@ -25,8 +25,7 @@ typedef enum __DeviceSelfTestState
 	STS_None = 0,
 	STS_InputBoard,
 	STS_ThermBoard,
-	STS_HVBoard1,
-	STS_HVBoard2
+	STS_IOBoard
 
 } DeviceSelfTestState;
 
