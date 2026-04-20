@@ -17,14 +17,6 @@ bool DIAG_HandleDiagnosticAction(uint16_t ActionID, uint16_t *pUserError)
 			DBACT_ToggleFPLed();
 			break;
 
-		case ACT_DBG_SF_RED_LED:
-			DBACT_ToggleSFRedLed();
-			break;
-
-		case ACT_DBG_SF_GRN_LED:
-			DBACT_ToggleSFGreenLed();
-			break;
-
 		case ACT_DBG_WRITE_SPI:
 			DBACT_WriteSPI();
 			break;
@@ -39,6 +31,14 @@ bool DIAG_HandleDiagnosticAction(uint16_t ActionID, uint16_t *pUserError)
 
 		case ACT_DBG_SD_EN:
 			DBACT_SDEN();
+			break;
+
+		case ACT_DBG_SFT_ENABLE:
+			DBACT_SftEnablePulse();
+			break;
+
+		case ACT_DBG_SFT_IN:
+			DBACT_ReadSftIn();
 			break;
 
 		default:

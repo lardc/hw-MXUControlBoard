@@ -22,24 +22,6 @@ void DBACT_ToggleFPLed()
 }
 //-----------------------
 
-// Send pulse to Safety Subsystem Red LED
-void DBACT_ToggleSFRedLed()
-{
-	LL_SetStateSFRedLed(true);
-	DELAY_MS(1000);
-	LL_SetStateSFRedLed(false);
-}
-//-----------------------
-
-// Send pulse to Safety Subsystem Green LED
-void DBACT_ToggleSFGreenLed()
-{
-	LL_SetStateSFGreenLed(true);
-	DELAY_MS(1000);
-	LL_SetStateSFGreenLed(false);
-}
-//-----------------------
-
 void DBACT_WriteSPI()
 {
 	// Чтение номера таблицы коммутации из отладочного регистра
@@ -59,10 +41,27 @@ void DBACT_SelfTestMeasure()
 	LL_SetStateSD_EN(false);
 }
 //-----------------------
-void DBACT_SDEN()
 
+void DBACT_SDEN()
 {
 	LL_SetStateSD_EN(true);
 	DELAY_MS(100);
 	LL_SetStateSD_EN(false);
 }
+//-----------------------
+
+// Импульс SFT_ENABLE: на 1 с переводим пин в high-Z (OE сдвиговых регистров запрещён),
+// затем возвращаем активное состояние (OD к GND, OE разрешён).
+void DBACT_SftEnablePulse()
+{
+	LL_SetStateSFT_ENABLE(true);
+	DELAY_MS(1000);
+	LL_SetStateSFT_ENABLE(false);
+}
+//-----------------------
+
+void DBACT_ReadSftIn()
+{
+	DataTable[REG_DBG] = LL_IsSafetyTrig() ? 1 : 0;
+}
+//-----------------------
