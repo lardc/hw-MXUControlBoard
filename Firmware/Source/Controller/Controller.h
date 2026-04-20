@@ -55,6 +55,9 @@ extern volatile Int64U CONTROL_TimeCounter;
 extern volatile DeviceState CONTROL_State;
 extern volatile DeviceSelfTestState CONTROL_SubState;
 extern Int64U CONTROL_LEDTimeout;
+extern volatile Int16U CONTROL_DiagCounter;
+//
+extern volatile float CONTROL_DiagData[VALUES_DIAG_SIZE];
 
 // Functions
 //

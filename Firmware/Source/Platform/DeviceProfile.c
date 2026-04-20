@@ -13,7 +13,9 @@
 #include "Constraints.h"
 #include "ZwNCAN.h"
 #include "ZwSCI.h"
+#include "ZwNFLASH.h"
 #include "BCCIMHighLevel.h"
+#include "SaveToFlash.h"
 
 // Types
 //
@@ -166,6 +168,9 @@ static Boolean DEVPROFILE_ValidateFloat(Int16U Address, float Data, float* LowLi
 
 static Boolean DEVPROFILE_DispatchAction(Int16U ActionID, pInt16U UserError)
 {
+	static Int32U MemoryPointer = 0;
+	static Int32U MemoryEndPointer = 0;
+
 	switch (ActionID)
 	{
 		case ACT_SAVE_TO_ROM:
@@ -182,6 +187,49 @@ static Boolean DEVPROFILE_DispatchAction(Int16U ActionID, pInt16U UserError)
 
 		case ACT_BOOT_LOADER_REQUEST:
 			BOOT_LOADER_VARIABLE = BOOT_LOADER_REQUEST;
+			break;
+
+		case ACT_FLASH_CNT_READ_SYMBOL:
+			DataTable[REG_MEM_SYMBOL] = STF_ReadCounter();
+			break;
+
+		case ACT_FLASH_CNT_INIT_READ:
+			STF_ResetStateMachine();
+			MemoryPointer = FLASH_COUNTER_START_ADDR;
+			MemoryEndPointer = FLASH_COUNTER_END_ADDR;
+
+			break;
+
+		case ACT_FLASH_DIAG_INIT_READ:
+			MemoryPointer = FLASH_DIAG_START_ADDR;
+			MemoryEndPointer = FLASH_DIAG_END_ADDR;
+			break;
+
+		case ACT_FLASH_COUNTER_TO_EP:
+			{
+				DEVPROFILE_ResetEPReadState();
+				DEVPROFILE_ResetScopes(0);
+
+				for(CONTROL_DiagCounter = 0; CONTROL_DiagCounter < VALUES_DIAG_SIZE && MemoryPointer <= MemoryEndPointer;)
+				{
+					Int32U value = STF_ReadCounter();
+					CONTROL_DiagData[CONTROL_DiagCounter++] = (float)value;
+					MemoryPointer += 4;
+				}
+			}
+			break;
+
+		case ACT_FLASH_DIAG_TO_EP:
+			{
+				DEVPROFILE_ResetEPReadState();
+				DEVPROFILE_ResetScopes(0);
+
+				for(CONTROL_DiagCounter = 0; CONTROL_DiagCounter < VALUES_DIAG_SIZE && MemoryPointer <= MemoryEndPointer;)
+					{
+						CONTROL_DiagData[CONTROL_DiagCounter++] = NFLASH_ReadWord16(MemoryPointer);
+						MemoryPointer += 2;
+					}
+			}
 			break;
 
 		default:

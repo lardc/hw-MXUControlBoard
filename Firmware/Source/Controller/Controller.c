@@ -16,6 +16,7 @@
 #include "PMXU.h"
 #include "BCCIMHighLevel.h"
 #include "SelfTest.h"
+#include "SaveToFlash.h"
 
 // Types
 //
@@ -28,6 +29,9 @@ volatile DeviceSelfTestState CONTROL_SubState = STS_None;
 static Boolean CycleActive = false;
 volatile Int64U CONTROL_TimeCounter = 0;
 //
+volatile Int16U CONTROL_DiagCounter = 0;
+volatile float CONTROL_DiagData[VALUES_DIAG_SIZE];
+//
 DevType AllowedCases[] = {SC_Type_MIAA, SC_Type_MIDA, SC_Type_MIFA, SC_Type_MIHA, SC_Type_MIHM, SC_Type_MIHV, SC_Type_MISM, SC_Type_MISV,
 							SC_Type_MIXM, SC_Type_MIXV, SC_Type_MISM2_CH, SC_Type_MISM2_SS_SD, SC_Type_MIADAP};
 
@@ -38,11 +42,17 @@ void CONTROL_UpdateWatchDog();
 void CONTROL_ResetToDefaultState();
 void CONTROL_SafetyCheck();
 bool CONTROL_DevCaseCheck(DevType DevCase);
+void CONTROL_InitStoragePointers();
 
 // Functions
 //
 void CONTROL_Init()
 {
+	Int16U FEPIndexes[FEP_COUNT] = {EP_DiagData};
+	Int16U FEPSized[FEP_COUNT] = {VALUES_DIAG_SIZE};
+	pInt16U FEPCounters[FEP_COUNT] = {(pInt16U)&CONTROL_DiagCounter};
+	pFloat32 FEPDatas[FEP_COUNT] = {(pFloat32)&CONTROL_DiagData};
+
 	// Конфигурация сервиса работы Data-table и EPROM
 	EPROMServiceConfig EPROMService = {(FUNC_EPROM_WriteValues)&NFLASH_WriteDT, (FUNC_EPROM_ReadValues)&NFLASH_ReadDT};
 	// Инициализация data table
@@ -50,6 +60,10 @@ void CONTROL_Init()
 	DT_SaveFirmwareInfo(CAN_NID, 0);
 	// Инициализация device profile
 	DEVPROFILE_Init(&CONTROL_DispatchAction, &CycleActive);
+	DEVPROFILE_InitFEPService(FEPIndexes, FEPSized, FEPCounters, FEPDatas);
+
+	CONTROL_InitStoragePointers();
+	STF_LoadCounters();
 
 	// Сброс значений
 	DEVPROFILE_ResetControlSection();
@@ -59,6 +73,12 @@ void CONTROL_Init()
 
 void CONTROL_Idle()
 {
+	if (CONTROL_TimeCounter - CT_SaveTimer >= CT_SAVE_TIMEOUT)
+	{
+		STF_SaveCounterData();
+		CT_SaveTimer = CONTROL_TimeCounter;
+	}
+
 	CONTROL_SafetyCheck();
 	SELFTEST_Process();
 
@@ -104,6 +124,13 @@ void CONTROL_ResetToDefaultState()
 
 	CONTROL_SetDeviceState(DS_None);
 	CONTROL_SetDeviceSubState(STS_None);
+}
+//------------------------------------------
+
+void CONTROL_InitStoragePointers()
+{
+	for (Int16U i = 0; i < COMMUTATION_TABLE_SIZE; ++i)
+		STF_AssignCounterPointer(i, (Int32U)&CycleCounters[i]);
 }
 //------------------------------------------
 
@@ -234,6 +261,19 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 					COMM_Commutate(ActionID);
 				else
 					*pUserError = ERR_OPERATION_BLOCKED;
+			break;
+		
+		case ACT_SET_COUNTER:
+			CycleCounters[(Int16U)DataTable[REG_CNT_NUMBER]] = DataTable[REG_CNT_VALUE];
+			break;
+
+		case ACT_SAVE_COUNTERS:
+			STF_SaveCounterData();
+			break;
+
+		case ACT_ERASE_COUNTERS:
+			NFLASH_Unlock();
+			STF_EraseCounterDataSector();
 			break;
 
 		default:

@@ -1,0 +1,97 @@
+﻿// Header
+#include "StorageDescription.h"
+#include "Global.h"
+
+// Variables
+RecordDescription StorageDescription[] = {};
+
+#define SIZE_OF_POINTERS (sizeof(StorageDescription) / sizeof(StorageDescription[0]))
+Int32U TablePointers[SIZE_OF_POINTERS ? SIZE_OF_POINTERS : 1] = {0};
+const Int16U StorageSize = SIZE_OF_POINTERS;
+
+CounterDescription CounterStorageDescription[] =
+{
+	{"0. Collector (C_POT) to PE"},
+	{"1. Gate (G) to PE"},
+	{"2. Gate-Emitter (GE) to PE"},
+	{"3. Emitter (E_POT) to PE"},
+	{"4. Collector: Commutation of C_POT (Open/Close)"},
+	{"5. Gate: Commutation of G (Open/Close)"},
+	{"6. Gate-Emitter: Commutation of GE (Open/Close)"},
+	{"7. Emitter: Commutation of E_POT (Open/Close)"},
+	{"8. Gate (G) to Collector (C_POT)"},
+	{"9. Gate (G) to Gate-Emitter (GE)"},
+	{"10. Gate-Emitter (GE) to GT_G"},
+	{"11. Gate-Emitter (GE) to GT_GE"},
+	{"12. Gate-Emitter (GE) to LSL_GE"},
+	{"13. Gate (G) to GT_G"},
+	{"14. Gate (G) to GT_GE"},
+	{"15. Gate (G) to GT_G_POT"},
+	{"16. Emitter (E_POT) to GT_GE_POT"},
+	{"17. Emitter (E_POT) to LSL_POT+"},
+	{"18. Emitter (E_POT) to LSL_POT-"},
+	{"19. Gate (G) to LSL_G"},
+	{"20. Collector (C_POT) to LSL_POT+"},
+	{"21. Collector (C_POT) to LSL_POT-"},
+	{"22. None"},
+	{"23. None"},
+	{"24. Collector (C_POT) to PE"},
+	{"25. Gate (G) to PE"},
+	{"26. Gate-Emitter (GE) to PE"},
+	{"27. Emitter (E_POT) to PE"},
+	{"28. Collector: Commutation of C_POT (Open/Close)"},
+	{"29. Gate: Commutation of G (Open/Close)"},
+	{"30. Gate-Emitter: Commutation of GE (Open/Close)"},
+	{"31. Emitter: Commutation of E_POT (Open/Close)"},
+	{"32. Gate (G) to Collector (C_POT)"},
+	{"33. Gate (G) to Gate-Emitter (GE)"},
+	{"34. Gate-Emitter (GE) to GT_G"},
+	{"35. Gate-Emitter (GE) to GT_GE"},
+	{"36. Gate-Emitter (GE) to LSL_GE"},
+	{"37. Gate (G) to GT_G"},
+	{"38. Gate (G) to GT_GE"},
+	{"39. Gate (G) to GT_G_POT"},
+	{"40. Emitter (E_POT) to GT_GE_POT"},
+	{"41. Emitter (E_POT) to LSL_POT+"},
+	{"42. Emitter (E_POT) to LSL_POT-"},
+	{"43. Gate (G) to LSL_G"},
+	{"44. Collector (C_POT) to LSL_POT+"},
+	{"45. Collector (C_POT) to LSL_POT-"},
+	{"46. None"},
+	{"47. None"},
+	{"48. Thermistor_1 (T1) to PE"},
+	{"49. Thermistor_2 (T2) to PE"},
+	{"50. Thermistor_1: Commutation of T1 (Open/Close)"},
+	{"51. Thermistor_2: Commutation of T2 (Open/Close)"},
+	{"52. T2 to GT_G"},
+	{"53. T2 to GT_G_POT"},
+	{"54. T1 to GT_GE"},
+	{"55. T1 to GT_GE_POT"},
+	{"56. GT_G to TEST-IN"},
+	{"57. GT_GE to TEST-OUT"},
+	{"58. GT_G: Commutation of GT_G (Open/Close)"},
+	{"59. GT_GE: Commutation of GT_GE (Open/Close)"},
+	{"60. GT_G to GT_GE"},
+	{"61. GT_G_POT to TEST-IN"},
+	{"62. GT_GE_POT to TEST-OUT"},
+	{"63. GT_G_POT: Commutation of GT_G_POT (Open/Close)"},
+	{"64. GT_GE_POT: Commutation of GT_GE_POT (Open/Close)"},
+	{"65. GT_G_POT to GT_GE_POT"},
+	{"66. LSL_G to TEST-IN"},
+	{"67. LSL_GE to TEST-OUT"},
+	{"68. LSL_G: Commutation of LSL_G (Open/Close)"},
+	{"69. LSL_GE: Commutation of LSL_GE (Open/Close)"},
+	{"70. LSL_G to LSL_GE"},
+	{"71. LSL_POT+ to TEST-IN"},
+	{"72. LSL_POT- to TEST-OUT"},
+	{"73. LSL_POT+: Commutation of LSL_POT+ (Open/Close)"},
+	{"74. LSL_POT-: Commutation of LSL_POT- (Open/Close)"},
+	{"75. LSL_POT+ to LSL_POT-"},
+	{"76. None"},
+	{"77. None"},
+	{"78. None"},
+	{"79. None"}
+};
+CounterData CounterTablePointers[sizeof(CounterStorageDescription) / sizeof(CounterStorageDescription[0])] = {0};
+const Int16U CounterStorageSize = sizeof(CounterStorageDescription) / sizeof(CounterStorageDescription[0]);
+
