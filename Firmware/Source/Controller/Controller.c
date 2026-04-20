@@ -235,10 +235,9 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 		case ACT_COMM_IGES_POS_PULSE:
 		case ACT_COMM_IGES_NEG_PULSE:
 		case ACT_COMM_UGE_TH:
-		case ACT_COMM_QG:
 		case ACT_COMM_UCE_SAT:
 		case ACT_COMM_UFW_CHOPPER_DIODE:
-		case ACT_COMM_ICES:
+		case ACT_COMM_ICES_OR_IRRM:
 		case ACT_COMM_THERMISTOR:
 		case ACT_COMM_NO_PE:
 		case ACT_COMM_NONE:
@@ -252,10 +251,19 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 				*pUserError = ERR_DEVICE_NOT_READY;
 			}
 			else
-				if(CONTROL_DevCaseCheck(DataTable[REG_DEV_CASE]) || ActionID == ACT_COMM_NONE || ActionID == ACT_COMM_NO_PE)
+			{
+				Int16U ValErr = COMM_ValidateRequest(ActionID,
+					(Int16U)DataTable[REG_DUT_POSITION],
+					(Int16U)DataTable[REG_DUT_CASE],
+					(Int16U)DataTable[REG_DUT_SCHEME]);
+
+				if(ValErr != ERR_NONE)
+					*pUserError = ValErr;
+				else if(CONTROL_DevCaseCheck(DataTable[REG_DUT_CASE]) || ActionID == ACT_COMM_NONE || ActionID == ACT_COMM_NO_PE)
 					COMM_Commutate(ActionID);
 				else
 					*pUserError = ERR_OPERATION_BLOCKED;
+			}
 			break;
 		
 		case ACT_SET_COUNTER:

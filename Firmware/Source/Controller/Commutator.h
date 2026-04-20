@@ -17,10 +17,9 @@ typedef enum __CommutationState
 	COMM_Iges_Pos,
 	COMM_Iges_Neg,
 	COMM_Ugeth,
-	COMM_Qg,
 	COMM_Ucesat,
 	COMM_Uf,
-	COMM_Ices,
+	COMM_IcesOrIrrm,
 	COMM_Thermistor
 
 } CommutationState;
@@ -34,5 +33,8 @@ extern CommutationState COMM_State;
 void COMM_DisconnectPE();
 void COMM_Commutate(Int16U ActionID);
 void COMM_Default();
+// Валидация тройки «позиция + тип корпуса + схема» + допустимости ActionID
+// в текущем состоянии контроллера. Возвращает код ошибки ERR_*, либо ERR_NONE.
+Int16U COMM_ValidateRequest(Int16U ActionID, Int16U Position, Int16U DevCase, Int16U Scheme);
 
 #endif // __COMMUTATOR_H

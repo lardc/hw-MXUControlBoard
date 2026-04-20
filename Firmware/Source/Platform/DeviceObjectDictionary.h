@@ -23,11 +23,10 @@
 #define ACT_COMM_IGES_POS_PULSE					111 // Режим измерения тока утечки затвора-эмиттера (положительный импульс)
 #define ACT_COMM_IGES_NEG_PULSE					112 // Режим измерения тока утечки затвора-эмиттера (отрицательный импульс)
 #define ACT_COMM_UGE_TH							113 // Режим измерения порогового напряжения затвор-эмиттер
-#define ACT_COMM_QG								114 // Режим измерения заряда затвора (TODO commit10: удалить — измерение QG выводится из MXU303)
+// 114 — зарезервирован: бывший ACT_COMM_QG удалён (измерение QG выведено из MXU303)
 #define ACT_COMM_UCE_SAT						115 // Режим измерения напряжения насыщения коллектор-эмиттер
 #define ACT_COMM_UFW_CHOPPER_DIODE				116 // Режим измерения прямого напряжения обратно-параллельного диода и диода чоппера
 #define ACT_COMM_ICES_OR_IRRM					117 // Режим измерения ICES (IGBT) / IRRM (диод)
-#define ACT_COMM_ICES							ACT_COMM_ICES_OR_IRRM	// legacy-алиас, убрать в commit10 вместе с переименованием в Commutator
 #define ACT_COMM_THERMISTOR						118 // Режим измерения сопротивления термистора
 #define ACT_COMM_NO_PE							119 // Отключения защитного заземления
 
@@ -150,10 +149,10 @@
 #define ACT_PMXU_SELFTEST						120	// Команда завпуска SelfTest
 //
 #define ACT_PMXU_COMM_PE						110 // Отключение всех реле, замыкание шин на PE
-#define ACT_PMXU_COMM_ICES						111 // Режим измерения тока утечки коллектор-эмиттер
+#define ACT_PMXU_COMM_ICES						111 // Режим измерения тока утечки коллектор-эмиттер (ICES/IRRM)
 #define ACT_PMXU_COMM_VCESAT					112 // Режим измерения напряжения насыщения коллектор-эмиттер IGBT транзисторов
 #define ACT_PMXU_COMM_VF						113 // Режим измерения постоянного прямого напряжения диода чоппера и обратно-параллельного диода
-#define ACT_PMXU_COMM_QG						114 // Режим измерения заряда затвора
+// 114 — зарезервирован: бывший ACT_PMXU_COMM_QG удалён (команда ACT_COMM_QG выведена из MXU303)
 #define ACT_PMXU_COMM_NO_PE						115 // Отключение всех реле
 //
 
