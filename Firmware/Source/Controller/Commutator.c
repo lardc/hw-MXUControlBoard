@@ -67,15 +67,12 @@ void COMM_Commutate(Int16U ActionID)
 	Int16U DUTPosition = DataTable[REG_DUT_POSITION];
 	Int16U DUTCase = DataTable[REG_DUT_CASE];
 
-	// Фиксируем параметры последней попытки коммутации — регистры REG_LAST_*
-	// заполняются до начала коммутации, чтобы в Fault остались следы входных данных.
 	COMM_SaveLastRequest(ActionID);
 
-	// У прибора MISM-DS позиции 1 и 2 меняются местами, чтобы задаваемая позиция 1 соответствала транзистору VT1 в документации
-	//
+	// У прибора MISM-DS позиции 1 и 2 меняются местами, чтобы задаваемая позиция 1
+	// соответствала транзистору VT1 в документации
 	if(DUTCase == SC_Type_MISM)
 		DUTPosition = (DataTable[REG_DUT_POSITION] == DUT_POSITION_1) ? DUT_POSITION_2 : DUT_POSITION_1;
-	//
 
 	// Разряд после ICES/IRRM: перед любой следующей коммутацией обнуляем выходы
 	// сдвиговых регистров с удержанием SFT_ENABLE=true ~10 мс, чтобы «стекло»
@@ -92,10 +89,10 @@ void COMM_Commutate(Int16U ActionID)
 
 		case ACT_COMM_IGES_POS_PULSE:
 			{
-				COMM_State = COMM_Iges_Pos;
-
 				if(PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_NO_PE))
 				{
+					COMM_State = COMM_Iges_Pos;
+
 					if(COMM_IsDiodeModule(DUTCase))
 					{
 						ZcRD_OutputValuesReset();
@@ -154,10 +151,10 @@ void COMM_Commutate(Int16U ActionID)
 
 		case ACT_COMM_IGES_NEG_PULSE:
 			{
-				COMM_State = COMM_Iges_Neg;
-
 				if(PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_NO_PE))
 				{
+					COMM_State = COMM_Iges_Neg;
+
 					if(COMM_IsDiodeModule(DUTCase))
 					{
 						ZcRD_OutputValuesReset();
@@ -216,10 +213,10 @@ void COMM_Commutate(Int16U ActionID)
 
 		case ACT_COMM_UGE_TH:
 			{
-				COMM_State = COMM_Ugeth;
-
 				if(PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_NO_PE))
 				{
+					COMM_State = COMM_Ugeth;
+
 					if(COMM_IsDiodeModule(DUTCase))
 					{
 						ZcRD_OutputValuesReset();
@@ -284,10 +281,10 @@ void COMM_Commutate(Int16U ActionID)
 
 		case ACT_COMM_UCE_SAT:
 			{
-				COMM_State = COMM_Ucesat;
-
 				if(PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_VCESAT))
 				{
+					COMM_State = COMM_Ucesat;
+
 					if(COMM_IsDiodeModule(DUTCase))
 					{
 						ZcRD_OutputValuesReset();
@@ -350,10 +347,10 @@ void COMM_Commutate(Int16U ActionID)
 
 		case ACT_COMM_UFW_CHOPPER_DIODE:
 			{
-				COMM_State = COMM_Uf;
-
 				if(PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_VF))
 				{
+					COMM_State = COMM_Uf;
+
 					if(DUTPosition == DUT_POSITION_2 && DUTCase == SC_Type_MDSM)
 					{
 						// Выполнение коммутации по аналогии COMM_Ucesat
@@ -430,10 +427,10 @@ void COMM_Commutate(Int16U ActionID)
 
 		case ACT_COMM_ICES_OR_IRRM:
 			{
-				COMM_State = COMM_IcesOrIrrm;
-
 				if(PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_ICES))
 				{
+					COMM_State = COMM_IcesOrIrrm;
+
 					if (DUTPosition == DUT_POSITION_2	||
 						DUTCase == SC_Type_MIHV			||
 						DUTCase == SC_Type_MIHM			||
@@ -460,10 +457,10 @@ void COMM_Commutate(Int16U ActionID)
 
 		case ACT_COMM_THERMISTOR:
 			{
-				COMM_State = COMM_Thermistor;
-
 				if(PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_NO_PE))
 				{
+					COMM_State = COMM_Thermistor;
+
 					ZcRD_OutputValuesReset();
 					COMM_DisconnectPE();
 
@@ -507,8 +504,6 @@ void COMM_Commutate(Int16U ActionID)
 }
 // ----------------------------------------
 
-// Фиксация параметров последней коммутации (код команды + позиция + корпус + схема).
-// Вызывается всегда — даже если коммутация упадёт в Fault внутри PMXU.
 static void COMM_SaveLastRequest(Int16U ActionID)
 {
 	DataTable[REG_LAST_CMD]  = ActionID;
@@ -518,9 +513,6 @@ static void COMM_SaveLastRequest(Int16U ActionID)
 }
 // ----------------------------------------
 
-// Короткий разряд перед выходом из режима ICES/IRRM: обнуляем выходы сдвиговых
-// регистров и удерживаем SFT_ENABLE=true ~10 мс, чтобы снять остаточное напряжение
-// на DUT до начала следующей коммутации.
 static void COMM_DischargeBeforeIcesOrIrrm()
 {
 	LL_SetStateSFT_ENABLE(true);

@@ -39,7 +39,7 @@ void LL_SPI_LatchBoard(Int8U BoardIdx)
 	{
 		case 0:  SS = GPIO_SPI_SS1; break;
 		case 1:  SS = GPIO_SPI_SS2; break;
-		default: SS = GPIO_SPI_SS3; break;
+		case 2:  SS = GPIO_SPI_SS3; break;
 	}
 
 	DELAY_US(TIME_SPI_DELAY);

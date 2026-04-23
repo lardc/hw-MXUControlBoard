@@ -31,7 +31,7 @@ void DBACT_WriteSPI()
 }
 //-----------------------
 
-// Turn self-test current ON, measure voltage with ADC, compare result with DataTable constant
+// Turn self-test voltage ON, measure voltage with ADC, compare result with DataTable constant
 void DBACT_SelfTestMeasure()
 {
 	LL_SetStateSD_EN(true);

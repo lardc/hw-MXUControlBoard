@@ -22,8 +22,6 @@ typedef struct __SelfTestTableItem
 
 // Definitions
 //
-// TODO Trello ekh7qUK2: финализировать стадии самодиагностики под три платы MXU303
-// (InputRelayBoard/OutThermRelayBoard/IORelayBoard).
 #define ST_INPUT_BOARD_STAGES	4
 #define ST_THERM_BOARD_STAGES	2
 #define ST_IO_BOARD_STAGES		4

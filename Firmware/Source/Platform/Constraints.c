@@ -80,8 +80,8 @@ const TableItemConstraint Constraint[DATA_TABLE_WP_START] = {
 		{0, 0, 0},																	// 69
 		{0, INT16U_MAX, 0},															// 70
 		{DUT_POSITION_1, DUT_POSITION_2, DUT_POSITION_1},							// 71
-		{0, INT16U_MAX, 0},															// 72 REG_DUT_CASE
-		{0, INT16U_MAX, 0},															// 73 REG_DUT_SCHEME
+		{0, INT16U_MAX, 0},															// 72
+		{0, INT16U_MAX, 0},															// 73
 		{0, 0, 0},																	// 74
 		{0, 0, 0},																	// 75
 		{0, 0, 0},																	// 76
@@ -160,10 +160,10 @@ const TableItemConstraint Constraint[DATA_TABLE_WP_START] = {
 		{0, 0, 0},																	// 149
 		{0, INT16U_MAX, 0},															// 150
 		{0, INT16U_MAX, 0},															// 151
-		{0, INT16U_MAX, 0},															// 152 REG_LAST_CMD
-		{0, INT16U_MAX, 0},															// 153 REG_LAST_POS
-		{0, INT16U_MAX, 0},															// 154 REG_LAST_CASE
-		{0, INT16U_MAX, 0},															// 155 REG_LAST_TYPE
+		{0, INT16U_MAX, 0},															// 152
+		{0, INT16U_MAX, 0},															// 153
+		{0, INT16U_MAX, 0},															// 154
+		{0, INT16U_MAX, 0},															// 155
 		{0, 0, 0},																	// 156
 		{0, 0, 0},																	// 157
 		{0, 0, 0},																	// 158

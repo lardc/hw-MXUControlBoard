@@ -80,8 +80,7 @@ void CONTROL_Idle()
 		CT_SaveTimer = CONTROL_TimeCounter;
 	}
 
-	// CONTROL_SafetyCheck() теперь вызывается из TIM7_IRQHandler, чтобы
-	// реакция на SFT_IN не зависела от зависаний обмена с PMXU в main loop.
+	// CONTROL_SafetyCheck() вызывается из TIM7_IRQHandler
 	SELFTEST_Process();
 
 	DEVPROFILE_ProcessRequests();
@@ -144,8 +143,6 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 		case ACT_ENABLE_POWER:
 			if(CONTROL_State == DS_None)
 			{
-				// По ТТ MXU303: PMXU_Enable + локальный самодиагностический цикл,
-				// после STP_Finish SelfTest_Process переводит устройство в DS_Enabled.
 				// PMXU_StartSelfTest не вызываем — режим SELFTEST у PMXU исключён.
 				if(PMXU_Enable())
 				{
@@ -191,9 +188,8 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			break;
 
 		case ACT_SET_ACTIVE:
-			// Аппаратный контур безопасности MXU303 всегда активен, команда лишь
-			// включает выдачу Fault по срабатыванию SFT_IN (реле уже сбрасываются
-			// аппаратно через SFT_ENABLE).
+			// Аппаратный контур безопасности MXU303 всегда активен, команда
+			// включает выдачу Fault по срабатыванию SFT_IN
 			if(CONTROL_State == DS_Enabled || CONTROL_State == DS_SafetyActive)
 			{
 				if(PMXU_SafetyActivate())
@@ -207,7 +203,12 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			if(CONTROL_State == DS_Enabled || CONTROL_State == DS_SafetyActive || CONTROL_State == DS_SafetyTrig)
 			{
 				if(PMXU_SafetyDeactivate())
-					CONTROL_SetDeviceState(DS_Enabled);
+				{
+					if(LL_IsSafetyTrig())
+						CONTROL_SetDeviceState(DS_SafetyTrig);
+					else
+						CONTROL_SetDeviceState(DS_SafetyActive);
+				}
 			}
 			else
 				*pUserError = ERR_DEVICE_NOT_READY;
@@ -218,8 +219,6 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			{
 				if(PMXU_IsReady())
 				{
-					// Только локальный самодиагностический цикл: PMXU_StartSelfTest()
-					// исключён по ТТ MXU303 (у PMXU режим SELFTEST больше не запускается).
 					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
 					RelayStages = CRS_Init;
 					CONTROL_SetDeviceState(DS_InSelfTest);
@@ -303,9 +302,6 @@ void CONTROL_SafetyCheck()
 	static bool PrevSafetyTrig = false;
 	bool SafetyTrig = LL_IsSafetyTrig();
 
-	// Опрашиваем SFT_IN всегда. Аппаратный сброс сдвиговых регистров
-	// производим один раз на фронт (true при первом прохождении), чтобы не
-	// пульсировать SFT_ENABLE на каждом тике TIM7 при длительном удержании.
 	if(SafetyTrig && !PrevSafetyTrig)
 	{
 		// Запретить OE выходов, затем «кадр нулей», затем вернуть OE активным.
@@ -314,11 +310,10 @@ void CONTROL_SafetyCheck()
 		ZcRD_RegisterFlushWrite();
 		LL_SetStateSFT_ENABLE(false);
 
-		// Подтверждение обнуления коммутации (по «Вопросы для обсуждения» в ТТ).
+		// Подтверждение обнуления коммутации
 		DataTable[REG_DBG] = 0;
 
-		// COMM_Default() в ISR не вызываем — тяжёлый 20 мс delay. Достаточно
-		// синхронизировать COMM_State, flush уже выполнен выше.
+		// COMM_Default() в ISR не вызываем — тяжёлый 20 мс delay.
 		COMM_State = COMM_Def;
 
 		// Переход в DS_SafetyTrig выполняется только если контур активирован командой ACT_SET_ACTIVE.

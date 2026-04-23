@@ -54,11 +54,6 @@ const SelfTestTableItem SelfTestThermBoard[ST_THERM_BOARD_COMM] =
 };
 //------------------------
 
-// IORelayBoard — объединение прежних OutHVRelayBoard-1/2. Поскольку в новой схеме
-// MXU303 Position 1/Position 2 пока обеспечивают одинаковую коммутацию (см. алиасы
-// *_2_* в CommutationTable.h), стадии самодиагностики повторяют структуру HV1 из 301.
-// TODO Trello ekh7qUK2: заменить на финальный набор ~5 реле на стадию под 4 регистра
-// IORelayBoard после уточнения матрицы коммутаций (Trello 7A6GZMVv).
 const SelfTestTableItem SelfTestIOBoard[ST_IO_BOARD_COMM] =
 {
 		{ST_STAGE0, E_POT_PE, RT_NormalClosed},					// 0
