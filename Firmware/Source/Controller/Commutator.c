@@ -527,6 +527,9 @@ Int16U COMM_ValidateRequest(Int16U ActionID, Int16U Position, Int16U DevCase, In
 {
 	(void)Scheme;	// TODO: детализировать допустимые тройки «позиция + корпус + схема» после уточнения матриц.
 
+	if(Position != DUT_POSITION_1 && Position != DUT_POSITION_2)
+		return ERR_OPERATION_BLOCKED;
+
 	// Команды, которые обрабатывает COMM_Commutate.
 	switch(ActionID)
 	{
@@ -546,9 +549,6 @@ Int16U COMM_ValidateRequest(Int16U ActionID, Int16U Position, Int16U DevCase, In
 		default:
 			return ERR_OPERATION_BLOCKED;
 	}
-
-	if(Position != DUT_POSITION_1 && Position != DUT_POSITION_2)
-		return ERR_OPERATION_BLOCKED;
 
 	// Проверка готовности PMXU и корпуса возложена на вызывающую сторону
 	// (CONTROL_DispatchAction), здесь подтверждаем номер команды и позицию.

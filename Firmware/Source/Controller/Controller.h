@@ -3,7 +3,6 @@
 
 // Include
 //
-#include "stdinc.h"
 #include "Global.h"
 #include "Commutator.h"
 

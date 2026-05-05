@@ -141,6 +141,8 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 {
 	*pUserError = ERR_NONE;
 	
+	CONTROL_SafetyCheck();
+
 	switch (ActionID)
 	{
 		case ACT_ENABLE_POWER:
@@ -211,12 +213,7 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			if(CONTROL_State == DS_Enabled || CONTROL_State == DS_SafetyActive || CONTROL_State == DS_SafetyTrig)
 			{
 				if(PMXU_SafetyDeactivate())
-				{
-					if(LL_IsSafetyTrig())
-						CONTROL_SetDeviceState(DS_SafetyTrig);
-					else
-						CONTROL_SetDeviceState(DS_SafetyActive);
-				}
+					CONTROL_SetDeviceState(DS_Enabled);
 			}
 			else
 				*pUserError = ERR_DEVICE_NOT_READY;
