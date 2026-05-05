@@ -1,6 +1,8 @@
 ﻿#ifndef __SYSCONFIG_H
 #define __SYSCONFIG_H
 
+#include "stdinc.h"
+
 
 // Flash loader options
 #define BOOT_LOADER_VARIABLE			(*((volatile uint32_t *)0x20000000))

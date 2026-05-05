@@ -28,6 +28,8 @@ volatile DeviceState CONTROL_State = DS_None;
 volatile DeviceSelfTestState CONTROL_SubState = STS_None;
 static Boolean CycleActive = false;
 volatile Int64U CONTROL_TimeCounter = 0;
+static bool PrevSafetyTrig = false;
+static volatile bool SafetyFlushPending = false;
 //
 volatile Int16U CONTROL_DiagCounter = 0;
 volatile float CONTROL_DiagData[VALUES_DIAG_SIZE];
@@ -80,7 +82,8 @@ void CONTROL_Idle()
 		CT_SaveTimer = CONTROL_TimeCounter;
 	}
 
-	// CONTROL_SafetyCheck() вызывается из TIM7_IRQHandler
+	CONTROL_SafetyCheck();
+
 	SELFTEST_Process();
 
 	DEVPROFILE_ProcessRequests();
@@ -193,7 +196,12 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			if(CONTROL_State == DS_Enabled || CONTROL_State == DS_SafetyActive)
 			{
 				if(PMXU_SafetyActivate())
-					CONTROL_SetDeviceState(DS_SafetyActive);
+				{
+					if(LL_IsSafetyTrig())
+						CONTROL_SetDeviceState(DS_SafetyTrig);
+					else
+						CONTROL_SetDeviceState(DS_SafetyActive);
+				}
 			}
 			else
 				*pUserError = ERR_DEVICE_NOT_READY;
@@ -299,11 +307,9 @@ bool CONTROL_DevCaseCheck(DevType DevCase)
 
 void CONTROL_SafetyCheck()
 {
-	static bool PrevSafetyTrig = false;
-	bool SafetyTrig = LL_IsSafetyTrig();
-
-	if(SafetyTrig && !PrevSafetyTrig)
+	if(SafetyFlushPending)
 	{
+		SafetyFlushPending = false;
 		// Запретить OE выходов, затем «кадр нулей», затем вернуть OE активным.
 		LL_SetStateSFT_ENABLE(true);
 		ZcRD_OutputValuesReset();
@@ -316,12 +322,23 @@ void CONTROL_SafetyCheck()
 		// COMM_Default() в ISR не вызываем — тяжёлый 20 мс delay.
 		COMM_State = COMM_Def;
 
-		// Переход в DS_SafetyTrig выполняется только если контур активирован командой ACT_SET_ACTIVE.
+		// Fault/state только если safety-режим активирован пользователем
 		if(DataTable[REG_SAFETY_ACTIVE])
 		{
 			if(CONTROL_State == DS_SafetyActive)
 				CONTROL_SetDeviceState(DS_SafetyTrig);
 		}
+	}
+}
+//-----------------------------------------------
+
+void CONTROL_SafetyIrqTick()
+{
+	bool SafetyTrig = LL_IsSafetyTrig();
+
+	if(SafetyTrig && !PrevSafetyTrig)
+	{
+		SafetyFlushPending = true;
 	}
 
 	PrevSafetyTrig = SafetyTrig;
