@@ -26,10 +26,42 @@
 // Распределение 64 слотов: 0..31 — IORelayBoard, 32..39 — OutThermRelayBoard,
 // 40..63 — InputRelayBoard.
 //
-// Конкретное соответствие «имя сигнала → физический бит на IORelayBoard» подлежит
-// уточнению в рамках задачи Trello 7A6GZMVv. Текущие значения сохраняют набор
-// сигналов исходной 301-й прошивки и служат заглушкой до финализации матрицы.
+// ===== InputRelayBoard =====
+#define GT_G_COMM				0	// BNC (wire) input
+#define GT_GE_COMM				0	// BNC (shield) input
 
+// ===== IORelayBoard =====
+// Main
+#define GT_G_TO_G				0
+#define GT_GE_TO_GE				0
+
+// OutHVRelayBoard-1
+#define EPOT_TO_EPOT1			0
+#define GE_TO_GE1				0
+#define G_TO_G1					0
+#define EPOT_TO_CPOT1			0
+
+#define GE1_TO_G1				0	// Through 1kOhm resitor
+
+#define GND_TO_EPOT1			0
+#define GND_TO_CPOT1			0
+
+// OutHVRelayBoard-2
+#define EPOT_TO_EPOT2			0
+#define GE_TO_GE2				0
+#define G_TO_G2					0
+
+#define GE2_TO_G2				0	// Through 1kOhm resitor
+
+#define GND_TO_EPOT2			0
+#define GND_TO_CPOT2			0
+
+// ===== OutThermRelayBoard =====
+
+
+
+//Старые коммутации
+// сигналы исходной 301-й прошивки и служат заглушкой до финализации матрицы.
 // ===== IORelayBoard — DUT Position 1 =====
 #define C_POT_PE				0	// Collector (C_POT) to PE
 #define G_PE					1	// Gate (G) to PE
