@@ -59,7 +59,7 @@
 #define REG_MODULE_TYPE							70	// Module type(Заглушка)
 #define REG_DUT_POSITION						71	// Регистр выбора позции тестируемого прибора (1 или 2)
 #define REG_DUT_CASE							72	// Тип корпуса тестируемого прибора
-#define REG_DUT_SCHEME							73	// Схема подключения внутри корпуса (уточняется при поставке корпусов с разными схемами)
+#define REG_DUT_SCHEME							73	// Схема подключения внутри корпуса
 #define REG_DEV_CASE							REG_DUT_CASE	// legacy-алиас; использовать REG_DUT_CASE
 //
 #define REG_EN_SFTY_IN1							80	// Enable safety input #1(Заглушка)

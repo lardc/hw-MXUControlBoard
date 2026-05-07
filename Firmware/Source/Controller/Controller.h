@@ -28,6 +28,30 @@ typedef enum __DeviceSelfTestState
 
 } DeviceSelfTestState;
 
+typedef enum __ModuleType
+{
+	MIAA_CE,
+	MIAA_HB,
+	MIAA_HC,
+	MIAA_LC,
+	MIDA_HB,
+	MIFA_HB,
+	MIFA_HC,
+	MIFA_LC,
+	MIHA_HB,
+	MIHA_HC,
+	MIHA_LC,
+	MIHM_SS,
+	MIHV_SS,
+	MISM_CH,
+	MISM_DS,
+	MISM_SS,
+	MISV_SS,
+	MIXM_HB,
+	MIXM_LR_LRD,
+	MIXV_HB,
+} ModuleType;
+
 typedef enum __DevType
 {
 	SC_Type_MIAA = 3001,

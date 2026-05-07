@@ -36,8 +36,8 @@ const SelfTestTableItem SelfTestThermBoard[ST_THERM_BOARD_COMM] =
 {
 		{ST_STAGE0, OL_T1_COMM, RT_NormalOpened},				// 0
 		{ST_STAGE0, OL_T2_COMM, RT_NormalOpened},				// 1
-		{ST_STAGE0, T1_PE, RT_NormalClosed},					// 2
-		{ST_STAGE0, T2_PE, RT_NormalClosed},					// 3
+		//{ST_STAGE0, T1_PE, RT_NormalClosed},					// 2
+		//{ST_STAGE0, T2_PE, RT_NormalClosed},					// 3
 		{ST_STAGE0, MC_T2_GT_G, RT_NormalOpened},				// 4
 		{ST_STAGE0, MC_T1_GT_GE, RT_NormalOpened},				// 5
 		{ST_STAGE0, ST_TI_GT_G, RT_NormalOpened},				// 6
@@ -45,8 +45,8 @@ const SelfTestTableItem SelfTestThermBoard[ST_THERM_BOARD_COMM] =
 
 		{ST_STAGE1, OL_T1_COMM, RT_NormalOpened},				// 8
 		{ST_STAGE1, OL_T2_COMM, RT_NormalOpened},				// 9
-		{ST_STAGE1, T1_PE, RT_NormalClosed},					// 10
-		{ST_STAGE1, T2_PE, RT_NormalClosed},					// 11
+		//{ST_STAGE1, T1_PE, RT_NormalClosed},					// 10
+		//{ST_STAGE1, T2_PE, RT_NormalClosed},					// 11
 		{ST_STAGE1, MC_T2_GT_G_POT, RT_NormalOpened},			// 12
 		{ST_STAGE1, MC_T1_GT_GE_POT, RT_NormalOpened},			// 13
 		{ST_STAGE1, ST_TI_GT_G_POT, RT_NormalOpened},			// 14
@@ -56,8 +56,8 @@ const SelfTestTableItem SelfTestThermBoard[ST_THERM_BOARD_COMM] =
 
 const SelfTestTableItem SelfTestIOBoard[ST_IO_BOARD_COMM] =
 {
-		{ST_STAGE0, E_POT_PE, RT_NormalClosed},					// 0
-		{ST_STAGE0, GE_PE, RT_NormalClosed},					// 1
+		//{ST_STAGE0, E_POT_PE, RT_NormalClosed},					// 0
+		//{ST_STAGE0, GE_PE, RT_NormalClosed},					// 1
 		{ST_STAGE0, OL_E_POT_COMM, RT_NormalOpened},			// 2
 		{ST_STAGE0, OL_GE_COMM, RT_NormalOpened},				// 3
 		{ST_STAGE0, MC_G_C_POT, RT_NormalOpened},				// 4
@@ -83,8 +83,8 @@ const SelfTestTableItem SelfTestIOBoard[ST_IO_BOARD_COMM] =
 		{ST_STAGE1, MC_G_GT_GE, RT_NormalOpened},				// 23
 		{ST_STAGE1, OL_C_POT_COMM, RT_NormalOpened},			// 24
 		{ST_STAGE1, MC_C_POT_LSL_POTP, RT_NormalOpened},		// 25
-		{ST_STAGE1, G_PE, RT_NormalClosed},						// 26
-		{ST_STAGE1, C_POT_PE, RT_NormalClosed},					// 27
+		//{ST_STAGE1, G_PE, RT_NormalClosed},						// 26
+		//{ST_STAGE1, C_POT_PE, RT_NormalClosed},					// 27
 		{ST_STAGE1, ST_TI_GT_G_POT, RT_NormalOpened},			// 28
 		{ST_STAGE1, ST_TO_GT_GE, RT_NormalOpened},				// 29
 		{ST_STAGE1, IL_GT_G_POT_COMM, RT_NormalOpened},			// 30

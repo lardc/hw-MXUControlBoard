@@ -27,8 +27,8 @@
 // 40..63 — InputRelayBoard.
 //
 // ===== InputRelayBoard =====
-#define GT_G_COMM				0	// BNC (wire) input
-#define GT_GE_COMM				0	// BNC (shield) input
+#define GT_G_COMM				0	// BNC (wire) input gate
+#define GT_GE_COMM				0	// BNC (shield) input control emmiter
 
 // ===== IORelayBoard =====
 // Main
@@ -50,6 +50,7 @@
 #define EPOT_TO_EPOT2			0
 #define GE_TO_GE2				0
 #define G_TO_G2					0
+#define EPOT_TO_CPOT2			0
 
 #define GE2_TO_G2				0	// Through 1kOhm resitor
 
@@ -63,10 +64,6 @@
 //Старые коммутации
 // сигналы исходной 301-й прошивки и служат заглушкой до финализации матрицы.
 // ===== IORelayBoard — DUT Position 1 =====
-#define C_POT_PE				0	// Collector (C_POT) to PE
-#define G_PE					1	// Gate (G) to PE
-#define GE_PE					2	// Gate-Emitter (GE) to PE
-#define E_POT_PE				3	// Emitter (E_POT) to PE
 //
 #define OL_C_POT_COMM			4	// Out lines self-commutation
 #define OL_G_COMM				5
@@ -94,10 +91,6 @@
 // Position 2 выполняется та же физическая коммутация, что и Position 1.
 // Это сознательная заглушка; корректный вариант появится после финализации
 // схемы IORelayBoard.
-#define C_POT_2_PE				C_POT_PE
-#define G_2_PE					G_PE
-#define GE_2_PE					GE_PE
-#define E_POT_2_PE				E_POT_PE
 //
 #define OL_C_POT_2_COMM			OL_C_POT_COMM
 #define OL_G_2_COMM				OL_G_COMM
@@ -120,8 +113,6 @@
 #define MC_C_POT_2_LSL_POTN		MC_C_POT_LSL_POTN
 
 // ===== OutThermRelayBoard =====
-#define T1_PE					32	// Thermistor_1 (T1) to PE
-#define T2_PE					33	// Thermistor_2 (T2) to PE
 #define OL_T1_COMM				34	// Thermistor_1: Commutation of T1 (Open/Close)
 #define OL_T2_COMM				35	// Thermistor_2: Commutation of T2 (Open/Close)
 #define MC_T2_GT_G				36	// T2 to GT_G
