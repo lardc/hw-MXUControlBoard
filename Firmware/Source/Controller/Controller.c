@@ -34,9 +34,6 @@ static volatile bool SafetyFlushPending = false;
 volatile Int16U CONTROL_DiagCounter = 0;
 volatile float CONTROL_DiagData[VALUES_DIAG_SIZE];
 //
-DevType AllowedCases[] = {SC_Type_MIAA, SC_Type_MIDA, SC_Type_MIFA, SC_Type_MIHA, SC_Type_MIHM, SC_Type_MIHV, SC_Type_MISM, SC_Type_MISV,
-							SC_Type_MIXM, SC_Type_MIXV, SC_Type_MISM2_CH, SC_Type_MISM2_SS_SD, SC_Type_MIADAP,
-							SC_Type_MDAA, SC_Type_MDFA_MDF2_DD, SC_Type_MDSM, SC_Type_MDSV, SC_Type_MDFA_MDF2_SD, SC_Type_MDA2};
 
 // Forward functions
 //
@@ -44,8 +41,8 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError);
 void CONTROL_UpdateWatchDog();
 void CONTROL_ResetToDefaultState();
 void CONTROL_SafetyCheck();
-bool CONTROL_DevCaseCheck(DevType DevCase);
 void CONTROL_InitStoragePointers();
+void CONTROL_SaveLastRequest(Int16U ActionID);
 
 // Functions
 //
@@ -85,6 +82,7 @@ void CONTROL_Idle()
 	CONTROL_SafetyCheck();
 
 	SELFTEST_Process();
+	PMXU_Process();
 
 	DEVPROFILE_ProcessRequests();
 	CONTROL_UpdateWatchDog();
@@ -101,8 +99,11 @@ void CONTROL_SwitchToFault(Int16U Reason)
 		DataTable[REG_EXT_UNIT_EXT_DATA] = Error.ExtData;
 	}
 
+	CONTROL_ResetOutputRegisters();
+	COMM_Default();
 	CONTROL_SetDeviceState(DS_Fault);
 	DataTable[REG_FAULT_REASON] = Reason;
+	DataTable[REG_OP_RESULT] = OPRESULT_FAIL;
 }
 //------------------------------------------
 
@@ -142,6 +143,7 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 	*pUserError = ERR_NONE;
 	
 	CONTROL_SafetyCheck();
+	CONTROL_SaveLastRequest(ActionID);
 
 	switch (ActionID)
 	{
@@ -247,15 +249,13 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 		case ACT_COMM_NONE:
 			if (CONTROL_State == DS_Fault)
 				*pUserError = ERR_OPERATION_BLOCKED;
-			else if(CONTROL_State == DS_None || !PMXU_IsReady())
-			{
-				if(PMXU_InFault())
-					CONTROL_SwitchToFault(DF_PMXU);
-
+			else if(CONTROL_State == DS_None)
 				*pUserError = ERR_DEVICE_NOT_READY;
-			}
 			else
 			{
+				CONTROL_ResetOutputRegisters();
+				PMXU_ProcessState = PP_CheckReadyAndFault;
+
 				Int16U ValErr = COMM_ValidateRequest(ActionID,
 					(Int16U)DataTable[REG_DUT_POSITION],
 					(Int16U)DataTable[REG_DUT_CASE],
@@ -263,10 +263,8 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 
 				if(ValErr != ERR_NONE)
 					*pUserError = ValErr;
-				else if(CONTROL_DevCaseCheck(DataTable[REG_DUT_CASE]) || ActionID == ACT_COMM_NONE || ActionID == ACT_COMM_NO_PE)
+				else if(DataTable[REG_OP_RESULT] != OPRESULT_FAIL)
 					COMM_Commutate(ActionID);
-				else
-					*pUserError = ERR_OPERATION_BLOCKED;
 			}
 			break;
 		
@@ -287,18 +285,6 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			return DIAG_HandleDiagnosticAction(ActionID, pUserError);
 	}
 	return true;
-}
-//-----------------------------------------------
-
-bool CONTROL_DevCaseCheck(DevType DevCase)
-{
-	for(int i = 0; i < sizeof(AllowedCases) / sizeof(AllowedCases[0]); i++)
-	{
-		if(DevCase == AllowedCases[i])
-			return true;
-	}
-
-	return false;
 }
 //-----------------------------------------------
 
@@ -361,6 +347,23 @@ void CONTROL_ResetOutputRegisters()
 	DEVPROFILE_ResetEPReadState();
 }
 //------------------------------------------
+
+void CONTROL_FinishedWithProblem(Int16U Problem)
+{
+	DataTable[REG_OP_RESULT] = OPRESULT_FAIL;
+	DataTable[REG_PROBLEM] = Problem;
+	ZcRD_OutputValuesReset();
+}
+//------------------------------------------
+
+void CONTROL_SaveLastRequest(Int16U ActionID)
+{
+	DataTable[REG_LAST_CMD]  = ActionID;
+	DataTable[REG_LAST_POS]  = (Int16U)DataTable[REG_DUT_POSITION];
+	DataTable[REG_LAST_CASE] = (Int16U)DataTable[REG_DUT_CASE];
+	DataTable[REG_LAST_TYPE] = (Int16U)DataTable[REG_DUT_SCHEME];
+}
+// ----------------------------------------
 
 void CONTROL_HandleFrontPanelLamp(CommutationState Commutation)
 {

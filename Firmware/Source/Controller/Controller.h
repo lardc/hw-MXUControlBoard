@@ -102,5 +102,6 @@ void CONTROL_UpdateWatchDog();
 void CONTROL_ResetOutputRegisters();
 void CONTROL_HandleFrontPanelLamp(CommutationState Commutation);
 void CONTROL_SafetyIrqTick();
+void CONTROL_FinishedWithProblem(Int16U Problem);
 
 #endif // __CONTROLLER_H

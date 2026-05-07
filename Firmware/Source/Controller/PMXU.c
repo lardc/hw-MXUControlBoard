@@ -10,6 +10,10 @@
 #include "LowLevel.h"
 #include "Delay.h"
 
+// Variables
+//
+volatile PMXUProcess PMXU_ProcessState = PP_None;
+
 // Function prototypes
 //
 bool PMXU_CallAction(Int16U Action);
@@ -64,7 +68,7 @@ bool PMXU_CheckState(PMXUState State)
 }
 //--------------------------------------
 
-bool PMXU_SwitchCommutation(Int16U Position, Int16U DevCase, Int16U CommutationNumber)
+bool PMXU_SwitchCommutation(Int16U Position, Int16U DevCase, Int16U Scheme,Int16U CommutationNumber)
 {
 	if(PMXU_WriteReg(REG_PMXU_DUT_POSITION, Position))
 		if(PMXU_WriteReg(REG_PMXU_DEV_CASE, DevCase))
@@ -140,6 +144,33 @@ bool PMXU_WriteReg(Int16U RegAddress, Int16U RegData)
 	{
 		CONTROL_SwitchToFault(DF_PMXU_INTERFACE);
 		return false;
+	}
+}
+//--------------------------------------
+
+void PMXU_Process()
+{
+	switch(PMXU_ProcessState)
+	{
+		case PP_CheckReadyAndFault:
+			if(PMXU_IsReady())
+			{
+				if(PMXU_InFault())
+					CONTROL_SwitchToFault(DF_PMXU);
+			}
+			else
+				CONTROL_FinishedWithProblem(PROBLEM_PMXU_NOT_READY);
+
+			PMXU_ProcessState = PP_None;
+			break;
+
+		case PP_Commutation:
+			PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], DataTable[REG_DUT_CASE], DataTable[REG_DUT_SCHEME], ACT_PMXU_COMM_NO_PE);
+			PMXU_ProcessState = PP_None;
+			break;
+
+		default:
+			break;
 	}
 }
 //--------------------------------------

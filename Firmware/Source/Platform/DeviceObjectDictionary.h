@@ -121,6 +121,8 @@
 
 // Problem
 #define PROBLEM_NONE							0
+#define PROBLEM_INCORRECT_DUT					1	// Выбранная команда не может быть выполнена над текущим DUT
+#define PROBLEM_PMXU_NOT_READY					2	// PMXU не готов
 
 //  Warning
 #define WARNING_NONE							0

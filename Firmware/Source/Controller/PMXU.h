@@ -19,18 +19,30 @@ typedef enum __PMXUState
 	PS_InProcess		= 7
 } PMXUState;
 
+typedef enum __PMXUProcess
+{
+	PP_None					= 0,
+	PP_CheckReadyAndFault	= 1,
+	PP_Commutation			= 2,
+} PMXUProcess;
+
+// Variables
+//
+extern volatile PMXUProcess PMXU_ProcessState;
+
 // Functions
 //
 bool PMXU_IsReady();
 bool PMXU_InFault();
 bool PMXU_ClearFault();
 bool PMXU_ClearWarning();
-bool PMXU_SwitchCommutation(Int16U Position, Int16U DevCase, Int16U CommutationNumber);
+bool PMXU_SwitchCommutation(Int16U Position, Int16U DevCase, Int16U Scheme, Int16U CommutationNumber);
 bool PMXU_Enable();
 bool PMXU_Disable();
 bool PMXU_CheckState(PMXUState State);
 bool PMXU_SafetyActivate();
 bool PMXU_SafetyDeactivate();
 bool PMXU_StartSelfTest();
+void PMXU_Process();
 
 #endif /* CONTROLLER_PMXU_H_ */
