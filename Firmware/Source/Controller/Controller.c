@@ -352,7 +352,7 @@ void CONTROL_FinishedWithProblem(Int16U Problem)
 {
 	DataTable[REG_OP_RESULT] = OPRESULT_FAIL;
 	DataTable[REG_PROBLEM] = Problem;
-	ZcRD_OutputValuesReset();
+	COMM_Default();
 }
 //------------------------------------------
 

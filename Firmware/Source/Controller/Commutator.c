@@ -89,7 +89,7 @@ void COMM_Commutate(Int16U ActionID)
 				ZcRD_OutputValuesCompose(GT_G_TO_G, TRUE);
 				ZcRD_OutputValuesCompose(GT_GE_TO_GE, TRUE);
 				ZcRD_OutputValuesCompose(GT_G_COMM, TRUE);
-				ZcRD_OutputValuesCompose(GT_G_COMM, TRUE);
+				ZcRD_OutputValuesCompose(GT_GE_COMM, TRUE);
 
 				if(DUTPosition == DUT_POSITION_1)
 				{

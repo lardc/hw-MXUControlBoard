@@ -153,12 +153,9 @@ void PMXU_Process()
 	switch(PMXU_ProcessState)
 	{
 		case PP_CheckReadyAndFault:
-			if(PMXU_IsReady())
-			{
-				if(PMXU_InFault())
-					CONTROL_SwitchToFault(DF_PMXU);
-			}
-			else
+			if(PMXU_InFault())
+				CONTROL_SwitchToFault(DF_PMXU);
+			else if(PMXU_IsReady())
 				CONTROL_FinishedWithProblem(PROBLEM_PMXU_NOT_READY);
 
 			PMXU_ProcessState = PP_None;
