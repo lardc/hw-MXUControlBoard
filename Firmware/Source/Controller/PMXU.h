@@ -24,6 +24,7 @@ typedef enum __PMXUProcess
 	PP_None					= 0,
 	PP_CheckReadyAndFault	= 1,
 	PP_Commutation			= 2,
+	PP_CheckStatus			= 3,
 } PMXUProcess;
 
 // Variables

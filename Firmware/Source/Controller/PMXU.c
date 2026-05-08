@@ -154,15 +154,34 @@ void PMXU_Process()
 	{
 		case PP_CheckReadyAndFault:
 			if(PMXU_InFault())
+			{
+				PMXU_ProcessState = PP_None;
 				CONTROL_SwitchToFault(DF_PMXU);
-			else if(PMXU_IsReady())
+			}
+			else if(!PMXU_IsReady())
+			{
+				PMXU_ProcessState = PP_None;
 				CONTROL_FinishedWithProblem(PROBLEM_PMXU_NOT_READY);
-
-			PMXU_ProcessState = PP_None;
+			}
+			else
+				PMXU_ProcessState = PP_Commutation;
 			break;
 
 		case PP_Commutation:
-			PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], DataTable[REG_DUT_CASE], DataTable[REG_DUT_SCHEME], ACT_PMXU_COMM_NO_PE);
+			if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], DataTable[REG_DUT_CASE], DataTable[REG_DUT_SCHEME], ACT_PMXU_COMM_NO_PE))
+				PMXU_ProcessState = PP_CheckStatus;
+			else
+				PMXU_ProcessState = PP_None;
+			break;
+
+		case PP_CheckStatus:
+			if(PMXU_InFault())
+				CONTROL_SwitchToFault(DF_PMXU);
+			else if(!PMXU_IsReady())
+				CONTROL_FinishedWithProblem(PROBLEM_PMXU_NOT_READY);
+			else
+				DataTable[REG_OP_RESULT] = OPRESULT_OK;
+
 			PMXU_ProcessState = PP_None;
 			break;
 

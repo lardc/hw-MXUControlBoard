@@ -82,7 +82,7 @@ void COMM_Commutate(Int16U ActionID)
 		case ACT_COMM_IGES_POS_PULSE:
 			{
 				COMM_State = COMM_Iges_Pos;
-				PMXU_ProcessState = PP_Commutation;
+				PMXU_ProcessState = PP_CheckReadyAndFault;
 
 				ZcRD_OutputValuesReset();
 				COMM_ConnectToGND();
@@ -154,9 +154,6 @@ void COMM_Commutate(Int16U ActionID)
 					}
 					ZcRD_RegisterFlushWrite();
 				}
-
-				if(DataTable[REG_OP_RESULT] != OPRESULT_FAIL)
-					DataTable[REG_OP_RESULT] = OPRESULT_OK;
 			}
 			break;
 
