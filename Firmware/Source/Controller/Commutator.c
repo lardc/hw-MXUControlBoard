@@ -534,16 +534,19 @@ void COMM_CalcModuleType(Int16U Case,Int16U Scheme)
 }
 // ----------------------------------------
 
-Int16U COMM_ValidateRequest(Int16U ActionID, Int16U Position)
+bool COMM_ValidateRequest(Int16U ActionID, Int16U Position)
 {
 	if(Position != DUT_POSITION_1 && Position != DUT_POSITION_2)
-		return ERR_OPERATION_BLOCKED;
+	{
+		CONTROL_FinishedWithProblem(PROBLEM_INCORRECT_DUT);
+		return false;
+	}
 
 	switch(ActionID)
 	{
 		case ACT_COMM_NONE:
 		case ACT_COMM_NO_PE:
-			return ERR_NONE;	// допустимо без проверки корпуса
+			return true;	// допустимо без проверки корпуса
 
 		case ACT_COMM_IGES_POS_PULSE:
 			if(Position == DUT_POSITION_1)
@@ -567,10 +570,10 @@ Int16U COMM_ValidateRequest(Int16U ActionID, Int16U Position)
 					case MIXM_HB:
 					case MIXM_LR_LRD:
 					case MIXV_HB:
-						return ERR_NONE;
+						return true;
 					default:
 						CONTROL_FinishedWithProblem(PROBLEM_INCORRECT_DUT);
-						return ERR_OPERATION_BLOCKED;
+						return false;
 				}
 			}
 			else if (Position == DUT_POSITION_2)
@@ -588,13 +591,14 @@ Int16U COMM_ValidateRequest(Int16U ActionID, Int16U Position)
 					case MISM_DS:
 					case MIXM_HB:
 					case MIXV_HB:
-						return ERR_NONE;
+						return true;
 					default:
 						CONTROL_FinishedWithProblem(PROBLEM_INCORRECT_DUT);
-						return ERR_OPERATION_BLOCKED;
+						return false;
 				}
 			}
 			break;
+
 		case ACT_COMM_IGES_NEG_PULSE:
 		case ACT_COMM_UGE_TH:
 		case ACT_COMM_UCE_SAT:
@@ -602,11 +606,9 @@ Int16U COMM_ValidateRequest(Int16U ActionID, Int16U Position)
 		case ACT_COMM_ICES_OR_IRRM:
 		case ACT_COMM_THERMISTOR:
 			break;
-
-		default:
-			return ERR_OPERATION_BLOCKED;
 	}
 
-	return ERR_OPERATION_BLOCKED;
+	CONTROL_FinishedWithProblem(PROBLEM_INCORRECT_COMMAND);
+	return false;
 }
 // ----------------------------------------

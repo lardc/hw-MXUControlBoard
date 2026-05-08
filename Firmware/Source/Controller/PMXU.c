@@ -178,7 +178,7 @@ void PMXU_Process()
 			if(PMXU_InFault())
 				CONTROL_SwitchToFault(DF_PMXU);
 			else if(!PMXU_IsReady())
-				CONTROL_FinishedWithProblem(PROBLEM_PMXU_NOT_READY);
+				CONTROL_FinishedWithProblem(PROBLEM_PMXU_FAILED_TO_FINISH);
 			else
 				DataTable[REG_OP_RESULT] = OPRESULT_OK;
 

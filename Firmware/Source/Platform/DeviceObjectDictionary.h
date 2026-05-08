@@ -123,6 +123,8 @@
 #define PROBLEM_NONE							0
 #define PROBLEM_INCORRECT_DUT					1	// Выбранная команда не может быть выполнена над текущим DUT
 #define PROBLEM_PMXU_NOT_READY					2	// PMXU не готов
+#define PROBLEM_INCORRECT_COMMAND				3 	// Вызвана команда не обрабатываемая в валидации
+#define PROBLEM_PMXU_FAILED_TO_FINISH			4	// PMXU не смог\успел выолнить коммутацию и не перешел в состояние готовности
 
 //  Warning
 #define WARNING_NONE							0

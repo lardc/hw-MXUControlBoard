@@ -256,11 +256,9 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 				CONTROL_ResetOutputRegisters();
 				COMM_CalcModuleType((Int16U)DataTable[REG_DUT_CASE],(Int16U)DataTable[REG_DUT_SCHEME]);
 
-				Int16U ValErr = COMM_ValidateRequest(ActionID, (Int16U)DataTable[REG_DUT_POSITION]);
+				bool Validation = COMM_ValidateRequest(ActionID, (Int16U)DataTable[REG_DUT_POSITION]);
 
-				if(ValErr != ERR_NONE)
-					*pUserError = ValErr;
-				else if(DataTable[REG_OP_RESULT] != OPRESULT_FAIL)
+				if(Validation)
 					COMM_Commutate(ActionID);
 			}
 			break;

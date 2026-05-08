@@ -33,7 +33,7 @@ extern CommutationState COMM_State;
 void COMM_ConnectToGND();
 void COMM_Commutate(Int16U ActionID);
 void COMM_Default();
-Int16U COMM_ValidateRequest(Int16U ActionID, Int16U Position);
+bool COMM_ValidateRequest(Int16U ActionID, Int16U Position);
 void COMM_CalcModuleType(Int16U Case,Int16U Scheme);
 
 #endif // __COMMUTATOR_H
