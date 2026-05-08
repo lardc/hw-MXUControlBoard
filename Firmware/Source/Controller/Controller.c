@@ -254,12 +254,11 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			else
 			{
 				CONTROL_ResetOutputRegisters();
+				COMM_CalcModuleType((Int16U)DataTable[REG_DUT_CASE],(Int16U)DataTable[REG_DUT_SCHEME]);
+
 				PMXU_ProcessState = PP_CheckReadyAndFault;
 
-				Int16U ValErr = COMM_ValidateRequest(ActionID,
-					(Int16U)DataTable[REG_DUT_POSITION],
-					(Int16U)DataTable[REG_DUT_CASE],
-					(Int16U)DataTable[REG_DUT_SCHEME]);
+				Int16U ValErr = COMM_ValidateRequest(ActionID, (Int16U)DataTable[REG_DUT_POSITION]);
 
 				if(ValErr != ERR_NONE)
 					*pUserError = ValErr;

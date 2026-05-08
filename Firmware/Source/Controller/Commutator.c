@@ -18,6 +18,7 @@
 // Variables
 //
 CommutationState COMM_State = COMM_Def;
+ModuleTypes ModuleType = None;
 
 // Forward declarations
 //
@@ -34,7 +35,7 @@ void COMM_Default()
 }
 // ----------------------------------------
 
-void COMM_DisconnectPE() // После окончания переименовать в Connect to GND
+void COMM_ConnectToGND()
 {
 	ZcRD_OutputValuesCompose(GND_TO_EPOT1, TRUE);
 	ZcRD_OutputValuesCompose(GND_TO_EPOT2, TRUE);
@@ -59,7 +60,6 @@ void COMM_Commutate(Int16U ActionID)
 	Int16U DUTPosition = DataTable[REG_DUT_POSITION];
 	Int16U DUTCase = DataTable[REG_DUT_CASE];
 	Int16U DUTScheme = DataTable[REG_DUT_SCHEME];
-	ModuleType ModuleType = DUTCase + DUTScheme;
 
 	// У прибора MISM-DS позиции 1 и 2 меняются местами, чтобы задаваемая позиция 1
 	// соответствала транзистору VT1 в документации
@@ -85,7 +85,7 @@ void COMM_Commutate(Int16U ActionID)
 				PMXU_ProcessState = PP_Commutation;
 
 				ZcRD_OutputValuesReset();
-				COMM_DisconnectPE();
+				COMM_ConnectToGND();
 				ZcRD_OutputValuesCompose(GT_G_TO_G, TRUE);
 				ZcRD_OutputValuesCompose(GT_GE_TO_GE, TRUE);
 				ZcRD_OutputValuesCompose(GT_G_COMM, TRUE);
@@ -169,7 +169,7 @@ void COMM_Commutate(Int16U ActionID)
 					if(COMM_IsDiodeModule(DUTCase))
 					{
 						ZcRD_OutputValuesReset();
-						COMM_DisconnectPE();
+						COMM_ConnectToGND();
 						break;
 					}
 					if (DUTPosition == DUT_POSITION_2	||
@@ -179,7 +179,7 @@ void COMM_Commutate(Int16U ActionID)
 						DUTCase == SC_Type_MISM2_SS_SD)
 					{
 						ZcRD_OutputValuesReset();
-						COMM_DisconnectPE();
+						COMM_ConnectToGND();
 
 						ZcRD_OutputValuesCompose(OL_C_POT_2_COMM, TRUE);
 						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM, TRUE);
@@ -200,7 +200,7 @@ void COMM_Commutate(Int16U ActionID)
 					else if (DUTPosition == DUT_POSITION_1)
 					{
 						ZcRD_OutputValuesReset();
-						COMM_DisconnectPE();
+						COMM_ConnectToGND();
 
 						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM, TRUE);
 						ZcRD_OutputValuesCompose(OL_E_POT_COMM, TRUE);
@@ -231,7 +231,7 @@ void COMM_Commutate(Int16U ActionID)
 					if(COMM_IsDiodeModule(DUTCase))
 					{
 						ZcRD_OutputValuesReset();
-						COMM_DisconnectPE();
+						COMM_ConnectToGND();
 						break;
 					}
 					if (DUTPosition == DUT_POSITION_2	||
@@ -241,7 +241,7 @@ void COMM_Commutate(Int16U ActionID)
 						DUTCase == SC_Type_MISM2_SS_SD)
 					{
 						ZcRD_OutputValuesReset();
-						COMM_DisconnectPE();
+						COMM_ConnectToGND();
 
 						ZcRD_OutputValuesCompose(OL_C_POT_2_COMM, TRUE);
 						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM, TRUE);
@@ -264,7 +264,7 @@ void COMM_Commutate(Int16U ActionID)
 					else if (DUTPosition == DUT_POSITION_1)
 					{
 						ZcRD_OutputValuesReset();
-						COMM_DisconnectPE();
+						COMM_ConnectToGND();
 
 						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM, TRUE);
 						ZcRD_OutputValuesCompose(OL_E_POT_COMM, TRUE);
@@ -299,7 +299,7 @@ void COMM_Commutate(Int16U ActionID)
 					if(COMM_IsDiodeModule(DUTCase))
 					{
 						ZcRD_OutputValuesReset();
-						COMM_DisconnectPE();
+						COMM_ConnectToGND();
 						break;
 					}
 					if (DUTPosition == DUT_POSITION_2	||
@@ -309,7 +309,7 @@ void COMM_Commutate(Int16U ActionID)
 						DUTCase == SC_Type_MISM2_SS_SD)
 					{
 						ZcRD_OutputValuesReset();
-						COMM_DisconnectPE();
+						COMM_ConnectToGND();
 
 						ZcRD_OutputValuesCompose(OL_G_2_COMM, TRUE);
 						ZcRD_OutputValuesCompose(OL_GE_2_COMM, TRUE);
@@ -332,7 +332,7 @@ void COMM_Commutate(Int16U ActionID)
 					else if (DUTPosition == DUT_POSITION_1)
 					{
 						ZcRD_OutputValuesReset();
-						COMM_DisconnectPE();
+						COMM_ConnectToGND();
 
 						ZcRD_OutputValuesCompose(OL_G_COMM, TRUE);
 						ZcRD_OutputValuesCompose(OL_GE_COMM, TRUE);
@@ -366,7 +366,7 @@ void COMM_Commutate(Int16U ActionID)
 					{
 						// Выполнение коммутации по аналогии COMM_Ucesat
 						ZcRD_OutputValuesReset();
-						COMM_DisconnectPE();
+						COMM_ConnectToGND();
 
 						ZcRD_OutputValuesCompose(OL_C_POT_2_COMM, TRUE);
 						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM, TRUE);
@@ -391,7 +391,7 @@ void COMM_Commutate(Int16U ActionID)
 						DUTCase ==  SC_Type_MDA2)
 					{
 						ZcRD_OutputValuesReset();
-						COMM_DisconnectPE();
+						COMM_ConnectToGND();
 
 						ZcRD_OutputValuesCompose(OL_C_POT_2_COMM, TRUE);
 						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM, TRUE);
@@ -417,7 +417,7 @@ void COMM_Commutate(Int16U ActionID)
 					else if (DUTPosition == DUT_POSITION_1)
 					{
 						ZcRD_OutputValuesReset();
-						COMM_DisconnectPE();
+						COMM_ConnectToGND();
 
 						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM, TRUE);
 						ZcRD_OutputValuesCompose(OL_E_POT_COMM, TRUE);
@@ -451,14 +451,14 @@ void COMM_Commutate(Int16U ActionID)
 						DUTCase ==  SC_Type_MDA2)
 					{
 						ZcRD_OutputValuesReset();
-						COMM_DisconnectPE();
+						COMM_ConnectToGND();
 						ZcRD_OutputValuesCompose(MC_G_2_GE, TRUE);
 						ZcRD_RegisterFlushWrite();
 					}
 					else if (DUTPosition == DUT_POSITION_1)
 					{
 						ZcRD_OutputValuesReset();
-						COMM_DisconnectPE();
+						COMM_ConnectToGND();
 						ZcRD_OutputValuesCompose(MC_G_GE, TRUE);
 						ZcRD_RegisterFlushWrite();
 					}
@@ -473,7 +473,7 @@ void COMM_Commutate(Int16U ActionID)
 					COMM_State = COMM_Thermistor;
 
 					ZcRD_OutputValuesReset();
-					COMM_DisconnectPE();
+					COMM_ConnectToGND();
 
 					ZcRD_OutputValuesCompose(OL_T1_COMM, TRUE);
 					ZcRD_OutputValuesCompose(OL_T2_COMM, TRUE);
@@ -501,7 +501,7 @@ void COMM_Commutate(Int16U ActionID)
 				if(PMXU_SwitchCommutation(DUTPosition, DUTCase, DUTScheme, ACT_PMXU_COMM_NO_PE))
 				{
 					ZcRD_OutputValuesReset();
-					COMM_DisconnectPE();
+					COMM_ConnectToGND();
 					ZcRD_RegisterFlushWrite();
 				}
 			}
@@ -527,10 +527,18 @@ static void COMM_DischargeBeforeIcesOrIrrm()
 }
 // ----------------------------------------
 
-Int16U COMM_ValidateRequest(Int16U ActionID, Int16U Position, Int16U DevCase, Int16U Scheme)
+void COMM_CalcModuleType(Int16U Case,Int16U Scheme)
 {
-	ModuleType ModuleType = DevCase + Scheme;
+	Int16U CaseShift = 1;
+	while(CaseShift <= Scheme)
+		CaseShift *= 10;
 
+	ModuleType = Case * CaseShift + Scheme;
+}
+// ----------------------------------------
+
+Int16U COMM_ValidateRequest(Int16U ActionID, Int16U Position)
+{
 	if(Position != DUT_POSITION_1 && Position != DUT_POSITION_2)
 		return ERR_OPERATION_BLOCKED;
 

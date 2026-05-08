@@ -30,6 +30,7 @@ typedef enum __DeviceSelfTestState
 
 typedef enum __ModuleType
 {
+	None,
 	MIAA_CE,
 	MIAA_HB,
 	MIAA_HC,
@@ -50,7 +51,7 @@ typedef enum __ModuleType
 	MIXM_HB,
 	MIXM_LR_LRD,
 	MIXV_HB,
-} ModuleType;
+} ModuleTypes;
 
 typedef enum __DevType
 {
