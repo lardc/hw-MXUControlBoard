@@ -27,8 +27,10 @@
 // 40..63 — InputRelayBoard.
 //
 // ===== InputRelayBoard =====
-#define GT_G_COMM				0	// BNC (wire) input gate
-#define GT_GE_COMM				0	// BNC (shield) input control emmiter
+#define GT_G_COMM				0
+#define GT_GE_COMM				0
+#define GT_GPOT_COMM			0
+#define GT_GEPOT_COMM			0
 
 // ===== IORelayBoard =====
 // Main
@@ -36,12 +38,16 @@
 #define GT_GE_TO_GE				0
 #define GT_G_TO_GE				0
 #define GT_GE_TO_G				0
+#define GT_GEPOT_TO_EPOT		0
+#define GT_GPOT_TO_G			0
+#define	G_TO_CPOT				0
 
 // OutHVRelayBoard-1
 #define EPOT_TO_EPOT1			0
 #define GE_TO_GE1				0
 #define G_TO_G1					0
 #define EPOT_TO_CPOT1			0
+#define CPOT_TO_CPOT1			0
 
 #define GE1_TO_G1				0	// Through 1kOhm resitor
 
@@ -53,6 +59,7 @@
 #define GE_TO_GE2				0
 #define G_TO_G2					0
 #define EPOT_TO_CPOT2			0
+#define CPOT_TO_CPOT2			0
 
 #define GE2_TO_G2				0	// Through 1kOhm resitor
 
@@ -74,13 +81,7 @@
 //
 #define MC_G_C_POT				8	// Main Commutation — Position 1
 #define MC_G_GE					9
-#define MC_GE_GT_G				10
-#define MC_GE_GT_GE				11
 #define MC_GE_LSL_GE			12
-#define MC_G_GT_G				13
-#define MC_G_GT_GE				14
-#define MC_G_GT_G_POT			15
-#define MC_E_POT_GT_GE_POT		16
 #define MC_E_POT_LSL_POTP		17
 #define MC_E_POT_LSL_POTN		18
 #define MC_G_LSL_G				19
@@ -99,15 +100,8 @@
 #define OL_GE_2_COMM			OL_GE_COMM
 #define OL_E_POT_2_COMM			OL_E_POT_COMM
 //
-#define MC_G_2_C_POT			MC_G_C_POT
 #define MC_G_2_GE				MC_G_GE
-#define MC_GE_2_GT_G			MC_GE_GT_G
-#define MC_GE_2_GT_GE			MC_GE_GT_GE
 #define MC_GE_2_LSL_GE			MC_GE_LSL_GE
-#define MC_G_2_GT_G				MC_G_GT_G
-#define MC_G_2_GT_GE			MC_G_GT_GE
-#define MC_G_2_GT_G_POT			MC_G_GT_G_POT
-#define MC_E_POT_2_GT_GE_POT	MC_E_POT_GT_GE_POT
 #define MC_E_POT_2_LSL_POTP		MC_E_POT_LSL_POTP
 #define MC_E_POT_2_LSL_POTN		MC_E_POT_LSL_POTN
 #define MC_G_2_LSL_G			MC_G_LSL_G
