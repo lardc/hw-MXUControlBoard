@@ -34,6 +34,8 @@
 // Main
 #define GT_G_TO_G				0
 #define GT_GE_TO_GE				0
+#define GT_G_TO_GE				0
+#define GT_GE_TO_G				0
 
 // OutHVRelayBoard-1
 #define EPOT_TO_EPOT1			0
