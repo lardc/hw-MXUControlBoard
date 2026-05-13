@@ -254,7 +254,6 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			else
 			{
 				CONTROL_ResetOutputRegisters();
-				COMM_CalcModuleType((Int16U)DataTable[REG_DUT_CASE],(Int16U)DataTable[REG_DUT_SCHEME]);
 
 				bool Validation = COMM_ValidateRequest(ActionID, (Int16U)DataTable[REG_DUT_POSITION]);
 

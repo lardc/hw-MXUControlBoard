@@ -34,6 +34,6 @@ void COMM_ConnectToGND();
 void COMM_Commutate(Int16U ActionID);
 void COMM_Default();
 bool COMM_ValidateRequest(Int16U ActionID, Int16U Position);
-void COMM_CalcModuleType(Int16U Case,Int16U Scheme);
+Int16U COMM_CalcModuleType();
 
 #endif // __COMMUTATOR_H

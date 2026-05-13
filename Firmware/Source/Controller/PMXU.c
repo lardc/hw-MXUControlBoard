@@ -168,7 +168,8 @@ void PMXU_Process()
 			break;
 
 		case PP_Commutation:
-			if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], DataTable[REG_DUT_CASE], DataTable[REG_DUT_SCHEME], ACT_PMXU_COMM_NO_PE))
+			if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], DataTable[REG_DUT_CASE], DataTable[REG_DUT_SCHEME],
+					COMM_State == COMM_Ucesat ? ACT_PMXU_COMM_VCESAT : ACT_PMXU_COMM_NO_PE))
 				PMXU_ProcessState = PP_CheckStatus;
 			else
 				PMXU_ProcessState = PP_None;

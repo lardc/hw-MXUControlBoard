@@ -32,6 +32,11 @@
 #define GT_GPOT_COMM			0
 #define GT_GEPOT_COMM			0
 
+#define SV_G_COMM				0
+#define SV_GE_COMM				0
+#define SV_POT_POS_COMM			0
+#define SV_POT_NEG_COMM			0
+
 // ===== IORelayBoard =====
 // Main
 #define GT_G_TO_G				0
@@ -41,6 +46,11 @@
 #define GT_GEPOT_TO_EPOT		0
 #define GT_GPOT_TO_G			0
 #define	G_TO_CPOT				0
+
+#define SV_G_TO_G				0
+#define SV_GE_TO_GE				0
+#define SV_POT_POS_TO_CPOT		0
+#define SV_POT_NEG_TO_EPOT		0
 
 // OutHVRelayBoard-1
 #define EPOT_TO_EPOT1			0
@@ -75,8 +85,6 @@
 // ===== IORelayBoard — DUT Position 1 =====
 //
 #define OL_C_POT_COMM			4	// Out lines self-commutation
-#define OL_G_COMM				5
-#define OL_GE_COMM				6
 #define OL_E_POT_COMM			7
 //
 #define MC_G_C_POT				8	// Main Commutation — Position 1
@@ -96,8 +104,6 @@
 // схемы IORelayBoard.
 //
 #define OL_C_POT_2_COMM			OL_C_POT_COMM
-#define OL_G_2_COMM				OL_G_COMM
-#define OL_GE_2_COMM			OL_GE_COMM
 #define OL_E_POT_2_COMM			OL_E_POT_COMM
 //
 #define MC_G_2_GE				MC_G_GE
@@ -129,8 +135,6 @@
 #define IL_GT_G_GE_POT			49	// GT_G_POT to GT_GE_POT
 #define ST_TI_LSL_G				50	// LSL_G to TEST-IN
 #define ST_TO_LSL_GE			51	// LSL_GE to TEST-OUT
-#define IL_LSL_G_COMM			52	// LSL_G: Commutation of LSL_G (Open/Close)
-#define IL_LSL_GE_COMM			53	// LSL_GE: Commutation of LSL_GE (Open/Close)
 #define IL_LSL_G_GE				54	// LSL_G to LSL_GE
 #define ST_TI_LSL_POTP			55	// LSL_POT+ to TEST-IN
 #define ST_TO_LSL_POTN			56	// LSL_POT- to TEST-OUT

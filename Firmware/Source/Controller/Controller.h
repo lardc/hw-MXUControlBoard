@@ -70,10 +70,7 @@ typedef enum __DevType
 	// 2013
 	SC_Type_MISM2_SS_SD = 3014,
 	SC_Type_MIADAP = 3015,
-	SC_Type_MDAA = 3016,
-	SC_Type_MDFA_MDF2_DD = 3017,
 	SC_Type_MDSM = 3018,
-	SC_Type_MDSV = 3019,
 	SC_Type_MDFA_MDF2_SD = 3020,
 	SC_Type_MDA2 = 3021
 } DevType;
