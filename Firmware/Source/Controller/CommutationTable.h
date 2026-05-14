@@ -87,17 +87,7 @@
 // сигналы исходной 301-й прошивки и служат заглушкой до финализации матрицы.
 // ===== IORelayBoard — DUT Position 1 =====
 //
-#define OL_C_POT_COMM			4	// Out lines self-commutation
-#define OL_E_POT_COMM			7
-//
-#define MC_G_C_POT				8	// Main Commutation — Position 1
 #define MC_G_GE					9
-#define MC_GE_LSL_GE			12
-#define MC_E_POT_LSL_POTP		17
-#define MC_E_POT_LSL_POTN		18
-#define MC_G_LSL_G				19
-#define MC_C_POT_LSL_POTP		20
-#define MC_C_POT_LSL_POTN		21
 
 // ===== IORelayBoard — DUT Position 2 =====
 // TODO Trello 7A6GZMVv: уточнить распределение бит Position 2.
@@ -106,16 +96,7 @@
 // Это сознательная заглушка; корректный вариант появится после финализации
 // схемы IORelayBoard.
 //
-#define OL_C_POT_2_COMM			OL_C_POT_COMM
-#define OL_E_POT_2_COMM			OL_E_POT_COMM
-//
 #define MC_G_2_GE				MC_G_GE
-#define MC_GE_2_LSL_GE			MC_GE_LSL_GE
-#define MC_E_POT_2_LSL_POTP		MC_E_POT_LSL_POTP
-#define MC_E_POT_2_LSL_POTN		MC_E_POT_LSL_POTN
-#define MC_G_2_LSL_G			MC_G_LSL_G
-#define MC_C_POT_2_LSL_POTP		MC_C_POT_LSL_POTP
-#define MC_C_POT_2_LSL_POTN		MC_C_POT_LSL_POTN
 
 // ===== OutThermRelayBoard =====
 #define OL_T1_COMM				34	// Thermistor_1: Commutation of T1 (Open/Close)
@@ -126,25 +107,10 @@
 #define MC_T1_GT_GE_POT			39	// T1 to GT_GE_POT
 
 // ===== InputRelayBoard =====
-#define ST_TI_GT_G				40	// GT_G to TEST-IN
-#define ST_TO_GT_GE				41	// GT_GE to TEST-OUT
 #define IL_GT_G_COMM			42	// GT_G: Commutation of GT_G (Open/Close)
 #define IL_GT_GE_COMM			43	// GT_GE: Commutation of GT_GE (Open/Close)
-#define IL_GT_G_GE				44	// GT_G to GT_GE
-#define ST_TI_GT_G_POT			45	// GT_G_POT to TEST-IN
-#define ST_TO_GT_GE_POT			46	// GT_GE_POT to TEST-OUT
 #define IL_GT_G_POT_COMM		47	// GT_G_POT: Commutation of GT_G_POT (Open/Close)
 #define IL_GT_GE_POT_COMM		48	// GT_GE_POT: Commutation of GT_GE_POT (Open/Close)
-#define IL_GT_G_GE_POT			49	// GT_G_POT to GT_GE_POT
-#define ST_TI_LSL_G				50	// LSL_G to TEST-IN
-#define ST_TO_LSL_GE			51	// LSL_GE to TEST-OUT
-#define IL_LSL_G_GE				54	// LSL_G to LSL_GE
-#define ST_TI_LSL_POTP			55	// LSL_POT+ to TEST-IN
-#define ST_TO_LSL_POTN			56	// LSL_POT- to TEST-OUT
-#define IL_LSL_POTP_COMM		57	// LSL_POT+: Commutation of LSL_POT+ (Open/Close)
-#define IL_LSL_POTN_COMM		58	// LSL_POT-: Commutation of LSL_POT- (Open/Close)
-#define IL_LSL_POTS				59	// LSL_POT+ to LSL_POT-
-//	Резервные слоты 60..63 для будущих сигналов InputRelayBoard.
 
 #define CT_SAVE_TIMEOUT			1800000
 // Types
@@ -155,7 +121,6 @@ typedef struct __CommutationTableItem
 	Int8U Bit;
 	Int8U RegNum;
 } CommutationTableItem;
-
 
 // Variables
 //

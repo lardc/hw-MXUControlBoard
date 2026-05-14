@@ -24,6 +24,7 @@ CommutationState COMM_State = COMM_Def;
 void COMM_SaveLastRequest(Int16U ActionID);
 static void COMM_DischargeBeforeIcesOrIrrm();
 bool COMM_ValidateIGBT(Int16U Position, ModuleTypes Module);
+bool COMM_ValidateDiode(Int16U Position, ModuleTypes Module);
 
 // Functions
 //
@@ -191,81 +192,64 @@ void COMM_Commutate(Int16U ActionID)
 
 		case ACT_COMM_UFW_CHOPPER_DIODE:
 			{
-				if(PMXU_SwitchCommutation(DUTPosition, DUTCase, DUTScheme, ACT_PMXU_COMM_VF))
+				COMM_State = COMM_Uf;
+				PMXU_ProcessState = PP_CheckReadyAndFault;
+
+				ZcRD_OutputValuesReset();
+				COMM_ConnectToGND();
+				ZcRD_OutputValuesCompose(SV_POT_POS_COMM, TRUE);
+				ZcRD_OutputValuesCompose(SV_POT_NEG_COMM, TRUE);
+				ZcRD_OutputValuesCompose(SV_POT_POS_TO_EPOT, TRUE);
+				ZcRD_OutputValuesCompose(SV_POT_NEG_TO_CPOT, TRUE);
+
+				if(DUTPosition == DUT_POSITION_1)
 				{
-					COMM_State = COMM_Uf;
-
-					if(DUTPosition == DUT_POSITION_2 && DUTCase == SC_Type_MDSM)
+					switch(ModuleType)
 					{
-						// Выполнение коммутации по аналогии COMM_Ucesat
-						ZcRD_OutputValuesReset();
-						COMM_ConnectToGND();
-
-						ZcRD_OutputValuesCompose(OL_C_POT_2_COMM, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM, TRUE);
-						//
-						ZcRD_OutputValuesCompose(MC_G_2_LSL_G, TRUE);
-						ZcRD_OutputValuesCompose(MC_GE_2_LSL_GE, TRUE);
-						ZcRD_OutputValuesCompose(MC_C_POT_2_LSL_POTP, TRUE);
-						ZcRD_OutputValuesCompose(MC_E_POT_2_LSL_POTN, TRUE);
-						//
-						ZcRD_OutputValuesCompose(IL_LSL_POTP_COMM, TRUE);
-						ZcRD_OutputValuesCompose(IL_LSL_POTN_COMM, TRUE);
-
-						ZcRD_RegisterFlushWrite();
-						break;
-					}
-					if (DUTPosition == DUT_POSITION_2	||
-						DUTCase == SC_Type_MIHV			||
-						DUTCase == SC_Type_MIHM			||
-						DUTCase == SC_Type_MISV			||
-						DUTCase == SC_Type_MISM2_SS_SD	||
-						DUTCase ==  SC_Type_MDFA_MDF2_SD		||
-						DUTCase ==  SC_Type_MDA2)
-					{
-						ZcRD_OutputValuesReset();
-						COMM_ConnectToGND();
-
-						ZcRD_OutputValuesCompose(OL_C_POT_2_COMM, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM, TRUE);
-						//
-						ZcRD_OutputValuesCompose(MC_G_2_GE, TRUE);
-						if(DUTCase ==  SC_Type_MDFA_MDF2_SD || DUTCase ==  SC_Type_MDA2)
-						{
-							ZcRD_OutputValuesCompose(MC_C_POT_2_LSL_POTP, TRUE);
-							ZcRD_OutputValuesCompose(MC_E_POT_2_LSL_POTN, TRUE);
-						}
-						else
-						{
-							ZcRD_OutputValuesCompose(MC_C_POT_2_LSL_POTN, TRUE);
-							ZcRD_OutputValuesCompose(MC_E_POT_2_LSL_POTP, TRUE);
-						}
-						//
-						ZcRD_OutputValuesCompose(IL_LSL_POTN_COMM, TRUE);
-						ZcRD_OutputValuesCompose(IL_LSL_POTP_COMM, TRUE);
-						//
-
-						ZcRD_RegisterFlushWrite();
-					}
-					else if (DUTPosition == DUT_POSITION_1)
-					{
-						ZcRD_OutputValuesReset();
-						COMM_ConnectToGND();
-
-						ZcRD_OutputValuesCompose(OL_E_POT_2_COMM, TRUE);
-						ZcRD_OutputValuesCompose(OL_E_POT_COMM, TRUE);
-						//
-						ZcRD_OutputValuesCompose(MC_G_GE, TRUE);
-						ZcRD_OutputValuesCompose(MC_E_POT_2_LSL_POTN, TRUE);
-						ZcRD_OutputValuesCompose(MC_E_POT_LSL_POTP, TRUE);
-						//
-						ZcRD_OutputValuesCompose(IL_LSL_POTN_COMM, TRUE);
-						ZcRD_OutputValuesCompose(IL_LSL_POTP_COMM, TRUE);
-						//
-
-						ZcRD_RegisterFlushWrite();
+						case MIFA_SD:
+							ZcRD_OutputValuesCompose(EPOT_TO_EPOT2, TRUE);
+							ZcRD_OutputValuesCompose(CPOT_TO_CPOT2, TRUE);
+							break;
+						case MDAA_DD:
+						case MDDA_DD:
+						case MDFA_DD:
+						case MDSM_SD:
+						case MDSV_SD:
+						case MIAA_HC:
+						case MIFA_HC:
+						case MIHA_HC:
+							ZcRD_OutputValuesCompose(EPOT_TO_EPOT1, TRUE);
+							ZcRD_OutputValuesCompose(CPOT_TO_CPOT1, TRUE);
+							break;
+						default:
+							break;
 					}
 				}
+				else if(DUTPosition == DUT_POSITION_2)
+				{
+					switch(ModuleType)
+					{
+						case MDSM_SD:
+						case MDSV_SD:
+						case MIXM_LR_LRD:
+							ZcRD_OutputValuesCompose(CPOT_TO_EPOT2, TRUE);
+							ZcRD_OutputValuesCompose(EPOT_TO_CPOT2, TRUE);
+							break;
+						case MDAA_DD:
+						case MDDA_DD:
+						case MDFA_DD:
+						case MIAA_LC:
+						case MIFA_LC:
+						case MIHA_LC:
+						case MISM_CH:
+							ZcRD_OutputValuesCompose(EPOT_TO_EPOT2, TRUE);
+							ZcRD_OutputValuesCompose(CPOT_TO_CPOT2, TRUE);
+							break;
+						default:
+							break;
+					}
+				}
+				ZcRD_RegisterFlushWrite();
 			}
 			break;
 
@@ -391,6 +375,8 @@ bool COMM_ValidateRequest(Int16U ActionID, Int16U Position)
 			return COMM_ValidateIGBT(Position,ModuleType);
 
 		case ACT_COMM_UFW_CHOPPER_DIODE:
+			return COMM_ValidateDiode(Position,ModuleType);
+
 		case ACT_COMM_ICES_OR_IRRM:
 		case ACT_COMM_THERMISTOR:
 			break;
@@ -453,3 +439,49 @@ bool COMM_ValidateIGBT(Int16U Position, ModuleTypes Module)
 	}
 	return false;
 }
+// ----------------------------------------
+
+bool COMM_ValidateDiode(Int16U Position, ModuleTypes Module)
+{
+	if(Position == DUT_POSITION_1)
+	{
+		switch(Module)
+		{
+			case MDAA_DD:
+			case MDDA_DD:
+			case MDFA_DD:
+			case MDSM_SD:
+			case MDSV_SD:
+			case MIAA_HC:
+			case MIFA_HC:
+			case MIFA_SD:
+			case MIHA_HC:
+				return true;
+			default:
+				CONTROL_FinishedWithProblem(PROBLEM_INCORRECT_DUT);
+				return false;
+		}
+	}
+	else if(Position == DUT_POSITION_2)
+	{
+		switch(Module)
+		{
+			case MDAA_DD:
+			case MDDA_DD:
+			case MDFA_DD:
+			case MDSM_SD:
+			case MDSV_SD:
+			case MIAA_LC:
+			case MIFA_LC:
+			case MIHA_LC:
+			case MISM_CH:
+			case MIXM_LR_LRD:
+				return true;
+			default:
+				CONTROL_FinishedWithProblem(PROBLEM_INCORRECT_DUT);
+				return false;
+		}
+	}
+	return false;
+}
+// ----------------------------------------
