@@ -50,12 +50,14 @@
 #define SV_G_TO_G				0
 #define SV_GE_TO_GE				0
 #define SV_POT_POS_TO_CPOT		0
+#define SV_POT_POS_TO_EPOT		0
+#define SV_POT_NEG_TO_CPOT		0
 #define SV_POT_NEG_TO_EPOT		0
 
 // OutHVRelayBoard-1
-#define EPOT_TO_EPOT1			0
 #define GE_TO_GE1				0
 #define G_TO_G1					0
+#define EPOT_TO_EPOT1			0
 #define EPOT_TO_CPOT1			0
 #define CPOT_TO_CPOT1			0
 
@@ -65,10 +67,11 @@
 #define GND_TO_CPOT1			0
 
 // OutHVRelayBoard-2
-#define EPOT_TO_EPOT2			0
 #define GE_TO_GE2				0
 #define G_TO_G2					0
+#define EPOT_TO_EPOT2			0
 #define EPOT_TO_CPOT2			0
+#define CPOT_TO_EPOT2			0
 #define CPOT_TO_CPOT2			0
 
 #define GE2_TO_G2				0	// Through 1kOhm resitor

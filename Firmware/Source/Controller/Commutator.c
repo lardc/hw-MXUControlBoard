@@ -387,9 +387,9 @@ bool COMM_ValidateRequest(Int16U ActionID, Int16U Position)
 		case ACT_COMM_IGES_POS_PULSE:
 		case ACT_COMM_IGES_NEG_PULSE:
 		case ACT_COMM_UGE_TH:
+		case ACT_COMM_UCE_SAT:
 			return COMM_ValidateIGBT(Position,ModuleType);
 
-		case ACT_COMM_UCE_SAT:
 		case ACT_COMM_UFW_CHOPPER_DIODE:
 		case ACT_COMM_ICES_OR_IRRM:
 		case ACT_COMM_THERMISTOR:
