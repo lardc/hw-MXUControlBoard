@@ -254,33 +254,12 @@ void COMM_Commutate(Int16U ActionID)
 			break;
 
 		case ACT_COMM_ICES_OR_IRRM:
-			{
-				if(PMXU_SwitchCommutation(DUTPosition, DUTCase, DUTScheme, ACT_PMXU_COMM_ICES))
-				{
-					COMM_State = COMM_IcesOrIrrm;
+			COMM_State = COMM_IcesOrIrrm;
+			PMXU_ProcessState = PP_CheckReadyAndFault;
 
-					if (DUTPosition == DUT_POSITION_2	||
-						DUTCase == SC_Type_MIHV			||
-						DUTCase == SC_Type_MIHM			||
-						DUTCase == SC_Type_MISV			||
-						DUTCase == SC_Type_MISM2_SS_SD	||
-						DUTCase ==  SC_Type_MDFA_MDF2_SD		||
-						DUTCase ==  SC_Type_MDA2)
-					{
-						ZcRD_OutputValuesReset();
-						COMM_ConnectToGND();
-						ZcRD_OutputValuesCompose(MC_G_2_GE, TRUE);
-						ZcRD_RegisterFlushWrite();
-					}
-					else if (DUTPosition == DUT_POSITION_1)
-					{
-						ZcRD_OutputValuesReset();
-						COMM_ConnectToGND();
-						ZcRD_OutputValuesCompose(MC_G_GE, TRUE);
-						ZcRD_RegisterFlushWrite();
-					}
-				}
-			}
+			ZcRD_OutputValuesReset();
+			COMM_ConnectToGND();
+			ZcRD_RegisterFlushWrite();
 			break;
 
 		case ACT_COMM_THERMISTOR:
@@ -378,6 +357,7 @@ bool COMM_ValidateRequest(Int16U ActionID, Int16U Position)
 			return COMM_ValidateDiode(Position,ModuleType);
 
 		case ACT_COMM_ICES_OR_IRRM:
+			return COMM_ValidateIGBT(Position,ModuleType) || COMM_ValidateDiode(Position,ModuleType);
 		case ACT_COMM_THERMISTOR:
 			break;
 	}

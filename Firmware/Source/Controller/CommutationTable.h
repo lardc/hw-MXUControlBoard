@@ -85,18 +85,6 @@
 
 //Старые коммутации
 // сигналы исходной 301-й прошивки и служат заглушкой до финализации матрицы.
-// ===== IORelayBoard — DUT Position 1 =====
-//
-#define MC_G_GE					9
-
-// ===== IORelayBoard — DUT Position 2 =====
-// TODO Trello 7A6GZMVv: уточнить распределение бит Position 2.
-// Сейчас сигналы Position 2 aliased на одноимённые Position 1 — при коммутации
-// Position 2 выполняется та же физическая коммутация, что и Position 1.
-// Это сознательная заглушка; корректный вариант появится после финализации
-// схемы IORelayBoard.
-//
-#define MC_G_2_GE				MC_G_GE
 
 // ===== OutThermRelayBoard =====
 #define OL_T1_COMM				34	// Thermistor_1: Commutation of T1 (Open/Close)

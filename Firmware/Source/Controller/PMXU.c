@@ -182,11 +182,14 @@ void PMXU_Process()
 						break;
 					case COMM_Uf:
 						PMXU_Command = ACT_PMXU_COMM_VF;
+						break;
+					case COMM_IcesOrIrrm:
+						PMXU_Command = ACT_PMXU_COMM_ICES;
+						break;
 					default:
 						break;
 				}
-				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], DataTable[REG_DUT_CASE],
-						DataTable[REG_DUT_SCHEME], PMXU_Command))
+				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], DataTable[REG_DUT_CASE], DataTable[REG_DUT_SCHEME], PMXU_Command))
 					PMXU_ProcessState = PP_CheckStatus;
 				else
 					PMXU_ProcessState = PP_None;
