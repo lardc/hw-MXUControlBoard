@@ -175,6 +175,8 @@ void PMXU_Process()
 					case COMM_Iges_Pos:
 					case COMM_Iges_Neg:
 					case COMM_Ugeth:
+					case COMM_Thermistor:
+					case COMM_NoPE:
 						PMXU_Command = ACT_PMXU_COMM_NO_PE;
 						break;
 					case COMM_Ucesat:

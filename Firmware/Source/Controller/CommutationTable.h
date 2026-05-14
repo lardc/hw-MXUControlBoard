@@ -8,7 +8,6 @@
 // Include
 #include "stdinc.h"
 
-
 // Constants
 //
 // MXU303: три физические платы за отдельными CS (SS1/SS2/SS3).
@@ -27,15 +26,15 @@
 // 40..63 — InputRelayBoard.
 //
 // ===== InputRelayBoard =====
-#define GT_G_COMM				0
-#define GT_GE_COMM				0
-#define GT_GPOT_COMM			0
-#define GT_GEPOT_COMM			0
+#define GT_G_COMM				0 // Затвор
+#define GT_GE_COMM				0 // Эмиттер управления
+#define GT_GPOT_COMM			0 // Потенциальный затвор
+#define GT_GEPOT_COMM			0 // Потенциальный эмиттер управления
 
-#define SV_G_COMM				0
-#define SV_GE_COMM				0
-#define SV_POT_POS_COMM			0
-#define SV_POT_NEG_COMM			0
+#define SV_G_COMM				0 // Затвор
+#define SV_GE_COMM				0 // Эмиттер Управления
+#define SV_POT_POS_COMM			0 // Потенциальный +
+#define SV_POT_NEG_COMM			0 // Потенциальный -
 
 // ===== IORelayBoard =====
 // Main
@@ -80,25 +79,12 @@
 #define GND_TO_CPOT2			0
 
 // ===== OutThermRelayBoard =====
-
-
-
-//Старые коммутации
-// сигналы исходной 301-й прошивки и служат заглушкой до финализации матрицы.
-
-// ===== OutThermRelayBoard =====
-#define OL_T1_COMM				34	// Thermistor_1: Commutation of T1 (Open/Close)
-#define OL_T2_COMM				35	// Thermistor_2: Commutation of T2 (Open/Close)
-#define MC_T2_GT_G				36	// T2 to GT_G
-#define MC_T2_GT_G_POT			37	// T2 to GT_G_POT
-#define MC_T1_GT_GE				38	// T1 to GT_GE
-#define MC_T1_GT_GE_POT			39	// T1 to GT_GE_POT
-
-// ===== InputRelayBoard =====
-#define IL_GT_G_COMM			42	// GT_G: Commutation of GT_G (Open/Close)
-#define IL_GT_GE_COMM			43	// GT_GE: Commutation of GT_GE (Open/Close)
-#define IL_GT_G_POT_COMM		47	// GT_G_POT: Commutation of GT_G_POT (Open/Close)
-#define IL_GT_GE_POT_COMM		48	// GT_GE_POT: Commutation of GT_GE_POT (Open/Close)
+#define GT_G_T2						0
+#define GT_G_AND_GT_GPOT_TO_T2		0
+#define GT_GPOT_TO_GT_G_T2			0
+#define GT_GE_T1					0
+#define GT_GE_AND_GT_GEPOT_TO_T1	0
+#define GT_GEPOT_TO_GT_GE_T1		0
 
 #define CT_SAVE_TIMEOUT			1800000
 // Types
