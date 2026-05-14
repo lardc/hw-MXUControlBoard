@@ -81,7 +81,7 @@ void CONTROL_Idle()
 
 	CONTROL_SafetyCheck();
 
-	//SELFTEST_Process();
+	SELFTEST_Process();
 	PMXU_Process();
 
 	DEVPROFILE_ProcessRequests();
