@@ -8,6 +8,9 @@
 // Include
 #include "stdinc.h"
 
+// Defines
+//
+#define PMXU_WAIT_MS 10
 // Types
 //
 typedef enum __CommutationState
@@ -46,6 +49,6 @@ void COMM_Commutate(Int16U ActionID);
 void COMM_Default();
 void COMM_Process();
 bool COMM_ValidateRequest(Int16U ActionID, Int16U Position);
-Int16U COMM_CalcModuleType();
+Int32U COMM_CalcModuleType();
 
 #endif // __COMMUTATOR_H

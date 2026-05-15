@@ -19,10 +19,10 @@
 //
 CommutationState COMM_State = COMM_Def;
 DeviceProcessState COMM_ProcessState = DPS_None;
+static Int16U Timeout = 0;
 
 // Forward declarations
 //
-void COMM_SaveLastRequest(Int16U ActionID);
 static void COMM_DischargeBeforeIcesOrIrrm();
 bool COMM_ValidateIGBT(Int16U Position, ModuleTypes Module);
 bool COMM_ValidateDiode(Int16U Position, ModuleTypes Module);
@@ -49,8 +49,6 @@ void COMM_ConnectToGND()
 void COMM_Process()
 {
 	Int16U ActionID =  DataTable[REG_LAST_CMD];
-	Int16U TimerPMXU = 10; // в мс
-	Int16U Timeout = 0;
 	switch(COMM_ProcessState)
 	{
 		case DPS_Start:
@@ -72,9 +70,9 @@ void COMM_Process()
 			{
 				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], DataTable[REG_DUT_CASE], DataTable[REG_DUT_SCHEME], ACT_PMXU_COMM_PE))
 				{
-					COMM_State = DPS_CheckStatusAfterDischarge;
+					COMM_ProcessState = DPS_CheckStatusAfterDischarge;
 					COMM_DischargeBeforeIcesOrIrrm();
-					Timeout = CONTROL_TimeCounter + TimerPMXU;
+					Timeout = CONTROL_TimeCounter + PMXU_WAIT_MS;
 				}
 				else
 					COMM_ProcessState = DPS_None;
@@ -126,7 +124,7 @@ void COMM_Process()
 				}
 				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], DataTable[REG_DUT_CASE], DataTable[REG_DUT_SCHEME], PMXU_Command))
 				{
-					Timeout = CONTROL_TimeCounter + TimerPMXU;
+					Timeout = CONTROL_TimeCounter + PMXU_WAIT_MS;
 					COMM_ProcessState = DPS_CheckStatusAfterCommutation;
 				}
 				else
@@ -398,11 +396,11 @@ static void COMM_DischargeBeforeIcesOrIrrm()
 }
 // ----------------------------------------
 
-Int16U COMM_CalcModuleType()
+Int32U COMM_CalcModuleType()
 {
-	Int16U CaseShift = 100;
+	const Int32U CaseShift = 100;
 
-	return (DataTable[REG_DUT_CASE] * CaseShift + DataTable[REG_DUT_SCHEME]);
+	return ((Int32U)DataTable[REG_DUT_CASE] * CaseShift + (Int32U)DataTable[REG_DUT_SCHEME]);
 }
 // ----------------------------------------
 
@@ -426,13 +424,23 @@ bool COMM_ValidateRequest(Int16U ActionID, Int16U Position)
 		case ACT_COMM_IGES_NEG_PULSE:
 		case ACT_COMM_UGE_TH:
 		case ACT_COMM_UCE_SAT:
-			return COMM_ValidateIGBT(Position,ModuleType);
+			if(COMM_ValidateIGBT(Position,ModuleType))
+				return true;
+			CONTROL_FinishedWithProblem(PROBLEM_INCORRECT_DUT);
+			return false;
 
 		case ACT_COMM_UFW_CHOPPER_DIODE:
-			return COMM_ValidateDiode(Position,ModuleType);
+			if(COMM_ValidateDiode(Position, ModuleType))
+				return true;
+			CONTROL_FinishedWithProblem(PROBLEM_INCORRECT_DUT);
+			return false;
 
 		case ACT_COMM_ICES_OR_IRRM:
-			return COMM_ValidateIGBT(Position,ModuleType) || COMM_ValidateDiode(Position,ModuleType);
+			if(COMM_ValidateIGBT(Position, ModuleType) || COMM_ValidateDiode(Position, ModuleType))
+				return true;
+			CONTROL_FinishedWithProblem(PROBLEM_INCORRECT_DUT);
+			return false;
+
 		case ACT_COMM_THERMISTOR:
 			switch(ModuleType)
 			{
@@ -477,7 +485,6 @@ bool COMM_ValidateIGBT(Int16U Position, ModuleTypes Module)
 			case MIXV_HB:
 				return true;
 			default:
-				CONTROL_FinishedWithProblem(PROBLEM_INCORRECT_DUT);
 				return false;
 		}
 	}
@@ -498,7 +505,6 @@ bool COMM_ValidateIGBT(Int16U Position, ModuleTypes Module)
 			case MIXV_HB:
 				return true;
 			default:
-				CONTROL_FinishedWithProblem(PROBLEM_INCORRECT_DUT);
 				return false;
 		}
 	}
@@ -523,7 +529,6 @@ bool COMM_ValidateDiode(Int16U Position, ModuleTypes Module)
 			case MIHA_HC:
 				return true;
 			default:
-				CONTROL_FinishedWithProblem(PROBLEM_INCORRECT_DUT);
 				return false;
 		}
 	}
@@ -543,7 +548,6 @@ bool COMM_ValidateDiode(Int16U Position, ModuleTypes Module)
 			case MIXM_LR_LRD:
 				return true;
 			default:
-				CONTROL_FinishedWithProblem(PROBLEM_INCORRECT_DUT);
 				return false;
 		}
 	}

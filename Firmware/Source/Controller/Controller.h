@@ -27,20 +27,9 @@ typedef enum __DeviceSelfTestState
 	STS_IOBoard
 } DeviceSelfTestState;
 
-/*typedef enum __DeviceProcessState
-{
-	DPS_None = 0,
-	DPS_Start,
-	DPS_CheckIcesAndDischarge,
-	DPS_CheckStatusAfterDischarge,
-	DPS_PMXUCommutate,
-	DPS_CheckStatusAfterCommutation,
-	DPS_MXUCommutate,
-} DeviceProcessState;*/
-
 typedef enum __ModuleType
 {
-	None,
+	Module_None,
 	MDAA_DD,
 	MDDA_DD,
 	MDFA_DD,
