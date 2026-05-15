@@ -68,7 +68,7 @@ void COMM_Process()
 				COMM_ProcessState = DPS_CheckIcesAndDischarge;
 			break;
 		case DPS_CheckIcesAndDischarge:
-			if(COMM_State == COMM_IcesOrIrrm)
+			if(COMM_State == COMM_IcesOrIrrm && ActionID != ACT_COMM_ICES_OR_IRRM)
 			{
 				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], DataTable[REG_DUT_CASE], DataTable[REG_DUT_SCHEME], ACT_PMXU_COMM_PE))
 				{
