@@ -18,6 +18,7 @@
 // Variables
 //
 CommutationState COMM_State = COMM_Def;
+DeviceProcessState COMM_ProcessState = DPS_None;
 
 // Forward declarations
 //
@@ -45,33 +46,137 @@ void COMM_ConnectToGND()
 }
 // ----------------------------------------
 
+void COMM_Process()
+{
+	Int16U ActionID =  DataTable[REG_LAST_CMD];
+	Int16U TimerPMXU = 10; // в мс
+	Int16U Timeout = 0;
+	switch(COMM_ProcessState)
+	{
+		case DPS_Start:
+			if(PMXU_InFault())
+			{
+				COMM_ProcessState = DPS_None;
+				CONTROL_SwitchToFault(DF_PMXU);
+			}
+			else if(!PMXU_IsReady())
+			{
+				COMM_ProcessState = DPS_None;
+				CONTROL_FinishedWithProblem(PROBLEM_PMXU_NOT_READY);
+			}
+			else
+				COMM_ProcessState = DPS_CheckIcesAndDischarge;
+			break;
+		case DPS_CheckIcesAndDischarge:
+			if(COMM_State == COMM_IcesOrIrrm)
+			{
+				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], DataTable[REG_DUT_CASE], DataTable[REG_DUT_SCHEME], ACT_PMXU_COMM_PE))
+				{
+					COMM_State = DPS_CheckStatusAfterDischarge;
+					COMM_DischargeBeforeIcesOrIrrm();
+					Timeout = CONTROL_TimeCounter + TimerPMXU;
+				}
+				else
+					COMM_ProcessState = DPS_None;
+			}
+			else
+				COMM_ProcessState = DPS_PMXUCommutate;
+			break;
+
+		case DPS_CheckStatusAfterDischarge:
+			if(CONTROL_TimeCounter > Timeout)
+			{
+				if(PMXU_InFault())
+				{
+					CONTROL_SwitchToFault(DF_PMXU);
+					COMM_ProcessState = DPS_None;
+				}
+				else if(!PMXU_IsReady())
+				{
+					CONTROL_FinishedWithProblem(PROBLEM_PMXU_FAILED_TO_FINISH);
+					COMM_ProcessState = DPS_None;
+				}
+				else
+					COMM_ProcessState = DPS_PMXUCommutate;
+			}
+			break;
+
+		case DPS_PMXUCommutate:
+			{
+				Int16U PMXU_Command;
+				switch(ActionID)
+				{
+					case ACT_COMM_IGES_POS_PULSE:
+					case ACT_COMM_IGES_NEG_PULSE:
+					case ACT_COMM_UGE_TH:
+					case ACT_COMM_THERMISTOR:
+					case ACT_COMM_NO_PE:
+					case ACT_COMM_NONE:
+						PMXU_Command = ACT_PMXU_COMM_NO_PE;
+						break;
+					case ACT_COMM_UCE_SAT:
+						PMXU_Command = ACT_PMXU_COMM_VCESAT;
+						break;
+					case ACT_COMM_UFW_CHOPPER_DIODE:
+						PMXU_Command = ACT_PMXU_COMM_VF;
+						break;
+					case ACT_COMM_ICES_OR_IRRM:
+						PMXU_Command = ACT_PMXU_COMM_ICES;
+						break;
+				}
+				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], DataTable[REG_DUT_CASE], DataTable[REG_DUT_SCHEME], PMXU_Command))
+				{
+					Timeout = CONTROL_TimeCounter + TimerPMXU;
+					COMM_ProcessState = DPS_CheckStatusAfterCommutation;
+				}
+				else
+					COMM_ProcessState = DPS_None;
+			}
+			break;
+
+		case DPS_CheckStatusAfterCommutation:
+			if(CONTROL_TimeCounter > Timeout)
+			{
+				if(PMXU_InFault())
+				{
+					CONTROL_SwitchToFault(DF_PMXU);
+					COMM_ProcessState = DPS_None;
+				}
+				else if(!PMXU_IsReady())
+				{
+					CONTROL_FinishedWithProblem(PROBLEM_PMXU_FAILED_TO_FINISH);
+					COMM_ProcessState = DPS_None;
+				}
+				else
+					COMM_ProcessState = DPS_MXUCommutate;
+			}
+			break;
+
+		case DPS_MXUCommutate:
+			COMM_Commutate(ActionID);
+			DataTable[REG_OP_RESULT] = OPRESULT_OK;
+			COMM_ProcessState = DPS_None;
+			break;
+
+		default:
+			break;
+	}
+}
+// ----------------------------------------
 void COMM_Commutate(Int16U ActionID)
 {
 	Int16U DUTPosition = DataTable[REG_DUT_POSITION];
-	Int16U DUTCase = DataTable[REG_DUT_CASE];
-	Int16U DUTScheme = DataTable[REG_DUT_SCHEME];
-
 	ModuleTypes ModuleType = COMM_CalcModuleType();
-
-	// Разряд после ICES/IRRM: перед любой следующей коммутацией обнуляем выходы
-	// сдвиговых регистров с удержанием SFT_ENABLE=true ~10 мс, чтобы «стекло»
-	// остаточное напряжение на DUT.
-	if(COMM_State == COMM_IcesOrIrrm && ActionID != ACT_COMM_ICES_OR_IRRM)
-		COMM_DischargeBeforeIcesOrIrrm();
-
 	switch(ActionID)
 	{
 		case ACT_COMM_NONE:
-			if(PMXU_SwitchCommutation(DUTPosition, DUTCase, DUTScheme, ACT_PMXU_COMM_PE))
-				COMM_Default();
+			COMM_Default();
 			break;
 
 		case ACT_COMM_IGES_POS_PULSE:
 		case ACT_COMM_IGES_NEG_PULSE:
 		case ACT_COMM_UGE_TH:
 		case ACT_COMM_UCE_SAT:
-			PMXU_ProcessState = PP_CheckReadyAndFault;
-
 			ZcRD_OutputValuesReset();
 			COMM_ConnectToGND();
 			switch(ActionID)
@@ -190,7 +295,6 @@ void COMM_Commutate(Int16U ActionID)
 
 		case ACT_COMM_UFW_CHOPPER_DIODE:
 			COMM_State = COMM_Uf;
-			PMXU_ProcessState = PP_CheckReadyAndFault;
 
 			ZcRD_OutputValuesReset();
 			COMM_ConnectToGND();
@@ -256,8 +360,6 @@ void COMM_Commutate(Int16U ActionID)
 			else if(ActionID == ACT_COMM_NO_PE)
 				COMM_State = COMM_NoPE;
 
-			PMXU_ProcessState = PP_CheckReadyAndFault;
-
 			ZcRD_OutputValuesReset();
 			COMM_ConnectToGND();
 			ZcRD_RegisterFlushWrite();
@@ -277,9 +379,6 @@ void COMM_Commutate(Int16U ActionID)
 			ZcRD_OutputValuesCompose(GT_GEPOT_TO_GT_GE_T1, TRUE);
 
 			ZcRD_RegisterFlushWrite();
-			break;
-
-		default:
 			break;
 	}
 

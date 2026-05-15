@@ -25,8 +25,18 @@ typedef enum __DeviceSelfTestState
 	STS_InputBoard,
 	STS_ThermBoard,
 	STS_IOBoard
-
 } DeviceSelfTestState;
+
+/*typedef enum __DeviceProcessState
+{
+	DPS_None = 0,
+	DPS_Start,
+	DPS_CheckIcesAndDischarge,
+	DPS_CheckStatusAfterDischarge,
+	DPS_PMXUCommutate,
+	DPS_CheckStatusAfterCommutation,
+	DPS_MXUCommutate,
+} DeviceProcessState;*/
 
 typedef enum __ModuleType
 {
@@ -58,28 +68,6 @@ typedef enum __ModuleType
 	MIXM_LR_LRD,
 	MIXV_HB,
 } ModuleTypes;
-
-typedef enum __DevType
-{
-	SC_Type_MIAA = 3001,
-	SC_Type_MIDA = 3002,
-	SC_Type_MIFA = 3003,
-	SC_Type_MIHA = 3004,
-	SC_Type_MIHM = 3005,
-	SC_Type_MIHV = 3006,
-	SC_Type_MISM = 3007,
-	SC_Type_MISV = 3008,
-	SC_Type_MIXM = 3009,
-	SC_Type_MIXV = 3010,
-	// 2011
-	SC_Type_MISM2_CH = 3012,
-	// 2013
-	SC_Type_MISM2_SS_SD = 3014,
-	SC_Type_MIADAP = 3015,
-	SC_Type_MDSM = 3018,
-	SC_Type_MDFA_MDF2_SD = 3020,
-	SC_Type_MDA2 = 3021
-} DevType;
 
 // Variables
 //

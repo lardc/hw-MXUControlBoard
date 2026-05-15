@@ -12,7 +12,6 @@
 
 // Variables
 //
-volatile PMXUProcess PMXU_ProcessState = PP_None;
 
 // Function prototypes
 //
@@ -144,73 +143,6 @@ bool PMXU_WriteReg(Int16U RegAddress, Int16U RegData)
 	{
 		CONTROL_SwitchToFault(DF_PMXU_INTERFACE);
 		return false;
-	}
-}
-//--------------------------------------
-
-void PMXU_Process()
-{
-	switch(PMXU_ProcessState)
-	{
-		case PP_CheckReadyAndFault:
-			if(PMXU_InFault())
-			{
-				PMXU_ProcessState = PP_None;
-				CONTROL_SwitchToFault(DF_PMXU);
-			}
-			else if(!PMXU_IsReady())
-			{
-				PMXU_ProcessState = PP_None;
-				CONTROL_FinishedWithProblem(PROBLEM_PMXU_NOT_READY);
-			}
-			else
-				PMXU_ProcessState = PP_Commutation;
-			break;
-
-		case PP_Commutation:
-			{
-				Int16U PMXU_Command;
-				switch(COMM_State)
-				{
-					case COMM_Iges_Pos:
-					case COMM_Iges_Neg:
-					case COMM_Ugeth:
-					case COMM_Thermistor:
-					case COMM_NoPE:
-						PMXU_Command = ACT_PMXU_COMM_NO_PE;
-						break;
-					case COMM_Ucesat:
-						PMXU_Command = ACT_PMXU_COMM_VCESAT;
-						break;
-					case COMM_Uf:
-						PMXU_Command = ACT_PMXU_COMM_VF;
-						break;
-					case COMM_IcesOrIrrm:
-						PMXU_Command = ACT_PMXU_COMM_ICES;
-						break;
-					default:
-						break;
-				}
-				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], DataTable[REG_DUT_CASE], DataTable[REG_DUT_SCHEME], PMXU_Command))
-					PMXU_ProcessState = PP_CheckStatus;
-				else
-					PMXU_ProcessState = PP_None;
-			}
-			break;
-
-		case PP_CheckStatus:
-			if(PMXU_InFault())
-				CONTROL_SwitchToFault(DF_PMXU);
-			else if(!PMXU_IsReady())
-				CONTROL_FinishedWithProblem(PROBLEM_PMXU_FAILED_TO_FINISH);
-			else
-				DataTable[REG_OP_RESULT] = OPRESULT_OK;
-
-			PMXU_ProcessState = PP_None;
-			break;
-
-		default:
-			break;
 	}
 }
 //--------------------------------------

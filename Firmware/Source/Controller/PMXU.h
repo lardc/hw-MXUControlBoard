@@ -19,17 +19,8 @@ typedef enum __PMXUState
 	PS_InProcess		= 7
 } PMXUState;
 
-typedef enum __PMXUProcess
-{
-	PP_None					= 0,
-	PP_CheckReadyAndFault	= 1,
-	PP_Commutation			= 2,
-	PP_CheckStatus			= 3,
-} PMXUProcess;
-
 // Variables
 //
-extern volatile PMXUProcess PMXU_ProcessState;
 
 // Functions
 //
@@ -44,6 +35,5 @@ bool PMXU_CheckState(PMXUState State);
 bool PMXU_SafetyActivate();
 bool PMXU_SafetyDeactivate();
 bool PMXU_StartSelfTest();
-void PMXU_Process();
 
 #endif /* CONTROLLER_PMXU_H_ */

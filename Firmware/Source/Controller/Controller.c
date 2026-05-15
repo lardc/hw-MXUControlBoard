@@ -82,7 +82,7 @@ void CONTROL_Idle()
 	CONTROL_SafetyCheck();
 
 	SELFTEST_Process();
-	PMXU_Process();
+	COMM_Process();
 
 	DEVPROFILE_ProcessRequests();
 	CONTROL_UpdateWatchDog();
@@ -258,7 +258,7 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 				bool Validation = COMM_ValidateRequest(ActionID, (Int16U)DataTable[REG_DUT_POSITION]);
 
 				if(Validation)
-					COMM_Commutate(ActionID);
+					COMM_ProcessState = DPS_Start;
 			}
 			break;
 		
