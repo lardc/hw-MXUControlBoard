@@ -34,6 +34,7 @@ Int32U CycleCounters[COMMUTATION_TABLE_SIZE] = {0};
 const CommutationTableItem CommutationTable[COMMUTATION_TABLE_SIZE] =
 {
 		// ===== IORelayBoard (BOARD_IO, SS3) — Position 1 =====
+		//
 		{BOARD_IO, BIT0, REG_IO_1},		// 0
 		{BOARD_IO, BIT1, REG_IO_1},		// 1
 		{BOARD_IO, BIT2, REG_IO_1},		// 2
@@ -68,7 +69,7 @@ const CommutationTableItem CommutationTable[COMMUTATION_TABLE_SIZE] =
 		{BOARD_IO, BIT4, REG_IO_4},		// 28
 		{BOARD_IO, BIT5, REG_IO_4},		// 29
 		{BOARD_IO, BIT6, REG_IO_4},		// 30
-		{BOARD_IO, BIT7, REG_IO_4},		// 31
+		{BOARD_IO, BIT7, REG_IO_4},		// 31	Unused
 
 		// ===== OutThermRelayBoard (BOARD_THERM, SS2) =====
 		{BOARD_THERM, BIT0, REG_THERM_1},	// 32
@@ -77,8 +78,8 @@ const CommutationTableItem CommutationTable[COMMUTATION_TABLE_SIZE] =
 		{BOARD_THERM, BIT3, REG_THERM_1},	// 35
 		{BOARD_THERM, BIT4, REG_THERM_1},	// 36
 		{BOARD_THERM, BIT5, REG_THERM_1},	// 37
-		{BOARD_THERM, BIT6, REG_THERM_1},	// 38
-		{BOARD_THERM, BIT7, REG_THERM_1},	// 39
+		{BOARD_THERM, BIT6, REG_THERM_1},	// 38 Unused
+		{BOARD_THERM, BIT7, REG_THERM_1},	// 39 Unused
 
 		// ===== InputRelayBoard (BOARD_INPUT, SS1) =====
 		{BOARD_INPUT, BIT0, REG_INPUT_1},	// 40
@@ -87,7 +88,7 @@ const CommutationTableItem CommutationTable[COMMUTATION_TABLE_SIZE] =
 		{BOARD_INPUT, BIT3, REG_INPUT_1},	// 43
 		{BOARD_INPUT, BIT4, REG_INPUT_1},	// 44
 		{BOARD_INPUT, BIT5, REG_INPUT_1},	// 45
-		{BOARD_INPUT, BIT6, REG_INPUT_1},// 46
+		{BOARD_INPUT, BIT6, REG_INPUT_1},	// 46
 		{BOARD_INPUT, BIT7, REG_INPUT_1},	// 47
 		//
 		{BOARD_INPUT, BIT0, REG_INPUT_2},	// 48
@@ -105,7 +106,7 @@ const CommutationTableItem CommutationTable[COMMUTATION_TABLE_SIZE] =
 		{BOARD_INPUT, BIT3, REG_INPUT_3},	// 59
 		{BOARD_INPUT, BIT4, REG_INPUT_3},	// 60
 		{BOARD_INPUT, BIT5, REG_INPUT_3},	// 61
-		{BOARD_INPUT, BIT6, REG_INPUT_3},	// 62
-		{BOARD_INPUT, BIT7, REG_INPUT_3}	// 63
+		{BOARD_INPUT, BIT6, REG_INPUT_3},	// 62 Unused
+		{BOARD_INPUT, BIT7, REG_INPUT_3}	// 63 Unused
 };
 // No more
