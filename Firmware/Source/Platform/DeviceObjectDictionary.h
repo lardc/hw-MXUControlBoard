@@ -15,6 +15,7 @@
 #define ACT_DBG_SD_EN							27	// Проверка формирования напряжения самодиагностики
 #define ACT_DBG_SFT_ENABLE						28	// Импульс SFT_ENABLE (перевод OE сдвиговых регистров в high-Z)
 #define ACT_DBG_SFT_IN							29	// Прочитать состояние входа SFT_IN в REG_DBG
+#define ACT_DBG_SPI_SS							30 	// Проверка SPI_SS
 
 #define ACT_SET_ACTIVE							100	// Команда активации контура безопасности
 #define ACT_SET_INACTIVE						101	// Команда деактивации контура безопасности

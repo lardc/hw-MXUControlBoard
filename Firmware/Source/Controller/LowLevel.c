@@ -50,6 +50,22 @@ void LL_SPI_LatchBoard(Int8U BoardIdx)
 }
 //-----------------------------
 
+void LL_SPI_TestSS(Int8U BoardIdx)
+{
+	GPIO_PortPinSetting SS;
+	Int16U PulseMs = 100;
+	switch(BoardIdx)
+	{
+		case 0:	SS = GPIO_SPI_SS1; break;
+		case 1:	SS = GPIO_SPI_SS2; break;
+		case 2:	SS = GPIO_SPI_SS3; break;
+	}
+	GPIO_SetState(SS, false);
+	DELAY_MS(PulseMs);
+	GPIO_SetState(SS, true);
+}
+//-----------------------------
+
 void LL_SetStateSFT_ENABLE(bool Enable)
 {
 	// OpenDrain: false = активное притягивание к GND, true = high-Z
