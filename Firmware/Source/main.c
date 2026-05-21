@@ -14,6 +14,9 @@ int main()
 	// Настройка портов
 	INITCFG_ConfigIO();
 
+	// Настройка CAN (BCCI)
+	INITCFG_ConfigCAN();
+
 	// Настройка UART
 	INITCFG_ConfigUART();
 	
