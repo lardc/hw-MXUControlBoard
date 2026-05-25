@@ -317,6 +317,24 @@ void COMM_Commutate(Int16U ActionID)
 					case MIAA_HC:
 					case MIFA_HC:
 					case MIHA_HC:
+
+					case MIAA_CE:
+					case MIAA_HB:
+					case MIAA_LC:
+					case MIDA_HB:
+					case MIFA_HB:
+					case MIFA_LC:
+					case MIHA_HB:
+					case MIHA_LC:
+					case MIHM_SS:
+					case MIHV_SS:
+					case MISM_CH:
+					case MISM_DS:
+					case MISM_SS:
+					case MISV_SS:
+					case MIXM_HB:
+					case MIXM_LR_LRD:
+					case MIXV_HB:
 						ZcRD_OutputValuesCompose(EPOT_TO_EPOT1, TRUE);
 						ZcRD_OutputValuesCompose(CPOT_TO_CPOT1, TRUE);
 						break;
@@ -334,6 +352,10 @@ void COMM_Commutate(Int16U ActionID)
 						ZcRD_OutputValuesCompose(CPOT_TO_EPOT2, TRUE);
 						ZcRD_OutputValuesCompose(EPOT_TO_CPOT2, TRUE);
 						break;
+					case MIAA_CE:
+						ZcRD_OutputValuesCompose(EPOT_TO_EPOT1, TRUE);
+						ZcRD_OutputValuesCompose(CPOT_TO_CPOT2, TRUE);
+						break;
 					case MDAA_DD:
 					case MDDA_DD:
 					case MDFA_DD:
@@ -341,6 +363,17 @@ void COMM_Commutate(Int16U ActionID)
 					case MIFA_LC:
 					case MIHA_LC:
 					case MISM_CH:
+
+					case MIAA_HB:
+					case MIAA_HC:
+					case MIDA_HB:
+					case MIFA_HB:
+					case MIFA_HC:
+					case MIHA_HB:
+					case MIHA_HC:
+					case MISM_DS:
+					case MIXM_HB:
+					case MIXV_HB:
 						ZcRD_OutputValuesCompose(EPOT_TO_EPOT2, TRUE);
 						ZcRD_OutputValuesCompose(CPOT_TO_CPOT2, TRUE);
 						break;
@@ -429,13 +462,8 @@ bool COMM_ValidateRequest(Int16U ActionID, Int16U Position)
 			CONTROL_FinishedWithProblem(PROBLEM_INCORRECT_DUT);
 			return false;
 
-		case ACT_COMM_UFW_CHOPPER_DIODE:
-			if(COMM_ValidateDiode(Position, ModuleType))
-				return true;
-			CONTROL_FinishedWithProblem(PROBLEM_INCORRECT_DUT);
-			return false;
-
 		case ACT_COMM_ICES_OR_IRRM:
+		case ACT_COMM_UFW_CHOPPER_DIODE:
 			if(COMM_ValidateIGBT(Position, ModuleType) || COMM_ValidateDiode(Position, ModuleType))
 				return true;
 			CONTROL_FinishedWithProblem(PROBLEM_INCORRECT_DUT);
