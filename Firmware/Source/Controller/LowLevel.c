@@ -42,17 +42,17 @@ void LL_SPI_LatchBoardTemplate(Int8U BoardIdx, Int32U PulseLen)
 		case 2:  SS = GPIO_SPI_SS3; break;
 	}
 
-	DELAY_US(TIME_SPI_DELAY);
+	DELAY_US(TIME_SPI_DELAY_US);
 	GPIO_SetState(SS, false);
-	DELAY_US(PulseLen);
+	(PulseLen > 1000) ? DELAY_MS(PulseLen / 1000) : DELAY_US(PulseLen);
 	GPIO_SetState(SS, true);
-	DELAY_US(TIME_SPI_DELAY);
+	DELAY_US(TIME_SPI_DELAY_US);
 }
 //-----------------------------
 
 void LL_SPI_LatchBoard(Int8U BoardIdx)
 {
-	LL_SPI_LatchBoardTemplate(BoardIdx, TIME_SPI_DELAY);
+	LL_SPI_LatchBoardTemplate(BoardIdx, TIME_SPI_DELAY_US);
 }
 //-----------------------------
 

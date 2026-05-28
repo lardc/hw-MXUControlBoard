@@ -93,8 +93,6 @@ bool PMXU_SafetyActivate()
 {
 	if(PMXU_CallAction(ACT_PMXU_SET_ACTIVE))
 	{
-		DELAY_MS(10);
-
 		if(PMXU_CheckState(DS_SafetyActive))
 			return true;
 	}
@@ -107,8 +105,6 @@ bool PMXU_SafetyDeactivate()
 {
 	if(PMXU_CallAction(ACT_PMXU_SET_INACTIVE))
 	{
-		DELAY_MS(10);
-
 		if(PMXU_CheckState(DS_Enabled))
 			return true;
 	}

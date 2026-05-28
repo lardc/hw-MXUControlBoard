@@ -44,8 +44,6 @@ void ZcRD_RegisterReset()
 	// Set values to zero
 	ZcRD_OutputValuesReset();
 	ZcRD_RegisterFlushWrite();
-
-	DELAY_US(COMM_DELAY_MS * 1000L);
 }
 // ----------------------------------------
 
@@ -104,6 +102,7 @@ void ZcRD_RegisterFlushWrite()
 
 	for(Int16U i = 0; i < NUM_REGS_TOTAL; ++i)
 		PrevCurrentOutputValues[i] = CurrentOutputValues[i];
+	DELAY_MS(COMM_DELAY_MS);
 }
 // ----------------------------------------
 

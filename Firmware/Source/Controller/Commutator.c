@@ -410,7 +410,6 @@ void COMM_Commutate(Int16U ActionID)
 			ZcRD_RegisterFlushWrite();
 			break;
 	}
-	DELAY_MS(COMM_DELAY_MS);
 }
 // ----------------------------------------
 
@@ -419,7 +418,6 @@ static void COMM_DischargeBeforeIcesOrIrrm()
 	LL_SafetyForceRelaysOff(true);
 	ZcRD_OutputValuesReset();
 	ZcRD_RegisterFlushWrite();
-	DELAY_MS(10);
 	LL_SafetyForceRelaysOff(false);
 }
 // ----------------------------------------

@@ -293,9 +293,6 @@ void CONTROL_SafetyCheck()
 		ZcRD_RegisterFlushWrite();
 		LL_SafetyForceRelaysOff(false);
 
-		// Подтверждение обнуления коммутации
-		DataTable[REG_DBG] = 0;
-
 		// COMM_Default() в ISR не вызываем — тяжёлый 20 мс delay.
 		COMM_State = COMM_Def;
 
