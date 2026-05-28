@@ -5,30 +5,9 @@
 // Header
 #include "CommutationTable.h"
 
-// Extension board indexes — совпадают с индексами CS у LL_SPI_LatchBoard
-// и с порядком выгрузки в ZcRD_RegisterFlushWrite.
-//---------------------------------
-#define BOARD_INPUT		0		// InputRelayBoard (SS1)
-#define BOARD_THERM		1		// OutThermRelayBoard (SS2)
-#define BOARD_IO		2		// IORelayBoard (SS3, объединение прежних OutHVRelayBoard-1/2)
-
-// Номера регистров в физическом буфере CurrentOutputValues[NUM_REGS_TOTAL].
-// Порядок — IO → Therm → Input, согласуется с ZCRD_*_REG_FIRST в ZcRegistersDriver.
-#define REG_IO_1		0
-#define REG_IO_2		1
-#define REG_IO_3		2
-#define REG_IO_4		3
-#define REG_THERM_1		4
-#define REG_INPUT_1		5
-#define REG_INPUT_2		6
-#define REG_INPUT_3		7
-
 // Variables
 //
 Int64U CT_SaveTimer = 0;
-
-// Constants
-//
 Int32U CycleCounters[COMMUTATION_TABLE_SIZE] = {0};
 
 /* Визуализация расположения индексов по ЭМ
