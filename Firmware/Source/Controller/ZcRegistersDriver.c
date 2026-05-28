@@ -33,9 +33,9 @@ static uint8_t CurrentOutputValues[NUM_REGS_TOTAL] = {0};
 
 // Functions prototypes
 //
-void ZcRD_ShiftAndLatch(Int8U CS, Int8U FirstReg, Int8U RegCount);
-Int8U ZcRD_GetRegNum(Int8U ID);
-Int8U ZcRD_GetBitmask(Int8U ID);
+static void ZcRD_ShiftAndLatch(Int8U CS, Int8U FirstReg, Int8U RegCount);
+static Int8U ZcRD_GetRegNum(Int8U ID);
+static Int8U ZcRD_GetBitmask(Int8U ID);
 
 // Functions
 //
@@ -49,13 +49,13 @@ void ZcRD_RegisterReset()
 }
 // ----------------------------------------
 
-Int8U ZcRD_GetRegNum(Int8U ID)
+static Int8U ZcRD_GetRegNum(Int8U ID)
 {
 	return ID / 8;
 }
 // ----------------------------------------
 
-Int8U ZcRD_GetBitmask(Int8U ID)
+static Int8U ZcRD_GetBitmask(Int8U ID)
 {
 	return 1 << (ID % 8);
 }
@@ -107,7 +107,7 @@ void ZcRD_RegisterFlushWrite()
 }
 // ----------------------------------------
 
-void ZcRD_ShiftAndLatch(Int8U CS, Int8U FirstReg, Int8U RegCount)
+static void ZcRD_ShiftAndLatch(Int8U CS, Int8U FirstReg, Int8U RegCount)
 {
 	// Байты выгружаются от последнего регистра к первому — чипы каскадированы,
 	// и первая отправленная порция окажется в самом дальнем регистре.
