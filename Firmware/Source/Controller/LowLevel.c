@@ -44,7 +44,7 @@ void LL_SPI_LatchBoardTemplate(Int8U BoardIdx, Int32U PulseLen)
 
 	DELAY_US(TIME_SPI_DELAY);
 	GPIO_SetState(SS, false);
-	DELAY_US(TIME_SPI_DELAY);
+	DELAY_US(PulseLen);
 	GPIO_SetState(SS, true);
 	DELAY_US(TIME_SPI_DELAY);
 }
