@@ -288,10 +288,10 @@ void CONTROL_SafetyCheck()
 	{
 		SafetyFlushPending = false;
 		// Запретить OE выходов, затем «кадр нулей», затем вернуть OE активным.
-		LL_SetStateSFT_ENABLE(true);
+		LL_SafetyForceRelaysOff(true);
 		ZcRD_OutputValuesReset();
 		ZcRD_RegisterFlushWrite();
-		LL_SetStateSFT_ENABLE(false);
+		LL_SafetyForceRelaysOff(false);
 
 		// Подтверждение обнуления коммутации
 		DataTable[REG_DBG] = 0;

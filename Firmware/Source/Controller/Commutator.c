@@ -416,11 +416,11 @@ void COMM_Commutate(Int16U ActionID)
 
 static void COMM_DischargeBeforeIcesOrIrrm()
 {
-	LL_SetStateSFT_ENABLE(true);
+	LL_SafetyForceRelaysOff(true);
 	ZcRD_OutputValuesReset();
 	ZcRD_RegisterFlushWrite();
 	DELAY_MS(10);
-	LL_SetStateSFT_ENABLE(false);
+	LL_SafetyForceRelaysOff(false);
 }
 // ----------------------------------------
 

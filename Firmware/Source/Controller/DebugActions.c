@@ -54,9 +54,9 @@ void DBACT_SDEN()
 // затем возвращаем активное состояние (OD к GND, OE разрешён).
 void DBACT_SftEnablePulse()
 {
-	LL_SetStateSFT_ENABLE(true);
+	LL_SafetyForceRelaysOff(true);
 	DELAY_MS(1000);
-	LL_SetStateSFT_ENABLE(false);
+	LL_SafetyForceRelaysOff(false);
 }
 //-----------------------
 
