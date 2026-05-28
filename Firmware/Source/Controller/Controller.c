@@ -28,7 +28,6 @@ volatile DeviceState CONTROL_State = DS_None;
 volatile DeviceSelfTestState CONTROL_SubState = STS_None;
 static Boolean CycleActive = false;
 volatile Int64U CONTROL_TimeCounter = 0;
-static bool PrevSafetyTrig = false;
 static volatile bool SafetyFlushPending = false;
 //
 volatile Int16U CONTROL_DiagCounter = 0;
@@ -308,11 +307,13 @@ void CONTROL_SafetyCheck()
 
 void CONTROL_SafetyIrqTick()
 {
+	static bool PrevSafetyTrig = false;
 	bool SafetyTrig = LL_IsSafetyTrig();
 
 	if(SafetyTrig && !PrevSafetyTrig)
 	{
 		SafetyFlushPending = true;
+		LL_SafetyForceRelaysOff(true);
 	}
 
 	PrevSafetyTrig = SafetyTrig;
