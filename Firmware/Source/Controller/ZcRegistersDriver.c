@@ -33,7 +33,9 @@ static uint8_t CurrentOutputValues[NUM_REGS_TOTAL] = {0};
 
 // Functions prototypes
 //
-static void ZcRD_ShiftAndLatch(Int8U CS, Int8U FirstReg, Int8U RegCount);
+void ZcRD_ShiftAndLatch(Int8U CS, Int8U FirstReg, Int8U RegCount);
+Int8U ZcRD_GetRegNum(Int8U ID);
+Int8U ZcRD_GetBitmask(Int8U ID);
 
 // Functions
 //
@@ -47,12 +49,27 @@ void ZcRD_RegisterReset()
 }
 // ----------------------------------------
 
+Int8U ZcRD_GetRegNum(Int8U ID)
+{
+	return ID / 8;
+}
+// ----------------------------------------
+
+Int8U ZcRD_GetBitmask(Int8U ID)
+{
+	return 1 << (ID % 8);
+}
+// ----------------------------------------
+
 void ZcRD_OutputValuesCompose(Int16U TableID, Boolean TurnOn)
 {
-	if (TurnOn)
-		CurrentOutputValues[CommutationTable[TableID].RegNum] |= CommutationTable[TableID].Bit;
+	Int8U RegNum = ZcRD_GetRegNum(TableID);
+	Int8U BitMask = ZcRD_GetBitmask(TableID);
+
+	if(TurnOn)
+		CurrentOutputValues[RegNum] |= BitMask;
 	else
-		CurrentOutputValues[CommutationTable[TableID].RegNum] &= ~CommutationTable[TableID].Bit;
+		CurrentOutputValues[RegNum] &= ~BitMask;
 }
 // ----------------------------------------
 
@@ -75,17 +92,22 @@ void ZcRD_RegisterFlushWrite()
 	ZcRD_ShiftAndLatch(ZCRD_CS_IO,    ZCRD_IO_REG_FIRST,    ZCRD_IO_REG_COUNT);
 
 	// Учёт ресурса: инкремент счётчика при каждом изменении состояния бита.
-	for (Int16U i = 0; i < COMMUTATION_TABLE_SIZE; ++i)
-		if ((PrevCurrentOutputValues[CommutationTable[i].RegNum] & CommutationTable[i].Bit) !=
-			(CurrentOutputValues[CommutationTable[i].RegNum] & CommutationTable[i].Bit))
-			CycleCounters[i]++;
+	for(Int16U i = 0; i < COMMUTATION_TABLE_SIZE; ++i)
+	{
+		Int8U RegNum = ZcRD_GetRegNum(i);
+		Int8U BitMask = ZcRD_GetBitmask(i);
 
-	for (Int16U i = 0; i < NUM_REGS_TOTAL; ++i)
+		if((PrevCurrentOutputValues[RegNum] & BitMask) != (CurrentOutputValues[RegNum] & BitMask)
+				&& (PrevCurrentOutputValues[RegNum] & BitMask) == 0)
+			CycleCounters[i]++;
+	}
+
+	for(Int16U i = 0; i < NUM_REGS_TOTAL; ++i)
 		PrevCurrentOutputValues[i] = CurrentOutputValues[i];
 }
 // ----------------------------------------
 
-static void ZcRD_ShiftAndLatch(Int8U CS, Int8U FirstReg, Int8U RegCount)
+void ZcRD_ShiftAndLatch(Int8U CS, Int8U FirstReg, Int8U RegCount)
 {
 	// Байты выгружаются от последнего регистра к первому — чипы каскадированы,
 	// и первая отправленная порция окажется в самом дальнем регистре.

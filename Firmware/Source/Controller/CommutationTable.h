@@ -121,8 +121,6 @@ typedef struct __CommutationTableItem
 // Variables
 //
 extern Int32U CycleCounters[COMMUTATION_TABLE_SIZE];
-extern const CommutationTableItem CommutationTable[COMMUTATION_TABLE_SIZE];
-
 extern Int64U CT_SaveTimer;
 
 #endif // __COMMTABLE_H
