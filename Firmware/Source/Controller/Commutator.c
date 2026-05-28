@@ -410,9 +410,6 @@ void COMM_Commutate(Int16U ActionID)
 			ZcRD_RegisterFlushWrite();
 			break;
 	}
-
-	// TODO: после уточнения datasheet реле IORelayBoard перенести задержку внутрь
-	// ZcRD_RegisterFlushWrite или минимизировать (сейчас — грубая 20 мс страховка).
 	DELAY_MS(COMM_DELAY_MS);
 }
 // ----------------------------------------
