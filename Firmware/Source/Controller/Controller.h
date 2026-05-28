@@ -25,33 +25,38 @@ typedef enum __DeviceSelfTestState
 	STS_InputBoard,
 	STS_ThermBoard,
 	STS_IOBoard
-
 } DeviceSelfTestState;
 
-typedef enum __DevType
+typedef enum __ModuleType
 {
-	SC_Type_MIAA = 3001,
-	SC_Type_MIDA = 3002,
-	SC_Type_MIFA = 3003,
-	SC_Type_MIHA = 3004,
-	SC_Type_MIHM = 3005,
-	SC_Type_MIHV = 3006,
-	SC_Type_MISM = 3007,
-	SC_Type_MISV = 3008,
-	SC_Type_MIXM = 3009,
-	SC_Type_MIXV = 3010,
-	// 2011
-	SC_Type_MISM2_CH = 3012,
-	// 2013
-	SC_Type_MISM2_SS_SD = 3014,
-	SC_Type_MIADAP = 3015,
-	SC_Type_MDAA = 3016,
-	SC_Type_MDFA_MDF2_DD = 3017,
-	SC_Type_MDSM = 3018,
-	SC_Type_MDSV = 3019,
-	SC_Type_MDFA_MDF2_SD = 3020,
-	SC_Type_MDA2 = 3021
-} DevType;
+	Module_None,
+	MDAA_DD,
+	MDDA_DD,
+	MDFA_DD,
+	MDSM_SD,
+	MDSV_SD,
+	MIAA_CE,
+	MIAA_HB,
+	MIAA_HC,
+	MIAA_LC,
+	MIFA_HB,
+	MIFA_HC,
+	MIFA_LC,
+	MIFA_SD,
+	MIDA_HB,
+	MIHA_HB,
+	MIHA_HC,
+	MIHA_LC,
+	MIHM_SS,
+	MIHV_SS,
+	MISM_CH,
+	MISM_DS,
+	MISM_SS,
+	MISV_SS,
+	MIXM_HB,
+	MIXM_LR_LRD,
+	MIXV_HB,
+} ModuleTypes;
 
 // Variables
 //
@@ -78,5 +83,6 @@ void CONTROL_UpdateWatchDog();
 void CONTROL_ResetOutputRegisters();
 void CONTROL_HandleFrontPanelLamp(CommutationState Commutation);
 void CONTROL_SafetyIrqTick();
+void CONTROL_FinishedWithProblem(Int16U Problem);
 
 #endif // __CONTROLLER_H

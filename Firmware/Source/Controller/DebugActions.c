@@ -65,3 +65,12 @@ void DBACT_ReadSftIn()
 	DataTable[REG_DBG] = LL_IsSafetyTrig() ? 1 : 0;
 }
 //-----------------------
+
+void DBACT_SpiSSPulse()
+{
+	Int16U Select = (Int16U)DataTable[REG_DBG];
+	if (Select < 1 || Select > 3)
+		return;
+	LL_SPI_TestSS((Int8U)(Select - 1));
+}
+//-----------------------

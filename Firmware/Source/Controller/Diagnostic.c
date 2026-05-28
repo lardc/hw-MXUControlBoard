@@ -41,6 +41,10 @@ bool DIAG_HandleDiagnosticAction(uint16_t ActionID, uint16_t *pUserError)
 			DBACT_ReadSftIn();
 			break;
 
+		case ACT_DBG_SPI_SS:
+			DBACT_SpiSSPulse();
+			break;
+
 		default:
 			return false;
 	}

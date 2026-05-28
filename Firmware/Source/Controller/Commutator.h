@@ -8,6 +8,9 @@
 // Include
 #include "stdinc.h"
 
+// Defines
+//
+#define PMXU_WAIT_MS 10
 // Types
 //
 typedef enum __CommutationState
@@ -21,18 +24,31 @@ typedef enum __CommutationState
 	COMM_Uf,
 	COMM_IcesOrIrrm,
 	COMM_Thermistor
-
 } CommutationState;
+
+typedef enum __DeviceProcessState
+{
+	DPS_None = 0,
+	DPS_Start,
+	DPS_CheckIcesAndDischarge,
+	DPS_CheckStatusAfterDischarge,
+	DPS_PMXUCommutate,
+	DPS_CheckStatusAfterCommutation,
+	DPS_MXUCommutate,
+} DeviceProcessState;
 
 // Variables
 //
 extern CommutationState COMM_State;
+extern DeviceProcessState COMM_ProcessState;
 
 // Functions
 //
-void COMM_DisconnectPE();
+void COMM_ConnectToGND();
 void COMM_Commutate(Int16U ActionID);
 void COMM_Default();
-Int16U COMM_ValidateRequest(Int16U ActionID, Int16U Position, Int16U DevCase, Int16U Scheme);
+void COMM_Process();
+bool COMM_ValidateRequest(Int16U ActionID, Int16U Position);
+Int32U COMM_CalcModuleType();
 
 #endif // __COMMUTATOR_H

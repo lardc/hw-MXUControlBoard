@@ -10,6 +10,9 @@
 #include "LowLevel.h"
 #include "Delay.h"
 
+// Variables
+//
+
 // Function prototypes
 //
 bool PMXU_CallAction(Int16U Action);
@@ -64,7 +67,7 @@ bool PMXU_CheckState(PMXUState State)
 }
 //--------------------------------------
 
-bool PMXU_SwitchCommutation(Int16U Position, Int16U DevCase, Int16U CommutationNumber)
+bool PMXU_SwitchCommutation(Int16U Position, Int16U DevCase, Int16U Scheme,Int16U CommutationNumber)
 {
 	if(PMXU_WriteReg(REG_PMXU_DUT_POSITION, Position))
 		if(PMXU_WriteReg(REG_PMXU_DEV_CASE, DevCase))

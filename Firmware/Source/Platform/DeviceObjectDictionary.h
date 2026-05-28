@@ -15,6 +15,7 @@
 #define ACT_DBG_SD_EN							27	// Проверка формирования напряжения самодиагностики
 #define ACT_DBG_SFT_ENABLE						28	// Импульс SFT_ENABLE (перевод OE сдвиговых регистров в high-Z)
 #define ACT_DBG_SFT_IN							29	// Прочитать состояние входа SFT_IN в REG_DBG
+#define ACT_DBG_SPI_SS							30 	// Проверка SPI_SS
 
 #define ACT_SET_ACTIVE							100	// Команда активации контура безопасности
 #define ACT_SET_INACTIVE						101	// Команда деактивации контура безопасности
@@ -59,7 +60,7 @@
 #define REG_MODULE_TYPE							70	// Module type(Заглушка)
 #define REG_DUT_POSITION						71	// Регистр выбора позции тестируемого прибора (1 или 2)
 #define REG_DUT_CASE							72	// Тип корпуса тестируемого прибора
-#define REG_DUT_SCHEME							73	// Схема подключения внутри корпуса (уточняется при поставке корпусов с разными схемами)
+#define REG_DUT_SCHEME							73	// Схема подключения внутри корпуса
 #define REG_DEV_CASE							REG_DUT_CASE	// legacy-алиас; использовать REG_DUT_CASE
 //
 #define REG_EN_SFTY_IN1							80	// Enable safety input #1(Заглушка)
@@ -84,12 +85,6 @@
 #define REG_DBG									150	// Отладочный регистр
 #define REG_DBG2								151	// Отладочный регистр
 //
-// Информация о последней коммутации (для диагностики повторных/некорректных вызовов)
-#define REG_LAST_CMD							152	// Код последней команды коммутации (ACT_COMM_*)
-#define REG_LAST_POS							153	// Позиция DUT на момент последней коммутации
-#define REG_LAST_CASE							154	// Тип корпуса DUT на момент последней коммутации
-#define REG_LAST_TYPE							155	// Схема DUT на момент последней коммутации (REG_DUT_SCHEME)
-
 // Регистры только чтение
 #define REG_SELF_TEST_FAILED_BOARD				200	// Номер ЭМ на котором возникла проблема с реле
 #define REG_SELF_TEST_FAILED_RELAY				201	// Номер реле, на котором обнаружен отказ
@@ -97,6 +92,12 @@
 #define REG_EXT_UNIT_ERROR_CODE					220	// Ошибка интерфейса PAU: код ошибки
 #define REG_EXT_UNIT_FUNCTION					221	// Ошибка интерфейса PAU: код функции
 #define REG_EXT_UNIT_EXT_DATA					222	// Ошибка интерфейса PAU: расширенная информация
+
+// Информация о последней коммутации (для диагностики повторных/некорректных вызовов)
+#define REG_LAST_CMD							252	// Код последней команды коммутации (ACT_COMM_*)
+#define REG_LAST_POS							253	// Позиция DUT на момент последней коммутации
+#define REG_LAST_CASE							254	// Тип корпуса DUT на момент последней коммутации
+#define REG_LAST_TYPE							255	// Схема DUT на момент последней коммутации (REG_DUT_SCHEME)
 // -----------------------------
 #define REG_FWINFO_SLAVE_NID					256	// Device CAN slave node ID
 #define REG_FWINFO_MASTER_NID					257	// Device CAN master node ID (if presented)
@@ -121,6 +122,10 @@
 
 // Problem
 #define PROBLEM_NONE							0
+#define PROBLEM_INCORRECT_DUT					1	// Выбранная команда не может быть выполнена над текущим DUT
+#define PROBLEM_PMXU_NOT_READY					2	// PMXU не готов
+#define PROBLEM_INCORRECT_COMMAND				3 	// Вызвана команда не обрабатываемая в валидации
+#define PROBLEM_PMXU_FAILED_TO_FINISH			4	// PMXU не смог\успел выолнить коммутацию и не перешел в состояние готовности
 
 //  Warning
 #define WARNING_NONE							0

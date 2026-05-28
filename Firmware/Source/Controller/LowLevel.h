@@ -19,6 +19,7 @@ bool LL_IsSafetyTrig();
 void LL_SPI_WriteByte(Int8U Data);
 // Импульс защёлки на CS выбранной платы (BoardIdx: 0=SS1 Input, 1=SS2 OutTherm, 2=SS3 IORelay)
 void LL_SPI_LatchBoard(Int8U BoardIdx);
+void LL_SPI_TestSS(Int8U BoardIdx);
 //
 // OE сдвиговых регистров через GPIO_SFT_ENABLE.
 // Enable=false → пин притянут к GND (OE разрешён, коммутация активна)
