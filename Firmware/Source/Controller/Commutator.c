@@ -104,13 +104,8 @@ void COMM_Process()
 				Int16U PMXU_Command;
 				switch(ActionID)
 				{
-					case ACT_COMM_IGES_POS_PULSE:
-					case ACT_COMM_IGES_NEG_PULSE:
-					case ACT_COMM_UGE_TH:
-					case ACT_COMM_THERMISTOR:
-					case ACT_COMM_NO_PE:
 					case ACT_COMM_NONE:
-						PMXU_Command = ACT_PMXU_COMM_NO_PE;
+						PMXU_Command = ACT_PMXU_COMM_PE;
 						break;
 					case ACT_COMM_UCE_SAT:
 						PMXU_Command = ACT_PMXU_COMM_VCESAT;
@@ -120,6 +115,9 @@ void COMM_Process()
 						break;
 					case ACT_COMM_ICES_OR_IRRM:
 						PMXU_Command = ACT_PMXU_COMM_ICES;
+						break;
+					default:
+						PMXU_Command = ACT_PMXU_COMM_NO_PE;
 						break;
 				}
 				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], DataTable[REG_DUT_CASE], DataTable[REG_DUT_SCHEME], PMXU_Command))
