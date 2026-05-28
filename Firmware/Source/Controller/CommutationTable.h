@@ -41,7 +41,7 @@
 #define SV_POT_POS_COMM_TO_SV_POT_NEG_COMM		59
 
 #define SV_POT_POS_TO_PMXU_POS		60
-#define SV_POT_NEG_TP_PMXU_NEG		61
+#define SV_POT_NEG_TO_PMXU_NEG		61
 //62-63 - не заняты
 
 #define TEST_IN_TO_GT_G				40
