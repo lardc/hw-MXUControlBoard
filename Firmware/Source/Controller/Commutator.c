@@ -37,7 +37,7 @@ void COMM_Default()
 }
 // ----------------------------------------
 
-void COMM_ConnectToGND()
+void COMM_ComposeDisconnectPE()
 {
 	ZcRD_OutputValuesCompose(GND_TO_EPOT1, TRUE);
 	ZcRD_OutputValuesCompose(GND_TO_EPOT2, TRUE);
@@ -174,7 +174,7 @@ void COMM_Commutate(Int16U ActionID)
 		case ACT_COMM_UGE_TH:
 		case ACT_COMM_UCE_SAT:
 			ZcRD_OutputValuesReset();
-			COMM_ConnectToGND();
+			COMM_ComposeDisconnectPE();
 			switch(ActionID)
 			{
 				case ACT_COMM_IGES_POS_PULSE:
@@ -293,7 +293,7 @@ void COMM_Commutate(Int16U ActionID)
 			COMM_State = COMM_Uf;
 
 			ZcRD_OutputValuesReset();
-			COMM_ConnectToGND();
+			COMM_ComposeDisconnectPE();
 			ZcRD_OutputValuesCompose(SV_POT_POS_COMM, TRUE);
 			ZcRD_OutputValuesCompose(SV_POT_NEG_COMM, TRUE);
 			ZcRD_OutputValuesCompose(SV_POT_POS_TO_EPOT, TRUE);
@@ -390,7 +390,7 @@ void COMM_Commutate(Int16U ActionID)
 				COMM_State = COMM_NoPE;
 
 			ZcRD_OutputValuesReset();
-			COMM_ConnectToGND();
+			COMM_ComposeDisconnectPE();
 			ZcRD_RegisterFlushWrite();
 			break;
 
@@ -398,7 +398,7 @@ void COMM_Commutate(Int16U ActionID)
 			COMM_State = COMM_Thermistor;
 
 			ZcRD_OutputValuesReset();
-			COMM_ConnectToGND();
+			COMM_ComposeDisconnectPE();
 
 			ZcRD_OutputValuesCompose(GT_G_T2, TRUE);
 			ZcRD_OutputValuesCompose(GT_GE_T1, TRUE);

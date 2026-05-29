@@ -100,7 +100,7 @@ SelfTestProcess SELFTEST_RelayCheck(const SelfTestTableItem (*RelayArray)[], Int
 	{
 		case CRS_Init:
 			ZcRD_OutputValuesReset();
-			COMM_ConnectToGND();
+			COMM_ComposeDisconnectPE();
 
 			RelayStages = CRS_StageConfig;
 			break;
@@ -154,7 +154,7 @@ SelfTestProcess SELFTEST_RelayCheck(const SelfTestTableItem (*RelayArray)[], Int
 
 		case CRS_IncStage:
 			ZcRD_OutputValuesReset();
-			COMM_ConnectToGND();
+			COMM_ComposeDisconnectPE();
 
 			StageCounter++;
 

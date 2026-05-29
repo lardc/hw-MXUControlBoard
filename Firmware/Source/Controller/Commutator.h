@@ -44,7 +44,7 @@ extern DeviceProcessState COMM_ProcessState;
 
 // Functions
 //
-void COMM_ConnectToGND();
+void COMM_ComposeDisconnectPE();
 void COMM_Commutate(Int16U ActionID);
 void COMM_Default();
 void COMM_Process();
