@@ -69,7 +69,7 @@ void LL_SafetyForceRelaysOff(bool Enable)
 }
 //-----------------------------
 
-void LL_SetStateSD_EN(bool State)
+void LL_SelfTestCurrentEnable(bool State)
 {
 	GPIO_SetState(GPIO_SD_EN, State);
 }

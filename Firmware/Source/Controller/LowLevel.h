@@ -11,7 +11,7 @@
 void LL_ToggleBoardLED();
 void LL_SetStateFPLed(bool State);
 void LL_ToggleFPLed();
-void LL_SetStateSD_EN(bool State);
+void LL_SelfTestCurrentEnable(bool State);
 float GetTestVoltage();
 bool LL_IsSafetyTrig();
 //

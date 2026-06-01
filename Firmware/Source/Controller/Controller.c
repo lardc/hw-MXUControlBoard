@@ -100,6 +100,8 @@ void CONTROL_SwitchToFault(Int16U Reason)
 
 	CONTROL_ResetOutputRegisters();
 	COMM_Default();
+	LL_SelfTestCurrentEnable(false);
+
 	CONTROL_SetDeviceState(DS_Fault);
 	DataTable[REG_FAULT_REASON] = Reason;
 	DataTable[REG_OP_RESULT] = OPRESULT_FAIL;
@@ -124,6 +126,7 @@ void CONTROL_ResetToDefaultState()
 {
 	CONTROL_ResetOutputRegisters();
 	COMM_Default();
+	LL_SelfTestCurrentEnable(false);
 
 	CONTROL_SetDeviceState(DS_None);
 	CONTROL_SetDeviceSubState(STS_None);
@@ -149,7 +152,6 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 		case ACT_ENABLE_POWER:
 			if(CONTROL_State == DS_None)
 			{
-				// PMXU_StartSelfTest не вызываем — режим SELFTEST у PMXU исключён.
 				if(PMXU_Enable())
 				{
 					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
@@ -194,8 +196,6 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			break;
 
 		case ACT_SET_ACTIVE:
-			// Аппаратный контур безопасности MXU303 всегда активен, команда
-			// включает выдачу Fault по срабатыванию SFT_IN
 			if(CONTROL_State == DS_Enabled || CONTROL_State == DS_SafetyActive)
 			{
 				if(PMXU_SafetyActivate())
