@@ -155,10 +155,8 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 				if(PMXU_Enable())
 				{
 					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
-					RelayStages = CRS_Init;
-
 					CONTROL_SetDeviceState(DS_InSelfTest);
-					CONTROL_SetDeviceSubState(STS_InputBoard);
+					CONTROL_SetDeviceSubState(STS_Start);
 				}
 			}
 			else if(CONTROL_State != DS_Enabled)
@@ -226,9 +224,8 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 				if(PMXU_IsReady())
 				{
 					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
-					RelayStages = CRS_Init;
 					CONTROL_SetDeviceState(DS_InSelfTest);
-					CONTROL_SetDeviceSubState(STS_InputBoard);
+					CONTROL_SetDeviceSubState(STS_Start);
 				}
 				else
 					*pUserError = ERR_DEVICE_NOT_READY;

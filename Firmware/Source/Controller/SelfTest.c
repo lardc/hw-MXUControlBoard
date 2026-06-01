@@ -4,188 +4,158 @@
 
 // Includes
 //
-#include "Math.h"
 #include "Controller.h"
 #include "DataTable.h"
 #include "Delay.h"
 #include "LowLevel.h"
 #include "CommutationTable.h"
 #include "ZcRegistersDriver.h"
-#include "SelfTestRelaysArrays.h"
 #include "Commutator.h"
+
+// Types
+typedef enum __CheckRelayStages
+{
+	CRS_Init,
+	CRS_CheckClosedCircuit,
+	CRS_RelaySwitch,
+	CRS_Finish
+} CheckRelayStages;
+typedef enum __SelfTestProcess
+{
+	STP_InProcess,
+	STP_Finished,
+	STP_FailedClosedCheck,
+	STP_FailedOpenedCheck
+} SelfTestProcess;
+
+// Macro
+#define SELFTEST_RelayCheck_macro(arr, failed_pointer) \
+	SELFTEST_RelayCheck((arr), sizeof(arr) / sizeof((arr)[0]), failed_pointer)
 
 // Variables
 //
 CheckRelayStages RelayStages = CRS_Init;
-SelfTestProcess SelfTestState = STP_None;
+
+const Int8U SelfTestInputBoard[] = {GT_G_COMM, GT_G_COMM};
 
 // Functions prototypes
 //
-SelfTestProcess SELFTEST_RelayCheck(const SelfTestTableItem (*RelayArray)[], Int16U Stages, Int16U Commutations, pFloat32 RelayErrorReg);
-void SELFTEST_RelayClose(SelfTestTableItem Relay, bool State);
+SelfTestProcess SELFTEST_RelayCheck(const Int8U *RelaysArray, Int8U RelaysArrayCounter, pInt8U FailedIndex);
+void SELFTEST_HandleFail(SelfTestProcess State, Int8U FailedIndex);
 
 // Functions
 //
 void SELFTEST_Process()
 {
+	Int8U FailedIndex = 0;
+	SelfTestProcess SelfTestState;
+
 	if(CONTROL_State == DS_InSelfTest)
 	{
 		switch(CONTROL_SubState)
 		{
-		case STS_InputBoard:
-			LL_SetStateSD_EN(true);
+			case STS_Start:
+				RelayStages = CRS_Init;
+				LL_SelfTestCurrentEnable(true);
+				CONTROL_SetDeviceSubState(STS_InputBoard);
+				break;
 
-			SelfTestState = SELFTEST_RelayCheck(&SelfTestInputBoard, ST_INPUT_BOARD_STAGES, ST_INPUT_BOARD_COMM, (pFloat32)&DataTable[REG_SELF_TEST_FAILED_RELAY]);
-
-			if(SelfTestState == STP_Fault)
-			{
-				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
-				DataTable[REG_SELF_TEST_FAILED_BOARD] = STS_InputBoard;
-				CONTROL_SwitchToFault(DF_SELF_TEST);
-			}
-			else
-				if(SelfTestState == STP_Finish)
+			case STS_InputBoard:
+				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestInputBoard, &FailedIndex);
+				if(SelfTestState == STP_Finished)
 					CONTROL_SetDeviceSubState(STS_ThermBoard);
-			break;
+				else
+					SELFTEST_HandleFail(SelfTestState, FailedIndex);
+				break;
 
-		case STS_ThermBoard:
-			SelfTestState = SELFTEST_RelayCheck(&SelfTestThermBoard, ST_THERM_BOARD_STAGES, ST_THERM_BOARD_COMM, (pFloat32)&DataTable[REG_SELF_TEST_FAILED_RELAY]);
+			case STS_ThermBoard:
+				/* дописать для этой и других плат */
+				break;
 
-			if(SelfTestState == STP_Fault)
-			{
-				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
-				DataTable[REG_SELF_TEST_FAILED_BOARD] = STS_ThermBoard;
-				CONTROL_SwitchToFault(DF_SELF_TEST);
-			}
-			else
-				if(SelfTestState == STP_Finish)
-					CONTROL_SetDeviceSubState(STS_IOBoard);
-			break;
+			case STS_Finish:
+				LL_SelfTestCurrentEnable(false);
+				CONTROL_SetDeviceState(DS_Enabled);
+				CONTROL_SetDeviceSubState(STS_None);
+				break;
 
-		case STS_IOBoard:
-			SelfTestState = SELFTEST_RelayCheck(&SelfTestIOBoard, ST_IO_BOARD_STAGES, ST_IO_BOARD_COMM, (pFloat32)&DataTable[REG_SELF_TEST_FAILED_RELAY]);
-
-			if(SelfTestState == STP_Fault)
-			{
-				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
-				DataTable[REG_SELF_TEST_FAILED_BOARD] = STS_IOBoard;
-				CONTROL_SwitchToFault(DF_SELF_TEST);
-			}
-			else
-			{
-				if(SelfTestState == STP_Finish)
-				{
-					LL_SetStateSD_EN(false);
-
-					CONTROL_SetDeviceState(DS_Enabled);
-					CONTROL_SetDeviceSubState(STS_None);
-				}
-			}
-			break;
-
-		default:
-			CONTROL_SubState = STS_InputBoard;
-			break;
+			default:
+				break;
 		}
 	}
 }
 //-----------------------------------------------
 
-SelfTestProcess SELFTEST_RelayCheck(const SelfTestTableItem (*RelayArray)[], Int16U Stages, Int16U Commutations, pFloat32 RelayErrorReg)
+void SELFTEST_HandleFail(SelfTestProcess State, Int8U FailedIndex)
 {
-	float RelayClosedTestVoltage = 0, RelayOpenedTestVoltage = 0;
-	static Int16U StageCounter = 0, CommutationCounter = 0;
+	DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
+	DataTable[REG_SELF_TEST_FAILED_STATE] = State;
+	DataTable[REG_SELF_TEST_FAILED_RELAY] = FailedIndex;
+	CONTROL_SwitchToFault(DF_SELF_TEST);
+}
+//-----------------------------------------------
+
+SelfTestProcess SELFTEST_RelayCheck(const Int8U *RelaysArray, Int8U RelaysArrayCounter, pInt8U FailedIndex)
+{
+	static Int8U TestCounter = 0;
+	static SelfTestProcess Result = STP_Finished;
 
 	switch(RelayStages)
 	{
 		case CRS_Init:
 			ZcRD_OutputValuesReset();
 			COMM_ComposeDisconnectPE();
+			Result = STP_Finished;
 
-			RelayStages = CRS_StageConfig;
+			// Замыкание всех реле контура
+			for(int i = 0; i < RelaysArrayCounter; i++)
+				ZcRD_OutputValuesCompose(RelaysArray[i], true);
+			ZcRD_RegisterFlushWrite();
+
+			RelayStages = CRS_CheckClosedCircuit;
 			break;
 
-		case CRS_StageConfig:
-			// Open all relays
-			for(int j = 0; j < Commutations; j++)
-				SELFTEST_RelayClose((*RelayArray)[j], false);
-
-			for(int j = 0; j < Commutations; j++)
+		case CRS_CheckClosedCircuit:
+			if(GetTestVoltage() > DataTable[REG_SFTST_CLOSED_MAX_VOLTAGE])
 			{
-				// Close all relays in current stage
-				if((*RelayArray)[j].Stage == StageCounter)
-					SELFTEST_RelayClose((*RelayArray)[j], true);
+				Result = STP_FailedClosedCheck;
+				RelayStages = CRS_Finish;
 			}
-			DELAY_MS(COMM_DELAY_MS);
-
-			RelayStages = CRS_RelaySwitching;
+			else
+			{
+				RelayStages = CRS_RelaySwitch;
+				TestCounter = 0;
+			}
 			break;
 
-		case CRS_RelaySwitching:
-			// Switching each relay and checking the test current
-			//
-			if((*RelayArray)[CommutationCounter].Stage == StageCounter)
+		case CRS_RelaySwitch:
+			if(TestCounter < RelaysArrayCounter)
 			{
-				RelayClosedTestVoltage = GetTestVoltage();
+				ZcRD_OutputValuesCompose(RelaysArray[TestCounter], false);
+				ZcRD_RegisterFlushWrite();
 
-				SELFTEST_RelayClose((*RelayArray)[CommutationCounter], false);
-				DELAY_MS(COMM_DELAY_MS);
-
-				RelayOpenedTestVoltage = GetTestVoltage();
-
-				SELFTEST_RelayClose((*RelayArray)[CommutationCounter], true);
-				DELAY_MS(COMM_DELAY_MS);
-
-				if(fabs(RelayClosedTestVoltage - RelayOpenedTestVoltage) < DataTable[REG_SFTST_V_ALLOWED_VOLTAGE])
+				if(GetTestVoltage() < DataTable[REG_SFTST_OPENED_MIN_VOLTAGE])
 				{
-					*RelayErrorReg = CommutationCounter;
-					return STP_Fault;
+					Result = STP_FailedOpenedCheck;
+					RelayStages = CRS_Finish;
+					if(FailedIndex)
+						*FailedIndex = RelaysArray[TestCounter];
+				}
+				else
+				{
+					ZcRD_OutputValuesCompose(RelaysArray[TestCounter], true);
+					TestCounter++;
 				}
 			}
-
-			CommutationCounter++;
-
-			if(CommutationCounter >= Commutations)
-			{
-				CommutationCounter = 0;
-				RelayStages = CRS_IncStage;
-			}
-			break;
-
-		case CRS_IncStage:
-			ZcRD_OutputValuesReset();
-			COMM_ComposeDisconnectPE();
-
-			StageCounter++;
-
-			if(StageCounter >= Stages)
-				RelayStages = CRS_Finish;
 			else
-				RelayStages = CRS_StageConfig;
+				RelayStages = CRS_Finish;
 			break;
 
 		case CRS_Finish:
 			ZcRD_OutputValuesReset();
 			ZcRD_RegisterFlushWrite();
-			StageCounter = 0;
-			CommutationCounter = 0;
-			*RelayErrorReg = 0;
-			RelayStages = CRS_Init;
-
-			return STP_Finish;
-			break;
+			return Result;
 	}
 
 	return STP_InProcess;
-}
-//-----------------------------------------------
-
-void SELFTEST_RelayClose(SelfTestTableItem Relay, bool State)
-{
-	if(Relay.Type == RT_NormalClosed)
-		ZcRD_OutputValuesCompose(Relay.Relay, !State);
-	else
-		ZcRD_OutputValuesCompose(Relay.Relay, State);
-	ZcRD_RegisterFlushWrite();
 }
 //-----------------------------------------------

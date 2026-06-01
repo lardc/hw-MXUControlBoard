@@ -86,7 +86,7 @@
 #define REG_DBG2								151	// Отладочный регистр
 //
 // Регистры только чтение
-#define REG_SELF_TEST_FAILED_BOARD				200	// Номер ЭМ на котором возникла проблема с реле
+#define REG_SELF_TEST_FAILED_STATE				200	// Указывает состояние реле или цепи, на котором произошёл сбой (замкнуто / разомкнуто)
 #define REG_SELF_TEST_FAILED_RELAY				201	// Номер реле, на котором обнаружен отказ
 
 #define REG_EXT_UNIT_ERROR_CODE					220	// Ошибка интерфейса CAN: код ошибки
