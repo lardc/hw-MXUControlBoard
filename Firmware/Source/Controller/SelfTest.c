@@ -42,6 +42,7 @@ const Int8U SelfTestInputBoard[] = {GT_G_COMM, GT_G_COMM};
 //
 SelfTestProcess SELFTEST_RelayCheck(const Int8U *RelaysArray, Int8U RelaysArrayCounter, pInt8U FailedIndex);
 void SELFTEST_HandleFail(SelfTestProcess State, Int8U FailedIndex);
+void SELFTEST_SwitchToNextState(SelfTestProcess CheckState, DeviceSelfTestState NextState, Int8U FailedIndex);
 
 // Functions
 //
@@ -62,10 +63,7 @@ void SELFTEST_Process()
 
 			case STS_InputBoard:
 				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestInputBoard, &FailedIndex);
-				if(SelfTestState == STP_Finished)
-					CONTROL_SetDeviceSubState(STS_ThermBoard);
-				else
-					SELFTEST_HandleFail(SelfTestState, FailedIndex);
+				SELFTEST_SwitchToNextState(SelfTestState, STS_ThermBoard, FailedIndex);
 				break;
 
 			case STS_ThermBoard:
@@ -82,6 +80,15 @@ void SELFTEST_Process()
 				break;
 		}
 	}
+}
+//-----------------------------------------------
+
+void SELFTEST_SwitchToNextState(SelfTestProcess CheckState, DeviceSelfTestState NextState, Int8U FailedIndex)
+{
+	if(CheckState == STP_Finished)
+		CONTROL_SetDeviceSubState(NextState);
+	else if(CheckState != STP_InProcess)
+		SELFTEST_HandleFail(CheckState, FailedIndex);
 }
 //-----------------------------------------------
 
@@ -119,6 +126,8 @@ SelfTestProcess SELFTEST_RelayCheck(const Int8U *RelaysArray, Int8U RelaysArrayC
 			{
 				Result = STP_FailedClosedCheck;
 				RelayStages = CRS_Finish;
+				if(FailedIndex)
+					*FailedIndex = 0xFF;
 			}
 			else
 			{
