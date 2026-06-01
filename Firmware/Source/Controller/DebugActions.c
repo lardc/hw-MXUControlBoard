@@ -34,19 +34,19 @@ void DBACT_WriteSPI()
 // Turn self-test voltage ON, measure voltage with ADC, compare result with DataTable constant
 void DBACT_SelfTestMeasure()
 {
-	LL_SetStateSD_EN(true);
+	LL_SelfTestCurrentEnable(true);
 	DELAY_MS(100);
 	DataTable[REG_DBG] = GetTestVoltage();
 	DELAY_MS(100);
-	LL_SetStateSD_EN(false);
+	LL_SelfTestCurrentEnable(false);
 }
 //-----------------------
 
 void DBACT_SDEN()
 {
-	LL_SetStateSD_EN(true);
+	LL_SelfTestCurrentEnable(true);
 	DELAY_MS(100);
-	LL_SetStateSD_EN(false);
+	LL_SelfTestCurrentEnable(false);
 }
 //-----------------------
 
@@ -54,9 +54,9 @@ void DBACT_SDEN()
 // затем возвращаем активное состояние (OD к GND, OE разрешён).
 void DBACT_SftEnablePulse()
 {
-	LL_SetStateSFT_ENABLE(true);
+	LL_SafetyForceRelaysOff(true);
 	DELAY_MS(1000);
-	LL_SetStateSFT_ENABLE(false);
+	LL_SafetyForceRelaysOff(false);
 }
 //-----------------------
 

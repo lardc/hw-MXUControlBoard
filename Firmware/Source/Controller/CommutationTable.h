@@ -83,8 +83,8 @@
 
 #define GE1_TO_G1					7	// Through 1kOhm resitor
 
-#define GND_TO_EPOT1				3
-#define GND_TO_CPOT1				2
+#define PE_TO_EPOT1					3
+#define PE_TO_CPOT1					2
 
 // OutHVRelayBoard-2
 #define GE_TO_GE2					17
@@ -96,8 +96,8 @@
 
 #define GE2_TO_G2					16	// Through 1kOhm resitor
 
-#define GND_TO_EPOT2				12
-#define GND_TO_CPOT2				11
+#define PE_TO_EPOT2					12
+#define PE_TO_CPOT2					11
 
 // ===== OutThermRelayBoard =====
 #define GT_G_T2						34

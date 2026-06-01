@@ -36,11 +36,4 @@
 #define SPI1_LSB_FIRST					false		// Передача младшим битов вперед
 // ----------------------------------------------
 
-// Device ID
-//
-// TODO: согласовать номер с ВУ до финальной выдачи прошивки.
-#define DEVICE_ID						303
-
-#define COMM_MODE_2
-
 #endif // __SYSCONFIG_H

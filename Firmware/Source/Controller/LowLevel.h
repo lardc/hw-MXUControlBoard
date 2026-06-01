@@ -11,7 +11,7 @@
 void LL_ToggleBoardLED();
 void LL_SetStateFPLed(bool State);
 void LL_ToggleFPLed();
-void LL_SetStateSD_EN(bool State);
+void LL_SelfTestCurrentEnable(bool State);
 float GetTestVoltage();
 bool LL_IsSafetyTrig();
 //
@@ -24,6 +24,6 @@ void LL_SPI_TestSS(Int8U BoardIdx);
 // OE сдвиговых регистров через GPIO_SFT_ENABLE.
 // Enable=false → пин притянут к GND (OE разрешён, коммутация активна)
 // Enable=true  → пин в high-Z (OE запрещён, все выходы сдвиговых регистров отключены)
-void LL_SetStateSFT_ENABLE(bool Enable);
+void LL_SafetyForceRelaysOff(bool Enable);
 
 #endif //__LOWLEVEL_H

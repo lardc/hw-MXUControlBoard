@@ -51,17 +51,17 @@
 
 // Сохраняемые регистры
 //
-#define REG_SFTST_V_ALLOWED_VOLTAGE				0	// Допустимое значение напряжения на замкнутом реле
+#define REG_SFTST_CLOSED_MAX_VOLTAGE			0	// Максимальное напряжение на замкнутом реле, мВ
 #define REG_SAFETY_DELAY						1	// Задержка отключения коммутации, мс
 #define REG_SAFETY_ACTIVE						2	// Активация системы безопасности
 #define REG_PMXU_CAN_ID							3	// PMXU CAN ID
 #define REG_PMXU_EMULATED						4	// PMXU emulation
+#define REG_SFTST_OPENED_MIN_VOLTAGE			5	// Минимальное напряжение на разомкнутом реле, мВ
 //
 #define REG_MODULE_TYPE							70	// Module type(Заглушка)
 #define REG_DUT_POSITION						71	// Регистр выбора позции тестируемого прибора (1 или 2)
 #define REG_DUT_CASE							72	// Тип корпуса тестируемого прибора
 #define REG_DUT_SCHEME							73	// Схема подключения внутри корпуса
-#define REG_DEV_CASE							REG_DUT_CASE	// legacy-алиас; использовать REG_DUT_CASE
 //
 #define REG_EN_SFTY_IN1							80	// Enable safety input #1(Заглушка)
 #define REG_EN_SFTY_IN2							81	// Enable safety input #2(Заглушка)
@@ -86,12 +86,12 @@
 #define REG_DBG2								151	// Отладочный регистр
 //
 // Регистры только чтение
-#define REG_SELF_TEST_FAILED_BOARD				200	// Номер ЭМ на котором возникла проблема с реле
+#define REG_SELF_TEST_FAILED_STATE				200	// Указывает состояние реле или цепи, на котором произошёл сбой (замкнуто / разомкнуто)
 #define REG_SELF_TEST_FAILED_RELAY				201	// Номер реле, на котором обнаружен отказ
 
-#define REG_EXT_UNIT_ERROR_CODE					220	// Ошибка интерфейса PAU: код ошибки
-#define REG_EXT_UNIT_FUNCTION					221	// Ошибка интерфейса PAU: код функции
-#define REG_EXT_UNIT_EXT_DATA					222	// Ошибка интерфейса PAU: расширенная информация
+#define REG_EXT_UNIT_ERROR_CODE					220	// Ошибка интерфейса CAN: код ошибки
+#define REG_EXT_UNIT_FUNCTION					221	// Ошибка интерфейса CAN: код функции
+#define REG_EXT_UNIT_EXT_DATA					222	// Ошибка интерфейса CAN: расширенная информация
 
 // Информация о последней коммутации (для диагностики повторных/некорректных вызовов)
 #define REG_LAST_CMD							252	// Код последней команды коммутации (ACT_COMM_*)
@@ -101,8 +101,7 @@
 // -----------------------------
 #define REG_FWINFO_SLAVE_NID					256	// Device CAN slave node ID
 #define REG_FWINFO_MASTER_NID					257	// Device CAN master node ID (if presented)
-#define REG_DEVICE_ID							258	// Device ID
-// 259
+
 #define REG_FWINFO_STR_LEN						260	// Length of the information string record
 #define REG_FWINFO_STR_BEGIN					261	// Begining of the information string record
 

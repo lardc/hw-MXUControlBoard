@@ -28,7 +28,6 @@ volatile DeviceState CONTROL_State = DS_None;
 volatile DeviceSelfTestState CONTROL_SubState = STS_None;
 static Boolean CycleActive = false;
 volatile Int64U CONTROL_TimeCounter = 0;
-static bool PrevSafetyTrig = false;
 static volatile bool SafetyFlushPending = false;
 //
 volatile Int16U CONTROL_DiagCounter = 0;
@@ -101,6 +100,8 @@ void CONTROL_SwitchToFault(Int16U Reason)
 
 	CONTROL_ResetOutputRegisters();
 	COMM_Default();
+	LL_SelfTestCurrentEnable(false);
+
 	CONTROL_SetDeviceState(DS_Fault);
 	DataTable[REG_FAULT_REASON] = Reason;
 	DataTable[REG_OP_RESULT] = OPRESULT_FAIL;
@@ -125,6 +126,7 @@ void CONTROL_ResetToDefaultState()
 {
 	CONTROL_ResetOutputRegisters();
 	COMM_Default();
+	LL_SelfTestCurrentEnable(false);
 
 	CONTROL_SetDeviceState(DS_None);
 	CONTROL_SetDeviceSubState(STS_None);
@@ -150,14 +152,11 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 		case ACT_ENABLE_POWER:
 			if(CONTROL_State == DS_None)
 			{
-				// PMXU_StartSelfTest не вызываем — режим SELFTEST у PMXU исключён.
 				if(PMXU_Enable())
 				{
 					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
-					RelayStages = CRS_Init;
-
 					CONTROL_SetDeviceState(DS_InSelfTest);
-					CONTROL_SetDeviceSubState(STS_InputBoard);
+					CONTROL_SetDeviceSubState(STS_Start);
 				}
 			}
 			else if(CONTROL_State != DS_Enabled)
@@ -195,8 +194,6 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			break;
 
 		case ACT_SET_ACTIVE:
-			// Аппаратный контур безопасности MXU303 всегда активен, команда
-			// включает выдачу Fault по срабатыванию SFT_IN
 			if(CONTROL_State == DS_Enabled || CONTROL_State == DS_SafetyActive)
 			{
 				if(PMXU_SafetyActivate())
@@ -227,9 +224,8 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 				if(PMXU_IsReady())
 				{
 					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
-					RelayStages = CRS_Init;
 					CONTROL_SetDeviceState(DS_InSelfTest);
-					CONTROL_SetDeviceSubState(STS_InputBoard);
+					CONTROL_SetDeviceSubState(STS_Start);
 				}
 				else
 					*pUserError = ERR_DEVICE_NOT_READY;
@@ -288,13 +284,10 @@ void CONTROL_SafetyCheck()
 	{
 		SafetyFlushPending = false;
 		// Запретить OE выходов, затем «кадр нулей», затем вернуть OE активным.
-		LL_SetStateSFT_ENABLE(true);
+		LL_SafetyForceRelaysOff(true);
 		ZcRD_OutputValuesReset();
 		ZcRD_RegisterFlushWrite();
-		LL_SetStateSFT_ENABLE(false);
-
-		// Подтверждение обнуления коммутации
-		DataTable[REG_DBG] = 0;
+		LL_SafetyForceRelaysOff(false);
 
 		// COMM_Default() в ISR не вызываем — тяжёлый 20 мс delay.
 		COMM_State = COMM_Def;
@@ -311,11 +304,13 @@ void CONTROL_SafetyCheck()
 
 void CONTROL_SafetyIrqTick()
 {
+	static bool PrevSafetyTrig = false;
 	bool SafetyTrig = LL_IsSafetyTrig();
 
 	if(SafetyTrig && !PrevSafetyTrig)
 	{
 		SafetyFlushPending = true;
+		LL_SafetyForceRelaysOff(true);
 	}
 
 	PrevSafetyTrig = SafetyTrig;

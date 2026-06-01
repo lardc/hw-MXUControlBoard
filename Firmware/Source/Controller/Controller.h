@@ -21,10 +21,12 @@ typedef enum __DeviceState
 
 typedef enum __DeviceSelfTestState
 {
-	STS_None = 0,
+	STS_None,
+	STS_Start,
 	STS_InputBoard,
 	STS_ThermBoard,
-	STS_IOBoard
+	STS_IOBoard,
+	STS_Finish,
 } DeviceSelfTestState;
 
 typedef enum __ModuleType
