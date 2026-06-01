@@ -39,10 +39,10 @@ void COMM_Default()
 
 void COMM_ComposeDisconnectPE()
 {
-	ZcRD_OutputValuesCompose(GND_TO_EPOT1, TRUE);
-	ZcRD_OutputValuesCompose(GND_TO_EPOT2, TRUE);
-	ZcRD_OutputValuesCompose(GND_TO_CPOT1, TRUE);
-	ZcRD_OutputValuesCompose(GND_TO_CPOT2, TRUE);
+	ZcRD_OutputValuesCompose(PE_TO_EPOT1, TRUE);
+	ZcRD_OutputValuesCompose(PE_TO_EPOT2, TRUE);
+	ZcRD_OutputValuesCompose(PE_TO_CPOT1, TRUE);
+	ZcRD_OutputValuesCompose(PE_TO_CPOT2, TRUE);
 }
 // ----------------------------------------
 
