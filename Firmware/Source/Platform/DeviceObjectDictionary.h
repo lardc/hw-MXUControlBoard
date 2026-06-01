@@ -51,11 +51,12 @@
 
 // Сохраняемые регистры
 //
-#define REG_SFTST_V_ALLOWED_VOLTAGE				0	// Допустимое значение напряжения на замкнутом реле
+#define REG_SFTST_CLOSED_MAX_VOLTAGE			0	// Максимальное напряжение на замкнутом реле, мВ
 #define REG_SAFETY_DELAY						1	// Задержка отключения коммутации, мс
 #define REG_SAFETY_ACTIVE						2	// Активация системы безопасности
 #define REG_PMXU_CAN_ID							3	// PMXU CAN ID
 #define REG_PMXU_EMULATED						4	// PMXU emulation
+#define REG_SFTST_OPENED_MIN_VOLTAGE			5	// Минимальное напряжение на разомкнутом реле, мВ
 //
 #define REG_MODULE_TYPE							70	// Module type(Заглушка)
 #define REG_DUT_POSITION						71	// Регистр выбора позции тестируемого прибора (1 или 2)
