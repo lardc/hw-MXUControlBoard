@@ -61,7 +61,6 @@
 #define REG_DUT_POSITION						71	// Регистр выбора позции тестируемого прибора (1 или 2)
 #define REG_DUT_CASE							72	// Тип корпуса тестируемого прибора
 #define REG_DUT_SCHEME							73	// Схема подключения внутри корпуса
-#define REG_DEV_CASE							REG_DUT_CASE	// legacy-алиас; использовать REG_DUT_CASE
 //
 #define REG_EN_SFTY_IN1							80	// Enable safety input #1(Заглушка)
 #define REG_EN_SFTY_IN2							81	// Enable safety input #2(Заглушка)
@@ -89,9 +88,9 @@
 #define REG_SELF_TEST_FAILED_BOARD				200	// Номер ЭМ на котором возникла проблема с реле
 #define REG_SELF_TEST_FAILED_RELAY				201	// Номер реле, на котором обнаружен отказ
 
-#define REG_EXT_UNIT_ERROR_CODE					220	// Ошибка интерфейса PAU: код ошибки
-#define REG_EXT_UNIT_FUNCTION					221	// Ошибка интерфейса PAU: код функции
-#define REG_EXT_UNIT_EXT_DATA					222	// Ошибка интерфейса PAU: расширенная информация
+#define REG_EXT_UNIT_ERROR_CODE					220	// Ошибка интерфейса CAN: код ошибки
+#define REG_EXT_UNIT_FUNCTION					221	// Ошибка интерфейса CAN: код функции
+#define REG_EXT_UNIT_EXT_DATA					222	// Ошибка интерфейса CAN: расширенная информация
 
 // Информация о последней коммутации (для диагностики повторных/некорректных вызовов)
 #define REG_LAST_CMD							252	// Код последней команды коммутации (ACT_COMM_*)
