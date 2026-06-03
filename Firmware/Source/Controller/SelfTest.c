@@ -233,6 +233,7 @@ SelfTestProcess SELFTEST_RelayCheck(const Int8U *RelaysArray, Int8U RelaysArrayC
 		case CRS_Finish:
 			ZcRD_OutputValuesReset();
 			ZcRD_RegisterFlushWrite();
+			RelayStages = CRS_Init;
 			return Result;
 	}
 
