@@ -169,6 +169,7 @@
 #define REG_PMXU_FAULT_REASON					193	// Регистр Fault
 #define REG_PMXU_DISABLE_REASON					194	// Регистр Disable
 #define REG_PMXU_WARNING						195	// Регистр Warning
+#define REG_PMXU_OP_RESULT						197	// Регистр результата операции
 //
 
 // PMXU faults

@@ -94,7 +94,7 @@ void COMM_Process()
 					CONTROL_FinishedWithProblem(PROBLEM_PMXU_FAILED_TO_FINISH);
 					COMM_ProcessState = DPS_None;
 				}
-				else
+				else if(PMXU_CheckOPResult(OPRESULT_OK))
 					COMM_ProcessState = DPS_PMXUCommutate;
 			}
 			break;
@@ -143,7 +143,7 @@ void COMM_Process()
 					CONTROL_FinishedWithProblem(PROBLEM_PMXU_FAILED_TO_FINISH);
 					COMM_ProcessState = DPS_None;
 				}
-				else
+				else if(PMXU_CheckOPResult(OPRESULT_OK))
 					COMM_ProcessState = DPS_MXUCommutate;
 			}
 			break;

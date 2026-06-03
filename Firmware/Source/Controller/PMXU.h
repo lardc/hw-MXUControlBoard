@@ -15,7 +15,6 @@ typedef enum __PMXUState
 	PS_Enabled			= 3,
 	PS_SafetyActive		= 4,
 	PS_SafetyTrig		= 5,
-	PS_InSelfTest		= 6,
 	PS_InProcess		= 7
 } PMXUState;
 
@@ -32,6 +31,7 @@ bool PMXU_SwitchCommutation(Int16U Position, Int16U DevCase, Int16U Scheme, Int1
 bool PMXU_Enable();
 bool PMXU_Disable();
 bool PMXU_CheckState(PMXUState State);
+bool PMXU_CheckOPResult(Int16U OPResult);
 bool PMXU_SafetyActivate();
 bool PMXU_SafetyDeactivate();
 bool PMXU_StartSelfTest();
