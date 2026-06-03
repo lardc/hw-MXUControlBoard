@@ -103,9 +103,9 @@
 #define GT_G_T2						34
 #define GT_G_AND_GT_GPOT_TO_T2		32
 #define GT_GPOT_TO_GT_G_T2			35
-#define GT_GE_T1					37
+#define GT_GE_T1					36
 #define GT_GE_AND_GT_GEPOT_TO_T1	33
-#define GT_GEPOT_TO_GT_GE_T1		36
+#define GT_GEPOT_TO_GT_GE_T1		37
 // 38,39 - не заняты
 
 #define CT_SAVE_TIMEOUT				1800000

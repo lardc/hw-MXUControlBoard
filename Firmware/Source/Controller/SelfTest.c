@@ -36,7 +36,27 @@ typedef enum __SelfTestProcess
 //
 CheckRelayStages RelayStages = CRS_Init;
 
-const Int8U SelfTestInputBoard[] = {GT_G_COMM, GT_G_COMM};
+const Int8U SelfTestInputBoard_Stage0[] = {GT_G_COMM, GT_GE_COMM, GT_G_COMM_TO_GE_COMM, TEST_IN_TO_GT_G, TEST_OUT_TO_GT_GE};
+const Int8U SelfTestInputBoard_Stage1[] = {GT_GPOT_COMM, GT_GEPOT_COMM, GT_GPOT_COMM_TO_GEPOT_COMM, TEST_IN_TO_GT_GPOT, TEST_OUT_TO_GT_GEPOT};
+const Int8U SelfTestInputBoard_Stage2[] = {SV_G_COMM, SV_GE_COMM, SV_G_COMM_TO_SV_GE_COMM, TEST_IN_TO_SV_G, TEST_OUT_TO_SV_GE};
+const Int8U SelfTestInputBoard_Stage3[] = {SV_POT_POS_COMM, SV_POT_NEG_COMM, SV_POT_POS_COMM_TO_SV_POT_NEG_COMM,
+											TEST_IN_TO_SV_POT_POS, TEST_OUT_TO_SV_POT_NEG};
+
+const Int8U SelfTestThermBoard_Stage0[] = {TEST_IN_TO_GT_G, TEST_OUT_TO_GT_GEPOT, GT_G_TO_G, GT_GE_TO_GE, G_TO_G1, GE_TO_GE1, GE1_TO_G1,
+											GT_GE_T1, GT_GEPOT_TO_GT_GE_T1};
+const Int8U SelfTestThermBoard_Stage1[] = {TEST_IN_TO_GT_GPOT, TEST_OUT_TO_GT_GE, GT_G_TO_GE, GT_GE_TO_G, G_TO_G2, GE_TO_GE2, GE2_TO_G2,
+											GT_G_T2, GT_GPOT_TO_GT_G_T2};
+
+const Int8U SelfTestHV1Board_Stage0[] = {TEST_IN_TO_GT_G, TEST_OUT_TO_GT_GEPOT, GT_G_TO_G, GT_GEPOT_TO_EPOT, G_TO_CPOT, CPOT_TO_EPOT1, EPOT_TO_EPOT1};
+const Int8U SelfTestHV1Board_Stage1[] = {TEST_IN_TO_SV_POT_POS, TEST_OUT_TO_SV_POT_NEG, SV_POT_POS_TO_EPOT, SV_POT_NEG_TO_CPOT, EPOT_TO_CPOT1,
+										CPOT_TO_CPOT1};
+const Int8U SelfTestHV1Board_Stage2[] = {TEST_IN_TO_GT_GPOT, TEST_OUT_TO_GT_GE, GT_GE_TO_GE, GT_GPOT_TO_G, G_TO_G1, GE1_TO_G1, GE_TO_GE1};
+
+const Int8U SelfTestHV2Board_Stage0[] = {TEST_IN_TO_GT_GPOT, TEST_OUT_TO_GT_GEPOT, GT_GPOT_TO_G, GT_GEPOT_TO_EPOT, G_TO_CPOT, CPOT_TO_EPOT2,
+											EPOT_TO_EPOT2};
+const Int8U SelfTestHV2Board_Stage1[] = {TEST_IN_TO_SV_POT_POS, TEST_OUT_TO_SV_POT_NEG, SV_POT_POS_TO_CPOT, SV_POT_NEG_TO_EPOT, EPOT_TO_CPOT2,
+											CPOT_TO_CPOT2};
+const Int8U SelfTestHV2Board_Stage2[] = {TEST_IN_TO_SV_G, TEST_OUT_TO_SV_GE, SV_G_TO_G, SV_GE_TO_GE, G_TO_G2, GE2_TO_G2, GE_TO_GE2};
 
 // Functions prototypes
 //
@@ -58,16 +78,67 @@ void SELFTEST_Process()
 			case STS_Start:
 				RelayStages = CRS_Init;
 				LL_SelfTestCurrentEnable(true);
-				CONTROL_SetDeviceSubState(STS_InputBoard);
+				CONTROL_SetDeviceSubState(STS_InputBoardStage0);
 				break;
 
-			case STS_InputBoard:
-				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestInputBoard, &FailedIndex);
-				SELFTEST_SwitchToNextState(SelfTestState, STS_ThermBoard, FailedIndex);
+			case STS_InputBoardStage0:
+				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestInputBoard_Stage0, &FailedIndex);
+				SELFTEST_SwitchToNextState(SelfTestState, STS_InputBoardStage1, FailedIndex);
 				break;
 
-			case STS_ThermBoard:
-				/* дописать для этой и других плат */
+			case STS_InputBoardStage1:
+				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestInputBoard_Stage1, &FailedIndex);
+				SELFTEST_SwitchToNextState(SelfTestState, STS_InputBoardStage2, FailedIndex);
+				break;
+
+			case STS_InputBoardStage2:
+				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestInputBoard_Stage2, &FailedIndex);
+				SELFTEST_SwitchToNextState(SelfTestState, STS_InputBoardStage3, FailedIndex);
+				break;
+
+			case STS_InputBoardStage3:
+				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestInputBoard_Stage3, &FailedIndex);
+				SELFTEST_SwitchToNextState(SelfTestState, STS_ThermBoardStage0, FailedIndex);
+				break;
+
+			case STS_ThermBoardStage0:
+				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestThermBoard_Stage0, &FailedIndex);
+				SELFTEST_SwitchToNextState(SelfTestState, STS_ThermBoardStage1, FailedIndex);
+				break;
+
+			case STS_ThermBoardStage1:
+				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestThermBoard_Stage1, &FailedIndex);
+				SELFTEST_SwitchToNextState(SelfTestState, STS_HV1BboardStage0, FailedIndex);
+				break;
+
+			case STS_HV1BboardStage0:
+				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestHV1Board_Stage0, &FailedIndex);
+				SELFTEST_SwitchToNextState(SelfTestState, STS_HV1BboardStage1, FailedIndex);
+				break;
+
+			case STS_HV1BboardStage1:
+				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestHV1Board_Stage1, &FailedIndex);
+				SELFTEST_SwitchToNextState(SelfTestState, STS_HV1BboardStage2, FailedIndex);
+				break;
+
+			case STS_HV1BboardStage2:
+				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestHV1Board_Stage2, &FailedIndex);
+				SELFTEST_SwitchToNextState(SelfTestState, STS_HV2BboardStage0, FailedIndex);
+				break;
+
+			case STS_HV2BboardStage0:
+				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestHV2Board_Stage0, &FailedIndex);
+				SELFTEST_SwitchToNextState(SelfTestState, STS_HV2BboardStage1, FailedIndex);
+				break;
+
+			case STS_HV2BboardStage1:
+				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestHV2Board_Stage1, &FailedIndex);
+				SELFTEST_SwitchToNextState(SelfTestState, STS_HV2BboardStage2, FailedIndex);
+				break;
+
+			case STS_HV2BboardStage2:
+				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestHV2Board_Stage2, &FailedIndex);
+				SELFTEST_SwitchToNextState(SelfTestState, STS_Finish, FailedIndex);
 				break;
 
 			case STS_Finish:
