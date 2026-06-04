@@ -23,9 +23,18 @@ typedef enum __DeviceSelfTestState
 {
 	STS_None,
 	STS_Start,
-	STS_InputBoard,
-	STS_ThermBoard,
-	STS_IOBoard,
+	STS_InputBoardStage0,
+	STS_InputBoardStage1,
+	STS_InputBoardStage2,
+	STS_InputBoardStage3,
+	STS_ThermBoardStage0,
+	STS_ThermBoardStage1,
+	STS_HV1BboardStage0,
+	STS_HV1BboardStage1,
+	STS_HV1BboardStage2,
+	STS_HV2BboardStage0,
+	STS_HV2BboardStage1,
+	STS_HV2BboardStage2,
 	STS_Finish,
 } DeviceSelfTestState;
 

@@ -51,8 +51,8 @@ CounterDescription CounterStorageDescription[] =
 	{"33. OutThermRelayBoard: T1 to GT_GE and GT_GE_POT"},
 	{"34. OutThermRelayBoard: GT_G to T2"},
 	{"35. OutThermRelayBoard: GT_G_POT to GT_G_T2"},
-	{"36. OutThermRelayBoard: GT_GE_POT to GT_GE_T1"},
-	{"37. OutThermRelayBoard: GT_GE to T1"},
+	{"36. OutThermRelayBoard: GT_GE to T1"},
+	{"37. OutThermRelayBoard: GT_GE_POT to GT_GE_T1"},
 	{"38. OutThermRelayBoard: not used"},
 	{"39. OutThermRelayBoard: not used"},
 	// ===== InputRelayBoard (SS1) =====

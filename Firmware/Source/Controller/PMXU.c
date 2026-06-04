@@ -67,6 +67,22 @@ bool PMXU_CheckState(PMXUState State)
 }
 //--------------------------------------
 
+bool PMXU_CheckOPResult(Int16U OPResult)
+{
+	Int16U PMXU_OPResult = 0;
+
+	if(DataTable[REG_PMXU_EMULATED])
+		return true;
+
+	if(BHL_ReadRegister(DataTable[REG_PMXU_CAN_ID], REG_PMXU_OP_RESULT, &PMXU_OPResult))
+		return (PMXU_OPResult == OPResult) ? true : false;
+	else
+		CONTROL_SwitchToFault(DF_PMXU_INTERFACE);
+
+	return false;
+}
+//--------------------------------------
+
 bool PMXU_SwitchCommutation(Int16U Position, Int16U DevCase, Int16U Scheme,Int16U CommutationNumber)
 {
 	if(PMXU_WriteReg(REG_PMXU_DUT_POSITION, Position))
