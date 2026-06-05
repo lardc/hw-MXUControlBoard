@@ -30,6 +30,7 @@ bool PMXU_ClearWarning();
 bool PMXU_SwitchCommutation(Int16U Position, Int16U DevCase, Int16U Scheme, Int16U CommutationNumber);
 bool PMXU_Enable();
 bool PMXU_Disable();
+bool PMXU_CheckReady();
 bool PMXU_CheckState(PMXUState State);
 bool PMXU_CheckOPResult(Int16U OPResult);
 bool PMXU_SafetyActivate();
