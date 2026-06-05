@@ -118,7 +118,7 @@
 #define DF_SELF_TEST							1	// Проблема реле
 #define DF_PMXU_INTERFACE						2	// Проблема связи по интерфейсу с PMXU
 #define DF_PMXU									3	// PMXU в состоянии Fault
-#define DF_PMXU_FAILED_TO_FINISH				4	// PMXU не смог\успел выолнить коммутацию и не перешел в состояние готовности
+#define DF_PMXU_FAILED_TO_FINISH				4	// PMXU не смог\успел выполнить коммутацию и не перешел в состояние готовности
 
 // Problem
 #define PROBLEM_NONE							0
@@ -174,7 +174,7 @@
 // PMXU faults
 //
 #define DF_PMXU_NONE							0
-#define DF_PMXU_SELFT_TEST						1	// Проблема с реле/контактором во время самотестирования
+#define DF_PMXU_SELF_TEST						1	// Проблема с реле/контактором во время самотестирования
 #define DF_PMXU_CONTACTOR_FAULT					2	// Проблема с контактором, маска неисправных в REG_FAILED_CONTACTOR
 #define DF_PMXU_LOW_PRESSURE					3	// Низкое давление в пневмосистеме
 

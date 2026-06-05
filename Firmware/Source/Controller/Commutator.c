@@ -81,7 +81,7 @@ void COMM_Process()
 		case DPS_CheckStatusAfterDischarge:
 			if(CONTROL_TimeCounter <= Timeout)
 			{
-				if(CONTROL_TimeCounter >= PMXU_SURVEY_DELAY)
+				if(CONTROL_TimeCounter >= SurveyDelay)
 				{
 					SurveyDelay = CONTROL_TimeCounter + PMXU_SURVEY_DELAY;
 					if(PMXU_CheckReady())
