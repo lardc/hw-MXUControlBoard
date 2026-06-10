@@ -21,7 +21,7 @@ GPIO_PortPinSettingMacro GPIO_LED				= {GPIOB, Pin_1};	// Мигающий зе�
 GPIO_PortPinSettingMacro GPIO_FP_LED			= {GPIOA, Pin_3};	// Индикатор на передней панели
 GPIO_PortPinSettingMacro GPIO_SD_EN				= {GPIOB, Pin_9};	// Формирование напряжения самодиагностики
 //
-// CS сдвиговых регистров на трёх ЭМ (аппаратный SPI1, MOSI/SCLK на PB4/PB3)
+// CS сдвиговых регистров на трёх ЭМ (аппаратный SPI1, MOSI/SCLK на PA7/PB3)
 GPIO_PortPinSettingMacro GPIO_SPI_SS1			= {GPIOA, Pin_15};	// InputRelayBoard
 GPIO_PortPinSettingMacro GPIO_SPI_SS2			= {GPIOB, Pin_6};	// OutThermRelayBoard
 GPIO_PortPinSettingMacro GPIO_SPI_SS3			= {GPIOB, Pin_7};	// IORelayBoard (бывшие OutHVRelayBoard-1/2)
@@ -38,7 +38,7 @@ GPIO_PortPinSettingMacro GPIO_ALT_UART1_RX		= {GPIOA, Pin_10};
 GPIO_PortPinSettingMacro GPIO_ALT_CAN1_TX		= {GPIOA, Pin_12};
 GPIO_PortPinSettingMacro GPIO_ALT_CAN1_RX		= {GPIOA, Pin_11};
 //
-GPIO_PortPinSettingMacro GPIO_ALT_SPI1_SCLK		= {GPIOB, Pin_3};	// SPI1 SCLK (AF5)
-GPIO_PortPinSettingMacro GPIO_ALT_SPI1_MOSI		= {GPIOB, Pin_4};	// SPI1 MOSI (AF5)
+GPIO_PortPinSettingMacro GPIO_ALT_SPI1_SCLK		= {GPIOB, Pin_3};	// SPI1 SCLK (AF5), LQFP48 pin 39
+GPIO_PortPinSettingMacro GPIO_ALT_SPI1_MOSI		= {GPIOA, Pin_7};	// SPI1 MOSI (AF5), LQFP48 pin 17; для теста — перемычка pin 17 → pin 40
 
 #endif // __BOARD_H

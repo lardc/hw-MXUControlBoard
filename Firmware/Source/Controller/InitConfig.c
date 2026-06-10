@@ -54,6 +54,9 @@ void INITCFG_ConfigIO()
 	//
 	GPIO_InitAltFunction(GPIO_ALT_SPI1_SCLK, AltFn_5);
 	GPIO_InitAltFunction(GPIO_ALT_SPI1_MOSI, AltFn_5);
+	// PB4 (LQFP48 pin 40): на плате подключён к DATA сдвиговых регистров; MOSI выведен на PA7.
+	// Для временного теста: перемычка pin 17 (PA7) → pin 40 (PB4).
+	GPIO_InitInput((GPIO_PortPinSetting){GPIOB, Pin_4}, NoPull);
 }
 
 //------------------------------------------------
