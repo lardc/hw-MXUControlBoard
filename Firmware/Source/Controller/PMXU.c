@@ -17,6 +17,7 @@
 //
 bool PMXU_CallAction(Int16U Action);
 bool PMXU_WriteReg(Int16U RegAddress, Int16U RegData);
+void PMXU_ReadRegister(Int16U RegAddress, Int16U* RegData);
 
 
 // Functions
@@ -51,6 +52,30 @@ bool PMXU_InFault()
 }
 //--------------------------------------
 
+bool PMXU_CheckReady()
+{
+	Int16U PMXU_State = 0;
+
+	if(DataTable[REG_PMXU_EMULATED])
+		return true;
+
+	if(BHL_ReadRegister(DataTable[REG_PMXU_CAN_ID], REG_PMXU_DEV_STATE, &PMXU_State))
+	{
+		if(PMXU_State == PS_Enabled || PMXU_State == PS_SafetyActive)
+			return true;
+		else if(PMXU_State == PS_Fault)
+		{
+			CONTROL_SwitchToFault(DF_PMXU);
+			return false;
+		}
+	}
+	else
+		CONTROL_SwitchToFault(DF_PMXU_INTERFACE);
+
+	return false;
+}
+//--------------------------------------
+
 bool PMXU_CheckState(PMXUState State)
 {
 	Int16U PMXU_State = 0;
@@ -75,7 +100,18 @@ bool PMXU_CheckOPResult(Int16U OPResult)
 		return true;
 
 	if(BHL_ReadRegister(DataTable[REG_PMXU_CAN_ID], REG_PMXU_OP_RESULT, &PMXU_OPResult))
-		return (PMXU_OPResult == OPResult) ? true : false;
+	{
+		if(PMXU_OPResult == OPRESULT_FAIL)
+		{
+			Int16U problem = 0;
+			PMXU_ReadRegister(REG_PMXU_PROBLEM, &problem);
+			DataTable[REG_DBG2] = problem;
+			CONTROL_FinishedWithProblem(PROBLEM_PMXU_FAILED_COMMAND);
+			return false;
+		}
+		else
+			return (PMXU_OPResult == OPResult) ? true : false;
+	}
 	else
 		CONTROL_SwitchToFault(DF_PMXU_INTERFACE);
 
@@ -158,3 +194,9 @@ bool PMXU_WriteReg(Int16U RegAddress, Int16U RegData)
 	}
 }
 //--------------------------------------
+
+void PMXU_ReadRegister(Int16U RegAddress, Int16U* RegData)
+{
+	if(!BHL_ReadRegister(DataTable[REG_PMXU_CAN_ID], RegAddress, RegData))
+		CONTROL_SwitchToFault(DF_PMXU_INTERFACE);
+}

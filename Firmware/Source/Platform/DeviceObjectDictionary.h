@@ -118,13 +118,14 @@
 #define DF_SELF_TEST							1	// Проблема реле
 #define DF_PMXU_INTERFACE						2	// Проблема связи по интерфейсу с PMXU
 #define DF_PMXU									3	// PMXU в состоянии Fault
+#define DF_PMXU_FAILED_TO_FINISH				4	// PMXU не смог\успел выполнить коммутацию и не перешел в состояние готовности
 
 // Problem
 #define PROBLEM_NONE							0
 #define PROBLEM_INCORRECT_DUT					1	// Выбранная команда не может быть выполнена над текущим DUT
 #define PROBLEM_PMXU_NOT_READY					2	// PMXU не готов
 #define PROBLEM_INCORRECT_COMMAND				3 	// Вызвана команда не обрабатываемая в валидации
-#define PROBLEM_PMXU_FAILED_TO_FINISH			4	// PMXU не смог\успел выолнить коммутацию и не перешел в состояние готовности
+#define PROBLEM_PMXU_FAILED_COMMAND				4	// OPResult PMXU выставился fail без фолта
 
 //  Warning
 #define WARNING_NONE							0
@@ -159,7 +160,6 @@
 // 114 — зарезервирован: бывший ACT_PMXU_COMM_QG удалён (команда ACT_COMM_QG выведена из MXU303)
 #define ACT_PMXU_COMM_NO_PE						115 // Отключение всех реле
 //
-
 // PMXU registers
 //
 #define REG_PMXU_DUT_POSITION					128	// Регистр выбора позции тестируемого прибора (1 или 2)
@@ -168,22 +168,18 @@
 #define REG_PMXU_DEV_STATE						192	// Регистр состояния
 #define REG_PMXU_FAULT_REASON					193	// Регистр Fault
 #define REG_PMXU_DISABLE_REASON					194	// Регистр Disable
-#define REG_PMXU_WARNING						195	// Регистр Warning
+#define REG_PMXU_PROBLEM						196	// Регистр Problem
 #define REG_PMXU_OP_RESULT						197	// Регистр результата операции
 //
-
 // PMXU faults
 //
 #define DF_PMXU_NONE							0
-#define DF_PMXU_PMXU_RELAY_SHORT				1	// Обнаружено залипшее реле
-#define DF_PMXU_CHAIN_BREAK						2	// Обнаружен разрыв при прозвонке
-#define DF_PMXU_CONTACTOR_COMMUTATION_FAULT		3	// Ошибка коммутации контакторов, номер неисправного контактора в регистре REG_PROBLEM
-#define DF_PMXU_LOW_PRESSURE					4	// Низкое давление в пневмосистеме
-#define DF_PMXU_SAFETY_ERROR					5	// Ошибка защитной цепи
+#define DF_PMXU_SELF_TEST						1	// Проблема с реле/контактором во время самотестирования
+#define DF_PMXU_CONTACTOR_FAULT					2	// Проблема с контактором, маска неисправных в REG_FAILED_CONTACTOR
+#define DF_PMXU_LOW_PRESSURE					3	// Низкое давление в пневмосистеме
 
-// PMXU warnings
-//
-#define WARNING_PMXU_NONE						0
-#define WARNING_PMXU_CONTACTORS_CHECK			1	// Требуется проверка контактных сопротивлений контакторов, номер контактора в регистре REG_PROBLEM
+// PMXU Problems
+#define PROBLEM_PMXU_NONE						0
+#define PROBLEM_PMXU_INCORRECT_DUT				1	// Выбранная команда не может быть выполнена над текущим DUT
 
 #endif //  __DEV_OBJ_DIC_H

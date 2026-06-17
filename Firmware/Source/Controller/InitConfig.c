@@ -33,6 +33,8 @@ void INITCFG_ConfigIO()
 
 	// Входы
 	GPIO_InitInput(GPIO_SFT_IN, NoPull);
+	// Для временного теста: перемычка pin 17 (PA7) → pin 40 (PB4).
+	GPIO_InitInput(GPIO_SPI_TEST_INPUT, NoPull);
 
 	// Начальная установка состояний выводов
 	GPIO_SetState(GPIO_LED, false);

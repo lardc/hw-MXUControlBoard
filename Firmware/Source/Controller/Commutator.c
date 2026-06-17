@@ -19,7 +19,8 @@
 //
 CommutationState COMM_State = COMM_Def;
 DeviceProcessState COMM_ProcessState = DPS_None;
-static Int16U Timeout = 0;
+static Int64U Timeout = 0;
+static Int64U CANRequestPause = 0;
 
 // Forward declarations
 //
@@ -34,6 +35,7 @@ void COMM_Default()
 	ZcRD_RegisterReset();
 
 	COMM_State = COMM_Def;
+	COMM_ProcessState = DPS_None;
 }
 // ----------------------------------------
 
@@ -49,22 +51,18 @@ void COMM_ComposeDisconnectPE()
 void COMM_Process()
 {
 	Int16U ActionID =  DataTable[REG_LAST_CMD];
+
 	switch(COMM_ProcessState)
 	{
 		case DPS_Start:
 			if(PMXU_InFault())
-			{
-				COMM_ProcessState = DPS_None;
 				CONTROL_SwitchToFault(DF_PMXU);
-			}
 			else if(!PMXU_IsReady())
-			{
-				COMM_ProcessState = DPS_None;
 				CONTROL_FinishedWithProblem(PROBLEM_PMXU_NOT_READY);
-			}
 			else
 				COMM_ProcessState = DPS_CheckIcesAndDischarge;
 			break;
+
 		case DPS_CheckIcesAndDischarge:
 			if(COMM_State == COMM_IcesOrIrrm && ActionID != ACT_COMM_ICES_OR_IRRM)
 			{
@@ -72,31 +70,28 @@ void COMM_Process()
 				{
 					COMM_ProcessState = DPS_CheckStatusAfterDischarge;
 					COMM_DischargeBeforeIcesOrIrrm();
-					Timeout = CONTROL_TimeCounter + PMXU_WAIT_MS;
+					Timeout = CONTROL_TimeCounter + PMXU_WAIT_LONG;
+					CANRequestPause = 0;
 				}
-				else
-					COMM_ProcessState = DPS_None;
 			}
 			else
 				COMM_ProcessState = DPS_PMXUCommutate;
 			break;
 
 		case DPS_CheckStatusAfterDischarge:
-			if(CONTROL_TimeCounter > Timeout)
+			if(CONTROL_TimeCounter <= Timeout)
 			{
-				if(PMXU_InFault())
+				if(CONTROL_TimeCounter >= CANRequestPause)
 				{
-					CONTROL_SwitchToFault(DF_PMXU);
-					COMM_ProcessState = DPS_None;
+					CANRequestPause = CONTROL_TimeCounter + PMXU_CAN_REQUEST_DELAY;
+					if(PMXU_CheckReady())
+						if(PMXU_CheckOPResult(OPRESULT_OK))
+							COMM_ProcessState = DPS_PMXUCommutate;
 				}
-				else if(!PMXU_IsReady())
-				{
-					CONTROL_FinishedWithProblem(PROBLEM_PMXU_FAILED_TO_FINISH);
-					COMM_ProcessState = DPS_None;
-				}
-				else if(PMXU_CheckOPResult(OPRESULT_OK))
-					COMM_ProcessState = DPS_PMXUCommutate;
 			}
+			else
+				CONTROL_SwitchToFault(DF_PMXU_FAILED_TO_FINISH);
+
 			break;
 
 		case DPS_PMXUCommutate:
@@ -122,30 +117,26 @@ void COMM_Process()
 				}
 				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], DataTable[REG_DUT_CASE], DataTable[REG_DUT_SCHEME], PMXU_Command))
 				{
-					Timeout = CONTROL_TimeCounter + PMXU_WAIT_MS;
+					Timeout = CONTROL_TimeCounter + PMXU_WAIT_LONG;
+					CANRequestPause = 0;
 					COMM_ProcessState = DPS_CheckStatusAfterCommutation;
 				}
-				else
-					COMM_ProcessState = DPS_None;
 			}
 			break;
 
 		case DPS_CheckStatusAfterCommutation:
-			if(CONTROL_TimeCounter > Timeout)
+			if(CONTROL_TimeCounter <= Timeout)
 			{
-				if(PMXU_InFault())
+				if(CONTROL_TimeCounter >= CANRequestPause)
 				{
-					CONTROL_SwitchToFault(DF_PMXU);
-					COMM_ProcessState = DPS_None;
+					CANRequestPause = CONTROL_TimeCounter + PMXU_CAN_REQUEST_DELAY;
+					if(PMXU_CheckReady())
+						if(PMXU_CheckOPResult(OPRESULT_OK))
+							COMM_ProcessState = DPS_MXUCommutate;
 				}
-				else if(!PMXU_IsReady())
-				{
-					CONTROL_FinishedWithProblem(PROBLEM_PMXU_FAILED_TO_FINISH);
-					COMM_ProcessState = DPS_None;
-				}
-				else if(PMXU_CheckOPResult(OPRESULT_OK))
-					COMM_ProcessState = DPS_MXUCommutate;
 			}
+			else
+				CONTROL_SwitchToFault(DF_PMXU_FAILED_TO_FINISH);
 			break;
 
 		case DPS_MXUCommutate:

@@ -10,7 +10,8 @@
 
 // Defines
 //
-#define PMXU_WAIT_MS 10
+#define PMXU_WAIT_LONG		500 // в мс
+#define PMXU_CAN_REQUEST_DELAY	20
 // Types
 //
 typedef enum __CommutationState
