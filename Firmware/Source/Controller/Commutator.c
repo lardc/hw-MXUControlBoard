@@ -19,8 +19,8 @@
 //
 CommutationState COMM_State = COMM_Def;
 DeviceProcessState COMM_ProcessState = DPS_None;
-static Int16U Timeout = 0;
-static Int16U CANRequestPause = 0;
+static Int64U Timeout = 0;
+static Int64U CANRequestPause = 0;
 
 // Forward declarations
 //
