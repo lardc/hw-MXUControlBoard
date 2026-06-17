@@ -105,7 +105,7 @@ bool PMXU_CheckOPResult(Int16U OPResult)
 		{
 			Int16U problem = 0;
 			PMXU_ReadRegister(REG_PMXU_PROBLEM, &problem);
-			DataTable[REG_DBG2] = (float)problem;
+			DataTable[REG_DBG2] = problem;
 			CONTROL_FinishedWithProblem(PROBLEM_PMXU_FAILED_COMMAND);
 			return false;
 		}

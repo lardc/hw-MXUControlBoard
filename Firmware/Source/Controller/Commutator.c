@@ -20,7 +20,7 @@
 CommutationState COMM_State = COMM_Def;
 DeviceProcessState COMM_ProcessState = DPS_None;
 static Int16U Timeout = 0;
-static Int16U SurveyDelay = 0;
+static Int16U CANRequestPause = 0;
 
 // Forward declarations
 //
@@ -71,7 +71,7 @@ void COMM_Process()
 					COMM_ProcessState = DPS_CheckStatusAfterDischarge;
 					COMM_DischargeBeforeIcesOrIrrm();
 					Timeout = CONTROL_TimeCounter + PMXU_WAIT_LONG;
-					SurveyDelay = 0;
+					CANRequestPause = 0;
 				}
 			}
 			else
@@ -81,9 +81,9 @@ void COMM_Process()
 		case DPS_CheckStatusAfterDischarge:
 			if(CONTROL_TimeCounter <= Timeout)
 			{
-				if(CONTROL_TimeCounter >= SurveyDelay)
+				if(CONTROL_TimeCounter >= CANRequestPause)
 				{
-					SurveyDelay = CONTROL_TimeCounter + PMXU_SURVEY_DELAY;
+					CANRequestPause = CONTROL_TimeCounter + PMXU_CAN_REQUEST_DELAY;
 					if(PMXU_CheckReady())
 						if(PMXU_CheckOPResult(OPRESULT_OK))
 							COMM_ProcessState = DPS_PMXUCommutate;
@@ -118,7 +118,7 @@ void COMM_Process()
 				if(PMXU_SwitchCommutation(DataTable[REG_DUT_POSITION], DataTable[REG_DUT_CASE], DataTable[REG_DUT_SCHEME], PMXU_Command))
 				{
 					Timeout = CONTROL_TimeCounter + PMXU_WAIT_LONG;
-					SurveyDelay = 0;
+					CANRequestPause = 0;
 					COMM_ProcessState = DPS_CheckStatusAfterCommutation;
 				}
 			}
@@ -127,9 +127,9 @@ void COMM_Process()
 		case DPS_CheckStatusAfterCommutation:
 			if(CONTROL_TimeCounter <= Timeout)
 			{
-				if(CONTROL_TimeCounter >= SurveyDelay)
+				if(CONTROL_TimeCounter >= CANRequestPause)
 				{
-					SurveyDelay = CONTROL_TimeCounter + PMXU_SURVEY_DELAY;
+					CANRequestPause = CONTROL_TimeCounter + PMXU_CAN_REQUEST_DELAY;
 					if(PMXU_CheckReady())
 						if(PMXU_CheckOPResult(OPRESULT_OK))
 							COMM_ProcessState = DPS_MXUCommutate;
