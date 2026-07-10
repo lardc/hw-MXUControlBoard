@@ -400,24 +400,11 @@ void COMM_Commutate(Int16U ActionID)
 
 				if(PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_ICES))
 				{
-					if (DUTPosition == DUT_POSITION_2	||
-						DUTCase == SC_Type_MIHV			||
-						DUTCase == SC_Type_MIHM			||
-						DUTCase == SC_Type_MISV			||
-						DUTCase == SC_Type_MISM2_SS_SD)
-					{
-						ZcRD_OutputValuesReset();
-						COMM_DisconnectPE();
-						ZcRD_OutputValuesCompose(MC_G_2_GE, TRUE);
-						ZcRD_RegisterFlushWrite();
-					}
-					else if (DUTPosition == DUT_POSITION_1)
-					{
-						ZcRD_OutputValuesReset();
-						COMM_DisconnectPE();
-						ZcRD_OutputValuesCompose(MC_G_GE, TRUE);
-						ZcRD_RegisterFlushWrite();
-					}
+					ZcRD_OutputValuesReset();
+					COMM_DisconnectPE();
+					ZcRD_OutputValuesCompose(MC_G_GE, TRUE);
+					ZcRD_OutputValuesCompose(MC_G_2_GE, TRUE);
+					ZcRD_RegisterFlushWrite();
 				}
 			}
 			break;
