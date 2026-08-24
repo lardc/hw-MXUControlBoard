@@ -154,7 +154,6 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			{
 				if(PMXU_Enable())
 				{
-					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
 					CONTROL_SetDeviceState(DS_InSelfTest);
 					CONTROL_SetDeviceSubState(STS_Start);
 				}
@@ -223,7 +222,6 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			{
 				if(PMXU_IsReady())
 				{
-					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
 					CONTROL_SetDeviceState(DS_InSelfTest);
 					CONTROL_SetDeviceSubState(STS_Start);
 				}

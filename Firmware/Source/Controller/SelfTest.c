@@ -76,6 +76,9 @@ void SELFTEST_Process()
 		switch(CONTROL_SubState)
 		{
 			case STS_Start:
+				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
+				DataTable[REG_SELF_TEST_FAILED_STATE] = 0;
+				DataTable[REG_SELF_TEST_FAILED_RELAY] = 0;
 				RelayStages = CRS_Init;
 				LL_SelfTestCurrentEnable(true);
 				CONTROL_SetDeviceSubState(STS_InputBoardStage0);
