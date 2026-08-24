@@ -391,6 +391,11 @@ void COMM_Commutate(Int16U ActionID)
 			ZcRD_OutputValuesReset();
 			COMM_ComposeDisconnectPE();
 
+			ZcRD_OutputValuesCompose(GT_G_COMM, TRUE);
+			ZcRD_OutputValuesCompose(GT_GE_COMM, TRUE);
+			ZcRD_OutputValuesCompose(GT_GPOT_COMM, TRUE);
+			ZcRD_OutputValuesCompose(GT_GEPOT_COMM, TRUE);
+
 			ZcRD_OutputValuesCompose(GT_G_T2, TRUE);
 			ZcRD_OutputValuesCompose(GT_GE_T1, TRUE);
 			ZcRD_OutputValuesCompose(GT_G_AND_GT_GPOT_TO_T2, TRUE);

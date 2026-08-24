@@ -57,6 +57,7 @@
 #define REG_PMXU_CAN_ID							3	// PMXU CAN ID
 #define REG_PMXU_EMULATED						4	// PMXU emulation
 #define REG_SFTST_OPENED_MIN_VOLTAGE			5	// Минимальное напряжение на разомкнутом реле, мВ
+#define REG_SFTST_CLOSED_MAX_VOLTAGE_RES		6	// Максимальное напряжение на замкнутом реле c встроенным резистором, мВ
 //
 #define REG_MODULE_TYPE							70	// Module type(Заглушка)
 #define REG_DUT_POSITION						71	// Регистр выбора позции тестируемого прибора (1 или 2)
