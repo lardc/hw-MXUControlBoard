@@ -176,6 +176,7 @@ SelfTestProcess SELFTEST_RelayCheck(const Int8U *RelaysArray, Int8U RelaysArrayC
 {
 	static Int8U TestCounter = 0;
 	static SelfTestProcess Result = STP_Finished;
+	static Int8U StoredFailedIndex = 0;
 
 	switch(RelayStages)
 	{
@@ -183,6 +184,7 @@ SelfTestProcess SELFTEST_RelayCheck(const Int8U *RelaysArray, Int8U RelaysArrayC
 			ZcRD_OutputValuesReset();
 			COMM_ComposeDisconnectPE();
 			Result = STP_Finished;
+			StoredFailedIndex = 0;
 
 			// Замыкание всех реле контура. НЗ остаются в замкнутом положении
 			for(int i = 0; i < RelaysArrayCounter; i++)
@@ -206,9 +208,8 @@ SelfTestProcess SELFTEST_RelayCheck(const Int8U *RelaysArray, Int8U RelaysArrayC
 				if(GetTestVoltage() > ClosedVoltage)
 				{
 					Result = STP_FailedClosedCheck;
+					StoredFailedIndex = 0xFF;
 					RelayStages = CRS_Finish;
-					if(FailedIndex)
-						*FailedIndex = 0xFF;
 				}
 				else
 				{
@@ -231,9 +232,8 @@ SelfTestProcess SELFTEST_RelayCheck(const Int8U *RelaysArray, Int8U RelaysArrayC
 				if(GetTestVoltage() < DataTable[REG_SFTST_OPENED_MIN_VOLTAGE])
 				{
 					Result = STP_FailedOpenedCheck;
+					StoredFailedIndex = RelaysArray[TestCounter];
 					RelayStages = CRS_Finish;
-					if(FailedIndex)
-						*FailedIndex = RelaysArray[TestCounter];
 				}
 				else
 				{
@@ -253,6 +253,8 @@ SelfTestProcess SELFTEST_RelayCheck(const Int8U *RelaysArray, Int8U RelaysArrayC
 			ZcRD_OutputValuesReset();
 			ZcRD_RegisterFlushWrite();
 			RelayStages = CRS_Init;
+			if(FailedIndex)
+				*FailedIndex = StoredFailedIndex;
 			return Result;
 	}
 
