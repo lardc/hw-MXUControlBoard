@@ -59,6 +59,8 @@
 #define REG_SFTST_OPENED_MIN_VOLTAGE			5	// Минимальное напряжение на разомкнутом реле, мВ
 #define REG_SFTST_CLOSED_MAX_VOLTAGE_RES		6	// Максимальное напряжение на замкнутом реле c встроенным резистором, мВ
 //
+// Несохраняемые регистры чтения-записи
+//
 #define REG_MODULE_TYPE							70	// Module type(Заглушка)
 #define REG_DUT_POSITION						71	// Регистр выбора позции тестируемого прибора (1 или 2)
 #define REG_DUT_CASE							72	// Тип корпуса тестируемого прибора
@@ -69,6 +71,13 @@
 #define REG_EN_SFTY_IN3							82	// Enable safety input #3(Заглушка)
 #define REG_EN_SFTY_IN4							83	// Enable safety input #4(Заглушка)
 //
+#define REG_DBG									92	// Отладочный регистр
+#define REG_DBG2								93	// Отладочный регистр
+#define REG_CNT_NUMBER							94	// Номер счетчика, в который будет записано значение из регистра 95
+#define REG_CNT_VALUE							95	// Значение, которое будет записано в счетчик
+//
+// Регистры только чтение
+//
 #define REG_DEV_STATE							96	// Регистр состояния
 #define REG_FAULT_REASON						97	// Регистр Fault
 #define REG_DISABLE_REASON						98	// Регистр Disable
@@ -77,16 +86,7 @@
 #define REG_OP_RESULT							101	// Регистр результата операции
 #define REG_SELF_TEST_OP_RESULT					102	// Регистр результата самотестирования
 #define REG_SUB_STATE							103	// Регистр вспомогательного состояния
-
-#define REG_CNT_NUMBER							104	// Номер счетчика, в который будет записано значение из регистра 105
-#define REG_CNT_VALUE							105	// Значение, которое будет записано в счетчик
-
-// Несохраняемые регистры чтения-записи
 //
-#define REG_DBG									150	// Отладочный регистр
-#define REG_DBG2								151	// Отладочный регистр
-//
-// Регистры только чтение
 #define REG_SELF_TEST_FAILED_STATE				200	// Указывает состояние реле или цепи, на котором произошёл сбой (замкнуто / разомкнуто)
 #define REG_SELF_TEST_FAILED_RELAY				201	// Номер реле, на котором обнаружен отказ
 
