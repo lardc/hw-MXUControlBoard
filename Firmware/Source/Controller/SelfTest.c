@@ -29,8 +29,8 @@ typedef enum __SelfTestProcess
 } SelfTestProcess;
 
 // Macro
-#define SELFTEST_RelayCheck_macro(arr, failed_pointer) \
-	SELFTEST_RelayCheck((arr), sizeof(arr) / sizeof((arr)[0]), failed_pointer)
+#define SELFTEST_RelayCheck_macro(arr, failed_pointer, use_closed_with_res) \
+	SELFTEST_RelayCheck((arr), sizeof(arr) / sizeof((arr)[0]), failed_pointer, use_closed_with_res)
 
 // Variables
 //
@@ -60,7 +60,7 @@ const Int8U SelfTestHV2Board_Stage2[] = {TEST_IN_TO_SV_G, TEST_OUT_TO_SV_GE, SV_
 
 // Functions prototypes
 //
-SelfTestProcess SELFTEST_RelayCheck(const Int8U *RelaysArray, Int8U RelaysArrayCounter, pInt8U FailedIndex);
+SelfTestProcess SELFTEST_RelayCheck(const Int8U *RelaysArray, Int8U RelaysArrayCounter, pInt8U FailedIndex, Boolean UseClosedWithRes);
 void SELFTEST_HandleFail(SelfTestProcess State, Int8U FailedIndex);
 void SELFTEST_SwitchToNextState(SelfTestProcess CheckState, DeviceSelfTestState NextState, Int8U FailedIndex);
 
@@ -76,68 +76,71 @@ void SELFTEST_Process()
 		switch(CONTROL_SubState)
 		{
 			case STS_Start:
+				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
+				DataTable[REG_SELF_TEST_FAILED_STATE] = 0;
+				DataTable[REG_SELF_TEST_FAILED_RELAY] = 0;
 				RelayStages = CRS_Init;
 				LL_SelfTestCurrentEnable(true);
 				CONTROL_SetDeviceSubState(STS_InputBoardStage0);
 				break;
 
 			case STS_InputBoardStage0:
-				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestInputBoard_Stage0, &FailedIndex);
+				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestInputBoard_Stage0, &FailedIndex, false);
 				SELFTEST_SwitchToNextState(SelfTestState, STS_InputBoardStage1, FailedIndex);
 				break;
 
 			case STS_InputBoardStage1:
-				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestInputBoard_Stage1, &FailedIndex);
+				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestInputBoard_Stage1, &FailedIndex, false);
 				SELFTEST_SwitchToNextState(SelfTestState, STS_InputBoardStage2, FailedIndex);
 				break;
 
 			case STS_InputBoardStage2:
-				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestInputBoard_Stage2, &FailedIndex);
+				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestInputBoard_Stage2, &FailedIndex, false);
 				SELFTEST_SwitchToNextState(SelfTestState, STS_InputBoardStage3, FailedIndex);
 				break;
 
 			case STS_InputBoardStage3:
-				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestInputBoard_Stage3, &FailedIndex);
+				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestInputBoard_Stage3, &FailedIndex, false);
 				SELFTEST_SwitchToNextState(SelfTestState, STS_ThermBoardStage0, FailedIndex);
 				break;
 
 			case STS_ThermBoardStage0:
-				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestThermBoard_Stage0, &FailedIndex);
+				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestThermBoard_Stage0, &FailedIndex, true);
 				SELFTEST_SwitchToNextState(SelfTestState, STS_ThermBoardStage1, FailedIndex);
 				break;
 
 			case STS_ThermBoardStage1:
-				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestThermBoard_Stage1, &FailedIndex);
+				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestThermBoard_Stage1, &FailedIndex, true);
 				SELFTEST_SwitchToNextState(SelfTestState, STS_HV1BboardStage0, FailedIndex);
 				break;
 
 			case STS_HV1BboardStage0:
-				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestHV1Board_Stage0, &FailedIndex);
+				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestHV1Board_Stage0, &FailedIndex, false);
 				SELFTEST_SwitchToNextState(SelfTestState, STS_HV1BboardStage1, FailedIndex);
 				break;
 
 			case STS_HV1BboardStage1:
-				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestHV1Board_Stage1, &FailedIndex);
+				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestHV1Board_Stage1, &FailedIndex, false);
 				SELFTEST_SwitchToNextState(SelfTestState, STS_HV1BboardStage2, FailedIndex);
 				break;
 
 			case STS_HV1BboardStage2:
-				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestHV1Board_Stage2, &FailedIndex);
+				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestHV1Board_Stage2, &FailedIndex, true);
 				SELFTEST_SwitchToNextState(SelfTestState, STS_HV2BboardStage0, FailedIndex);
 				break;
 
 			case STS_HV2BboardStage0:
-				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestHV2Board_Stage0, &FailedIndex);
+				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestHV2Board_Stage0, &FailedIndex, false);
 				SELFTEST_SwitchToNextState(SelfTestState, STS_HV2BboardStage1, FailedIndex);
 				break;
 
 			case STS_HV2BboardStage1:
-				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestHV2Board_Stage1, &FailedIndex);
+				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestHV2Board_Stage1, &FailedIndex, false);
 				SELFTEST_SwitchToNextState(SelfTestState, STS_HV2BboardStage2, FailedIndex);
 				break;
 
 			case STS_HV2BboardStage2:
-				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestHV2Board_Stage2, &FailedIndex);
+				SelfTestState = SELFTEST_RelayCheck_macro(SelfTestHV2Board_Stage2, &FailedIndex, true);
 				SELFTEST_SwitchToNextState(SelfTestState, STS_Finish, FailedIndex);
 				break;
 
@@ -172,10 +175,11 @@ void SELFTEST_HandleFail(SelfTestProcess State, Int8U FailedIndex)
 }
 //-----------------------------------------------
 
-SelfTestProcess SELFTEST_RelayCheck(const Int8U *RelaysArray, Int8U RelaysArrayCounter, pInt8U FailedIndex)
+SelfTestProcess SELFTEST_RelayCheck(const Int8U *RelaysArray, Int8U RelaysArrayCounter, pInt8U FailedIndex, Boolean UseClosedWithRes)
 {
 	static Int8U TestCounter = 0;
 	static SelfTestProcess Result = STP_Finished;
+	static Int8U StoredFailedIndex = 0;
 
 	switch(RelayStages)
 	{
@@ -183,46 +187,64 @@ SelfTestProcess SELFTEST_RelayCheck(const Int8U *RelaysArray, Int8U RelaysArrayC
 			ZcRD_OutputValuesReset();
 			COMM_ComposeDisconnectPE();
 			Result = STP_Finished;
+			StoredFailedIndex = 0;
 
-			// Замыкание всех реле контура
+			// Замыкание всех реле контура. НЗ остаются в замкнутом положении
 			for(int i = 0; i < RelaysArrayCounter; i++)
-				ZcRD_OutputValuesCompose(RelaysArray[i], true);
+				if(RelaysArray[i] == GE1_TO_G1 || RelaysArray[i] == GE2_TO_G2)
+					continue;
+				else
+					ZcRD_OutputValuesCompose(RelaysArray[i], true);
 			ZcRD_RegisterFlushWrite();
 
 			RelayStages = CRS_CheckClosedCircuit;
 			break;
 
 		case CRS_CheckClosedCircuit:
-			if(GetTestVoltage() > DataTable[REG_SFTST_CLOSED_MAX_VOLTAGE])
 			{
-				Result = STP_FailedClosedCheck;
-				RelayStages = CRS_Finish;
-				if(FailedIndex)
-					*FailedIndex = 0xFF;
-			}
-			else
-			{
-				RelayStages = CRS_RelaySwitch;
-				TestCounter = 0;
+				Int16U ClosedVoltage;
+				if(UseClosedWithRes)
+					ClosedVoltage = DataTable[REG_SFTST_CLOSED_MAX_VOLTAGE_RES];
+				else
+					ClosedVoltage = DataTable[REG_SFTST_CLOSED_MAX_VOLTAGE];
+
+				if(GetTestVoltage() > ClosedVoltage)
+				{
+					Result = STP_FailedClosedCheck;
+					StoredFailedIndex = 0xFF;
+					RelayStages = CRS_Finish;
+				}
+				else
+				{
+					RelayStages = CRS_RelaySwitch;
+					TestCounter = 0;
+				}
 			}
 			break;
 
 		case CRS_RelaySwitch:
 			if(TestCounter < RelaysArrayCounter)
 			{
-				ZcRD_OutputValuesCompose(RelaysArray[TestCounter], false);
+				if(RelaysArray[TestCounter] == GE1_TO_G1 || RelaysArray[TestCounter] == GE2_TO_G2)
+					ZcRD_OutputValuesCompose(RelaysArray[TestCounter], true);
+				else
+					ZcRD_OutputValuesCompose(RelaysArray[TestCounter], false);
+
 				ZcRD_RegisterFlushWrite();
 
 				if(GetTestVoltage() < DataTable[REG_SFTST_OPENED_MIN_VOLTAGE])
 				{
 					Result = STP_FailedOpenedCheck;
+					StoredFailedIndex = RelaysArray[TestCounter];
 					RelayStages = CRS_Finish;
-					if(FailedIndex)
-						*FailedIndex = RelaysArray[TestCounter];
 				}
 				else
 				{
-					ZcRD_OutputValuesCompose(RelaysArray[TestCounter], true);
+					if(RelaysArray[TestCounter] == GE1_TO_G1 || RelaysArray[TestCounter] == GE2_TO_G2)
+						ZcRD_OutputValuesCompose(RelaysArray[TestCounter], false);
+					else
+						ZcRD_OutputValuesCompose(RelaysArray[TestCounter], true);
+
 					TestCounter++;
 				}
 			}
@@ -234,6 +256,8 @@ SelfTestProcess SELFTEST_RelayCheck(const Int8U *RelaysArray, Int8U RelaysArrayC
 			ZcRD_OutputValuesReset();
 			ZcRD_RegisterFlushWrite();
 			RelayStages = CRS_Init;
+			if(FailedIndex)
+				*FailedIndex = StoredFailedIndex;
 			return Result;
 	}
 

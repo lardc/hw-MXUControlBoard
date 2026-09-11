@@ -212,7 +212,15 @@ void COMM_Commutate(Int16U ActionID)
 				switch(ModuleType)
 				{
 					case MIAA_CE:
+					case MIA2_CE:
 					case MIAA_HB:
+					case MIA2_HB:
+					case MIF2_HB:
+					case MIH2_HB:
+					case MID2_HB:
+					case MIA2_LC:
+					case MIF2_LC:
+					case MIH2_LC:
 					case MIAA_LC:
 					case MIDA_HB:
 					case MIFA_HB:
@@ -228,6 +236,10 @@ void COMM_Commutate(Int16U ActionID)
 					case MIXM_HB:
 					case MIXM_LR_LRD:
 					case MIXV_HB:
+					case CERT_MIXM_HB:
+					case CERT_MIHM_SS:
+					case BES_23_IGTU_HB:
+					case MIRA_HB:
 						if(ActionID == ACT_COMM_UGE_TH || ActionID == ACT_COMM_UCE_SAT)
 							ZcRD_OutputValuesCompose(CPOT_TO_CPOT1, TRUE);
 						else
@@ -246,6 +258,7 @@ void COMM_Commutate(Int16U ActionID)
 				switch(ModuleType)
 				{
 					case MIAA_CE:
+					case MIA2_CE:
 						ZcRD_OutputValuesCompose(EPOT_TO_EPOT1, TRUE);
 						ZcRD_OutputValuesCompose(GE_TO_GE2, TRUE);
 						ZcRD_OutputValuesCompose(G_TO_G2, TRUE);
@@ -255,6 +268,13 @@ void COMM_Commutate(Int16U ActionID)
 							ZcRD_OutputValuesCompose(EPOT_TO_CPOT2, TRUE);
 						break;
 					case MIAA_HB:
+					case MIA2_HB:
+					case MIF2_HB:
+					case MIH2_HB:
+					case MID2_HB:
+					case MIA2_HC:
+					case MIF2_HC:
+					case MIH2_HC:
 					case MIAA_HC:
 					case MIDA_HB:
 					case MIFA_HB:
@@ -264,6 +284,9 @@ void COMM_Commutate(Int16U ActionID)
 					case MISM_DS:
 					case MIXM_HB:
 					case MIXV_HB:
+					case CERT_MIXM_HB:
+					case BES_23_IGTU_HB:
+					case MIRA_HB:
 						if(ActionID == ACT_COMM_UGE_TH || ActionID == ACT_COMM_UCE_SAT)
 							ZcRD_OutputValuesCompose(CPOT_TO_CPOT2, TRUE);
 						else
@@ -294,7 +317,8 @@ void COMM_Commutate(Int16U ActionID)
 			{
 				switch(ModuleType)
 				{
-					case MIFA_SD:
+					case MDFA_SD:
+					case MDF2_SD:
 						ZcRD_OutputValuesCompose(EPOT_TO_EPOT2, TRUE);
 						ZcRD_OutputValuesCompose(CPOT_TO_CPOT2, TRUE);
 						break;
@@ -303,12 +327,25 @@ void COMM_Commutate(Int16U ActionID)
 					case MDFA_DD:
 					case MDSM_SD:
 					case MDSV_SD:
+					case MIA2_HC:
+					case MIF2_HC:
+					case MIH2_HC:
 					case MIAA_HC:
 					case MIFA_HC:
 					case MIHA_HC:
-
+					case MIA2_CE:
 					case MIAA_CE:
+					case MDA2_DD:
+					case MDD2_DD:
+					case MDF2_DD:
 					case MIAA_HB:
+					case MIA2_HB:
+					case MIF2_HB:
+					case MIH2_HB:
+					case MID2_HB:
+					case MIA2_LC:
+					case MIF2_LC:
+					case MIH2_LC:
 					case MIAA_LC:
 					case MIDA_HB:
 					case MIFA_HB:
@@ -324,6 +361,9 @@ void COMM_Commutate(Int16U ActionID)
 					case MIXM_HB:
 					case MIXM_LR_LRD:
 					case MIXV_HB:
+					case CERT_MIXM_HB:
+					case CERT_MIHM_SS:
+					case MIRA_HB:
 						ZcRD_OutputValuesCompose(EPOT_TO_EPOT1, TRUE);
 						ZcRD_OutputValuesCompose(CPOT_TO_CPOT1, TRUE);
 						break;
@@ -342,6 +382,7 @@ void COMM_Commutate(Int16U ActionID)
 						ZcRD_OutputValuesCompose(EPOT_TO_CPOT2, TRUE);
 						break;
 					case MIAA_CE:
+					case MIA2_CE:
 						ZcRD_OutputValuesCompose(EPOT_TO_EPOT1, TRUE);
 						ZcRD_OutputValuesCompose(CPOT_TO_CPOT2, TRUE);
 						break;
@@ -352,7 +393,19 @@ void COMM_Commutate(Int16U ActionID)
 					case MIFA_LC:
 					case MIHA_LC:
 					case MISM_CH:
-
+					case MIA2_HB:
+					case MIF2_HB:
+					case MIH2_HB:
+					case MID2_HB:
+					case MIA2_HC:
+					case MIF2_HC:
+					case MIH2_HC:
+					case MIA2_LC:
+					case MIF2_LC:
+					case MIH2_LC:
+					case MDA2_DD:
+					case MDD2_DD:
+					case MDF2_DD:
 					case MIAA_HB:
 					case MIAA_HC:
 					case MIDA_HB:
@@ -363,6 +416,7 @@ void COMM_Commutate(Int16U ActionID)
 					case MISM_DS:
 					case MIXM_HB:
 					case MIXV_HB:
+					case CERT_MIXM_HB:
 						ZcRD_OutputValuesCompose(EPOT_TO_EPOT2, TRUE);
 						ZcRD_OutputValuesCompose(CPOT_TO_CPOT2, TRUE);
 						break;
@@ -390,6 +444,11 @@ void COMM_Commutate(Int16U ActionID)
 
 			ZcRD_OutputValuesReset();
 			COMM_ComposeDisconnectPE();
+
+			ZcRD_OutputValuesCompose(GT_G_COMM, TRUE);
+			ZcRD_OutputValuesCompose(GT_GE_COMM, TRUE);
+			ZcRD_OutputValuesCompose(GT_GPOT_COMM, TRUE);
+			ZcRD_OutputValuesCompose(GT_GEPOT_COMM, TRUE);
 
 			ZcRD_OutputValuesCompose(GT_G_T2, TRUE);
 			ZcRD_OutputValuesCompose(GT_GE_T1, TRUE);
@@ -459,6 +518,12 @@ bool COMM_ValidateRequest(Int16U ActionID, Int16U Position)
 				case MIDA_HB:
 				case MIXM_LR_LRD:
 				case MIXM_HB:
+				case MDDA_DD:
+				case MDD2_DD:
+				case MID2_HB:
+				case CERT_MIXM_HB:
+				case BES_23_IGTU_HB:
+				case MIRA_HB:
 					return true;
 				default:
 					CONTROL_FinishedWithProblem(PROBLEM_INCORRECT_DUT);
@@ -479,7 +544,15 @@ bool COMM_ValidateIGBT(Int16U Position, ModuleTypes Module)
 		switch(Module)
 		{
 			case MIAA_CE:
+			case MIA2_CE:
 			case MIAA_HB:
+			case MIA2_HB:
+			case MIF2_HB:
+			case MIH2_HB:
+			case MID2_HB:
+			case MIA2_LC:
+			case MIF2_LC:
+			case MIH2_LC:
 			case MIAA_LC:
 			case MIDA_HB:
 			case MIFA_HB:
@@ -495,6 +568,10 @@ bool COMM_ValidateIGBT(Int16U Position, ModuleTypes Module)
 			case MIXM_HB:
 			case MIXM_LR_LRD:
 			case MIXV_HB:
+			case CERT_MIXM_HB:
+			case CERT_MIHM_SS:
+			case BES_23_IGTU_HB:
+			case MIRA_HB:
 				return true;
 			default:
 				return false;
@@ -505,7 +582,15 @@ bool COMM_ValidateIGBT(Int16U Position, ModuleTypes Module)
 		switch(Module)
 		{
 			case MIAA_CE:
+			case MIA2_CE:
 			case MIAA_HB:
+			case MIA2_HB:
+			case MIF2_HB:
+			case MIH2_HB:
+			case MID2_HB:
+			case MIA2_HC:
+			case MIF2_HC:
+			case MIH2_HC:
 			case MIAA_HC:
 			case MIDA_HB:
 			case MIFA_HB:
@@ -515,6 +600,9 @@ bool COMM_ValidateIGBT(Int16U Position, ModuleTypes Module)
 			case MISM_DS:
 			case MIXM_HB:
 			case MIXV_HB:
+			case CERT_MIXM_HB:
+			case BES_23_IGTU_HB:
+			case MIRA_HB:
 				return true;
 			default:
 				return false;
@@ -535,9 +623,16 @@ bool COMM_ValidateDiode(Int16U Position, ModuleTypes Module)
 			case MDFA_DD:
 			case MDSM_SD:
 			case MDSV_SD:
+			case MIA2_HC:
+			case MIF2_HC:
+			case MIH2_HC:
+			case MDA2_DD:
+			case MDD2_DD:
+			case MDF2_DD:
 			case MIAA_HC:
 			case MIFA_HC:
-			case MIFA_SD:
+			case MDFA_SD:
+			case MDF2_SD:
 			case MIHA_HC:
 				return true;
 			default:
@@ -548,6 +643,12 @@ bool COMM_ValidateDiode(Int16U Position, ModuleTypes Module)
 	{
 		switch(Module)
 		{
+			case MIA2_LC:
+			case MIF2_LC:
+			case MIH2_LC:
+			case MDA2_DD:
+			case MDD2_DD:
+			case MDF2_DD:
 			case MDAA_DD:
 			case MDDA_DD:
 			case MDFA_DD:
