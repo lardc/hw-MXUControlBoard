@@ -145,7 +145,6 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 	*pUserError = ERR_NONE;
 	
 	CONTROL_SafetyCheck();
-	CONTROL_SaveLastRequest(ActionID);
 
 	switch (ActionID)
 	{
@@ -208,6 +207,11 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			break;
 
 		case ACT_SET_INACTIVE:
+			if(LL_IsSafetyTrig())
+			{
+				*pUserError = ERR_OPERATION_BLOCKED;
+				break;
+			}
 			if(CONTROL_State == DS_Enabled || CONTROL_State == DS_SafetyActive || CONTROL_State == DS_SafetyTrig)
 			{
 				if(PMXU_SafetyDeactivate())
@@ -248,6 +252,7 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			else
 			{
 				CONTROL_ResetOutputRegisters();
+				CONTROL_SaveLastRequest(ActionID);
 
 				bool Validation = COMM_ValidateRequest(ActionID, (Int16U)DataTable[REG_DUT_POSITION]);
 

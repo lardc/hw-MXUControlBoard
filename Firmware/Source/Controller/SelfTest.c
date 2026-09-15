@@ -146,6 +146,7 @@ void SELFTEST_Process()
 
 			case STS_Finish:
 				LL_SelfTestCurrentEnable(false);
+				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_OK;
 				CONTROL_SetDeviceState(DS_Enabled);
 				CONTROL_SetDeviceSubState(STS_None);
 				break;

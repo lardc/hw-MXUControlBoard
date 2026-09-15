@@ -152,10 +152,8 @@
 #define ACT_PMXU_SET_ACTIVE						100	// Команда активации контура безопасности
 #define ACT_PMXU_SET_INACTIVE					101	// Команда деактивации контура безопасности
 //
-#define ACT_PMXU_SELFTEST						120	// Команда завпуска SelfTest
-//
 #define ACT_PMXU_COMM_PE						110 // Отключение всех реле, замыкание шин на PE
-#define ACT_PMXU_COMM_ICES						111 // Режим измерения тока утечки коллектор-эмиттер (ICES/IRRM)
+#define ACT_PMXU_COMM_ICES_OR_IRRM				111 // Режим измерения ICES (IGBT) / IRRM (диод)
 #define ACT_PMXU_COMM_VCESAT					112 // Режим измерения напряжения насыщения коллектор-эмиттер IGBT транзисторов
 #define ACT_PMXU_COMM_VF						113 // Режим измерения постоянного прямого напряжения диода чоппера и обратно-параллельного диода
 // 114 — зарезервирован: бывший ACT_PMXU_COMM_QG удалён (команда ACT_COMM_QG выведена из MXU303)
@@ -163,8 +161,9 @@
 //
 // PMXU registers
 //
-#define REG_PMXU_DUT_POSITION					128	// Регистр выбора позции тестируемого прибора (1 или 2)
+#define REG_PMXU_DUT_POSITION					128	// Регистр выбора позиции тестируемого прибора (1 или 2)
 #define REG_PMXU_DEV_CASE						129	// Тип корпуса прибора
+#define REG_PMXU_DUT_SCHEME						130	// Схема подключения внутри корпуса
 
 #define REG_PMXU_DEV_STATE						192	// Регистр состояния
 #define REG_PMXU_FAULT_REASON					193	// Регистр Fault

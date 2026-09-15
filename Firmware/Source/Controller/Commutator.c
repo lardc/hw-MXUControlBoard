@@ -109,7 +109,7 @@ void COMM_Process()
 						PMXU_Command = ACT_PMXU_COMM_VF;
 						break;
 					case ACT_COMM_ICES_OR_IRRM:
-						PMXU_Command = ACT_PMXU_COMM_ICES;
+						PMXU_Command = ACT_PMXU_COMM_ICES_OR_IRRM;
 						break;
 					default:
 						PMXU_Command = ACT_PMXU_COMM_NO_PE;
