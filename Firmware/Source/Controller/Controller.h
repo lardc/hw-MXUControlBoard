@@ -5,6 +5,7 @@
 //
 #include "Global.h"
 #include "Commutator.h"
+#include "IGBTModuleTypes.h"
 
 // Types
 //
@@ -37,37 +38,6 @@ typedef enum __DeviceSelfTestState
 	STS_HV2BboardStage2,
 	STS_Finish,
 } DeviceSelfTestState;
-
-typedef enum __ModuleType
-{
-	Module_None,
-	MDAA_DD,
-	MDDA_DD,
-	MDFA_DD,
-	MDSM_SD,
-	MDSV_SD,
-	MIAA_CE,
-	MIAA_HB,
-	MIAA_HC,
-	MIAA_LC,
-	MIFA_HB,
-	MIFA_HC,
-	MIFA_LC,
-	MIFA_SD,
-	MIDA_HB,
-	MIHA_HB,
-	MIHA_HC,
-	MIHA_LC,
-	MIHM_SS,
-	MIHV_SS,
-	MISM_CH,
-	MISM_DS,
-	MISM_SS,
-	MISV_SS,
-	MIXM_HB,
-	MIXM_LR_LRD,
-	MIXV_HB,
-} ModuleTypes;
 
 // Variables
 //
