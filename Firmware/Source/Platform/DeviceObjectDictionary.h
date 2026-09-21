@@ -58,6 +58,7 @@
 #define REG_PMXU_EMULATED						4	// PMXU emulation
 #define REG_SFTST_OPENED_MIN_VOLTAGE			5	// Минимальное напряжение на разомкнутом реле, мВ
 #define REG_SFTST_CLOSED_MAX_VOLTAGE_RES		6	// Максимальное напряжение на замкнутом реле c встроенным резистором, мВ
+#define REG_SFTST_ACTIVATION					7	// Включение самодиагностики
 //
 // Несохраняемые регистры чтения-записи
 //

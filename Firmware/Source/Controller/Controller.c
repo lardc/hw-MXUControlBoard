@@ -153,8 +153,16 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			{
 				if(PMXU_Enable())
 				{
-					CONTROL_SetDeviceState(DS_InSelfTest);
-					CONTROL_SetDeviceSubState(STS_Start);
+					if(DataTable[REG_SFTST_ACTIVATION])
+					{
+						CONTROL_SetDeviceState(DS_InSelfTest);
+						CONTROL_SetDeviceSubState(STS_Start);
+					}
+					else
+					{
+						CONTROL_SetDeviceState(DS_Enabled);
+						CONTROL_SetDeviceSubState(STS_None);
+					}
 				}
 			}
 			else if(CONTROL_State != DS_Enabled)

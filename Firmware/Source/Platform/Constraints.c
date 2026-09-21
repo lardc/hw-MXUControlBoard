@@ -17,7 +17,7 @@ const TableItemConstraint Constraint[DATA_TABLE_WP_START] = {
 		{NO, YES, NO},																// 4
 		{SFTST_ALLOWED_VOLTAGE_MIN, SFTST_ALLOWED_VOLTAGE_MAX, SFTST_ALLOWED_VOLTAGE_DEF2},	// 5
 		{SFTST_ALLOWED_VOLTAGE_MIN, SFTST_ALLOWED_VOLTAGE_MAX, SFTST_ALLOWED_VOLTAGE_DEF3},	// 6
-		{0, 0, 0},																	// 7
+		{NO, YES, YES},																// 7
 		{0, 0, 0},																	// 8
 		{0, 0, 0},																	// 9
 		{0, 0, 0},																	// 10
