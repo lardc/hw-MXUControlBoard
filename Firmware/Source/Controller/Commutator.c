@@ -496,10 +496,15 @@ bool COMM_ValidateRequest(Int16U ActionID, Int16U Position)
 		case ACT_COMM_NO_PE:
 			return true;	// допустимо без проверки корпуса
 
+		case ACT_COMM_UCE_SAT:
+			if(ModuleType == BES_23_IGTU_HB)
+			{
+				CONTROL_FinishedWithProblem(PROBLEM_INCORRECT_DUT);
+				return false;
+			}
 		case ACT_COMM_IGES_POS_PULSE:
 		case ACT_COMM_IGES_NEG_PULSE:
 		case ACT_COMM_UGE_TH:
-		case ACT_COMM_UCE_SAT:
 			if(COMM_ValidateIGBT(Position,ModuleType))
 				return true;
 			CONTROL_FinishedWithProblem(PROBLEM_INCORRECT_DUT);
@@ -507,6 +512,11 @@ bool COMM_ValidateRequest(Int16U ActionID, Int16U Position)
 
 		case ACT_COMM_ICES_OR_IRRM:
 		case ACT_COMM_UFW_CHOPPER_DIODE:
+			if(ModuleType == BES_23_IGTU_HB || (ModuleType == MIRA_HB && Position == DUT_POSITION_2))
+			{
+				CONTROL_FinishedWithProblem(PROBLEM_INCORRECT_DUT);
+				return false;
+			}
 			if(COMM_ValidateIGBT(Position, ModuleType) || COMM_ValidateDiode(Position, ModuleType))
 				return true;
 			CONTROL_FinishedWithProblem(PROBLEM_INCORRECT_DUT);
