@@ -145,7 +145,6 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 	*pUserError = ERR_NONE;
 	
 	CONTROL_SafetyCheck();
-	CONTROL_SaveLastRequest(ActionID);
 
 	switch (ActionID)
 	{
@@ -154,9 +153,16 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			{
 				if(PMXU_Enable())
 				{
-					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
-					CONTROL_SetDeviceState(DS_InSelfTest);
-					CONTROL_SetDeviceSubState(STS_Start);
+					if(DataTable[REG_SFTST_ACTIVATION])
+					{
+						CONTROL_SetDeviceState(DS_InSelfTest);
+						CONTROL_SetDeviceSubState(STS_Start);
+					}
+					else
+					{
+						CONTROL_SetDeviceState(DS_Enabled);
+						CONTROL_SetDeviceSubState(STS_None);
+					}
 				}
 			}
 			else if(CONTROL_State != DS_Enabled)
@@ -209,6 +215,11 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			break;
 
 		case ACT_SET_INACTIVE:
+			if(LL_IsSafetyTrig())
+			{
+				*pUserError = ERR_OPERATION_BLOCKED;
+				break;
+			}
 			if(CONTROL_State == DS_Enabled || CONTROL_State == DS_SafetyActive || CONTROL_State == DS_SafetyTrig)
 			{
 				if(PMXU_SafetyDeactivate())
@@ -223,7 +234,6 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			{
 				if(PMXU_IsReady())
 				{
-					DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
 					CONTROL_SetDeviceState(DS_InSelfTest);
 					CONTROL_SetDeviceSubState(STS_Start);
 				}
@@ -250,6 +260,7 @@ bool CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			else
 			{
 				CONTROL_ResetOutputRegisters();
+				CONTROL_SaveLastRequest(ActionID);
 
 				bool Validation = COMM_ValidateRequest(ActionID, (Int16U)DataTable[REG_DUT_POSITION]);
 

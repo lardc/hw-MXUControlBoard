@@ -22,12 +22,6 @@ void PMXU_ReadRegister(Int16U RegAddress, Int16U* RegData);
 
 // Functions
 //
-bool PMXU_StartSelfTest()
-{
-	return PMXU_CallAction(ACT_PMXU_SELFTEST);
-}
-//--------------------------------------
-
 bool PMXU_Enable()
 {
 	return PMXU_CallAction(ACT_PMXU_ENABLE_POWER);
@@ -123,7 +117,8 @@ bool PMXU_SwitchCommutation(Int16U Position, Int16U DevCase, Int16U Scheme,Int16
 {
 	if(PMXU_WriteReg(REG_PMXU_DUT_POSITION, Position))
 		if(PMXU_WriteReg(REG_PMXU_DEV_CASE, DevCase))
-			return PMXU_CallAction(CommutationNumber);
+			if(PMXU_WriteReg(REG_PMXU_DUT_SCHEME, Scheme))
+				return PMXU_CallAction(CommutationNumber);
 
 	return false;
 }
@@ -200,3 +195,4 @@ void PMXU_ReadRegister(Int16U RegAddress, Int16U* RegData)
 	if(!BHL_ReadRegister(DataTable[REG_PMXU_CAN_ID], RegAddress, RegData))
 		CONTROL_SwitchToFault(DF_PMXU_INTERFACE);
 }
+//--------------------------------------

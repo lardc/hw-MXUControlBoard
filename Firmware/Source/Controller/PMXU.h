@@ -35,6 +35,5 @@ bool PMXU_CheckState(PMXUState State);
 bool PMXU_CheckOPResult(Int16U OPResult);
 bool PMXU_SafetyActivate();
 bool PMXU_SafetyDeactivate();
-bool PMXU_StartSelfTest();
 
 #endif /* CONTROLLER_PMXU_H_ */

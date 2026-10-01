@@ -57,6 +57,10 @@
 #define REG_PMXU_CAN_ID							3	// PMXU CAN ID
 #define REG_PMXU_EMULATED						4	// PMXU emulation
 #define REG_SFTST_OPENED_MIN_VOLTAGE			5	// Минимальное напряжение на разомкнутом реле, мВ
+#define REG_SFTST_CLOSED_MAX_VOLTAGE_RES		6	// Максимальное напряжение на замкнутом реле c встроенным резистором, мВ
+#define REG_SFTST_ACTIVATION					7	// Включение самодиагностики
+//
+// Несохраняемые регистры чтения-записи
 //
 #define REG_MODULE_TYPE							70	// Module type(Заглушка)
 #define REG_DUT_POSITION						71	// Регистр выбора позции тестируемого прибора (1 или 2)
@@ -68,6 +72,13 @@
 #define REG_EN_SFTY_IN3							82	// Enable safety input #3(Заглушка)
 #define REG_EN_SFTY_IN4							83	// Enable safety input #4(Заглушка)
 //
+#define REG_DBG									92	// Отладочный регистр
+#define REG_DBG2								93	// Отладочный регистр
+#define REG_CNT_NUMBER							94	// Номер счетчика, в который будет записано значение из регистра 95
+#define REG_CNT_VALUE							95	// Значение, которое будет записано в счетчик
+//
+// Регистры только чтение
+//
 #define REG_DEV_STATE							96	// Регистр состояния
 #define REG_FAULT_REASON						97	// Регистр Fault
 #define REG_DISABLE_REASON						98	// Регистр Disable
@@ -76,16 +87,7 @@
 #define REG_OP_RESULT							101	// Регистр результата операции
 #define REG_SELF_TEST_OP_RESULT					102	// Регистр результата самотестирования
 #define REG_SUB_STATE							103	// Регистр вспомогательного состояния
-
-#define REG_CNT_NUMBER							104	// Номер счетчика, в который будет записано значение из регистра 105
-#define REG_CNT_VALUE							105	// Значение, которое будет записано в счетчик
-
-// Несохраняемые регистры чтения-записи
 //
-#define REG_DBG									150	// Отладочный регистр
-#define REG_DBG2								151	// Отладочный регистр
-//
-// Регистры только чтение
 #define REG_SELF_TEST_FAILED_STATE				200	// Указывает состояние реле или цепи, на котором произошёл сбой (замкнуто / разомкнуто)
 #define REG_SELF_TEST_FAILED_RELAY				201	// Номер реле, на котором обнаружен отказ
 
@@ -151,10 +153,8 @@
 #define ACT_PMXU_SET_ACTIVE						100	// Команда активации контура безопасности
 #define ACT_PMXU_SET_INACTIVE					101	// Команда деактивации контура безопасности
 //
-#define ACT_PMXU_SELFTEST						120	// Команда завпуска SelfTest
-//
 #define ACT_PMXU_COMM_PE						110 // Отключение всех реле, замыкание шин на PE
-#define ACT_PMXU_COMM_ICES						111 // Режим измерения тока утечки коллектор-эмиттер (ICES/IRRM)
+#define ACT_PMXU_COMM_ICES_OR_IRRM				111 // Режим измерения ICES (IGBT) / IRRM (диод)
 #define ACT_PMXU_COMM_VCESAT					112 // Режим измерения напряжения насыщения коллектор-эмиттер IGBT транзисторов
 #define ACT_PMXU_COMM_VF						113 // Режим измерения постоянного прямого напряжения диода чоппера и обратно-параллельного диода
 // 114 — зарезервирован: бывший ACT_PMXU_COMM_QG удалён (команда ACT_COMM_QG выведена из MXU303)
@@ -162,8 +162,9 @@
 //
 // PMXU registers
 //
-#define REG_PMXU_DUT_POSITION					128	// Регистр выбора позции тестируемого прибора (1 или 2)
+#define REG_PMXU_DUT_POSITION					128	// Регистр выбора позиции тестируемого прибора (1 или 2)
 #define REG_PMXU_DEV_CASE						129	// Тип корпуса прибора
+#define REG_PMXU_DUT_SCHEME						130	// Схема подключения внутри корпуса
 
 #define REG_PMXU_DEV_STATE						192	// Регистр состояния
 #define REG_PMXU_FAULT_REASON					193	// Регистр Fault
