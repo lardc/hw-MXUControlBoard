@@ -18,6 +18,10 @@
 //
 CommutationState COMM_State = COMM_Def;
 
+// Forward
+//
+static void COMM_SwitchPMXU(Int16U Position, Int16U DevCase, Int16U CommutationNumber);
+
 // Functions
 //
 void COMM_Default()
@@ -25,6 +29,13 @@ void COMM_Default()
 	ZcRD_RegisterReset();
 
 	COMM_State = COMM_Def;
+}
+// ----------------------------------------
+
+static void COMM_SwitchPMXU(Int16U Position, Int16U DevCase, Int16U CommutationNumber)
+{
+	if(!PMXU_SwitchCommutation(Position, DevCase, CommutationNumber))
+		COMM_Default();
 }
 // ----------------------------------------
 
@@ -60,7 +71,7 @@ void COMM_Commutate(Int16U ActionID)
 	{
 		case ACT_COMM_NONE:
 			COMM_Default();
-			PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_PE);
+			COMM_SwitchPMXU(DUTPosition, DUTCase, ACT_PMXU_COMM_PE);
 			break;
 
 		case ACT_COMM_IGES_POS_PULSE:
@@ -114,7 +125,7 @@ void COMM_Commutate(Int16U ActionID)
 					ZcRD_RegisterFlushWrite();
 				}
 
-				PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_NO_PE);
+				COMM_SwitchPMXU(DUTPosition, DUTCase, ACT_PMXU_COMM_NO_PE);
 			}
 			break;
 
@@ -169,7 +180,7 @@ void COMM_Commutate(Int16U ActionID)
 					ZcRD_RegisterFlushWrite();
 				}
 
-				PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_NO_PE);
+				COMM_SwitchPMXU(DUTPosition, DUTCase, ACT_PMXU_COMM_NO_PE);
 			}
 			break;
 
@@ -230,7 +241,7 @@ void COMM_Commutate(Int16U ActionID)
 					ZcRD_RegisterFlushWrite();
 				}
 
-				PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_NO_PE);
+				COMM_SwitchPMXU(DUTPosition, DUTCase, ACT_PMXU_COMM_NO_PE);
 			}
 			break;
 
@@ -276,7 +287,7 @@ void COMM_Commutate(Int16U ActionID)
 					ZcRD_RegisterFlushWrite();
 				}
 
-				PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_QG);
+				COMM_SwitchPMXU(DUTPosition, DUTCase, ACT_PMXU_COMM_QG);
 			}
 			break;
 
@@ -335,7 +346,7 @@ void COMM_Commutate(Int16U ActionID)
 					ZcRD_RegisterFlushWrite();
 				}
 
-				PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_VCESAT);
+				COMM_SwitchPMXU(DUTPosition, DUTCase, ACT_PMXU_COMM_VCESAT);
 			}
 			break;
 
@@ -384,7 +395,7 @@ void COMM_Commutate(Int16U ActionID)
 					ZcRD_RegisterFlushWrite();
 				}
 
-				PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_VF);
+				COMM_SwitchPMXU(DUTPosition, DUTCase, ACT_PMXU_COMM_VF);
 			}
 			break;
 
@@ -398,7 +409,7 @@ void COMM_Commutate(Int16U ActionID)
 				ZcRD_OutputValuesCompose(MC_G_2_GE, TRUE);
 				ZcRD_RegisterFlushWrite();
 
-				PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_ICES);
+				COMM_SwitchPMXU(DUTPosition, DUTCase, ACT_PMXU_COMM_ICES);
 			}
 			break;
 
@@ -425,7 +436,7 @@ void COMM_Commutate(Int16U ActionID)
 
 				ZcRD_RegisterFlushWrite();
 
-				PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_NO_PE);
+				COMM_SwitchPMXU(DUTPosition, DUTCase, ACT_PMXU_COMM_NO_PE);
 			}
 			break;
 
@@ -435,7 +446,7 @@ void COMM_Commutate(Int16U ActionID)
 				COMM_DisconnectPE();
 				ZcRD_RegisterFlushWrite();
 
-				PMXU_SwitchCommutation(DUTPosition, DUTCase, ACT_PMXU_COMM_NO_PE);
+				COMM_SwitchPMXU(DUTPosition, DUTCase, ACT_PMXU_COMM_NO_PE);
 			}
 			break;
 
